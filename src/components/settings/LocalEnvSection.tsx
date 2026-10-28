@@ -24,6 +24,7 @@ import {
 } from "@/lib/local-envs"
 import type { EnvMode, ServiceDefinition } from "@/lib/local-envs"
 import { cn } from "@/lib/utils"
+import { useTranslations } from "next-intl"
 import {
     Eye,
     EyeOff,
@@ -60,6 +61,7 @@ function EnvVarInput({
     onChange: (value: string) => void
     onRemove: () => void
 }) {
+    const t = useTranslations("dashboard.settings.localEnv")
     const [show, setShow] = useState(false)
 
     return (
@@ -102,7 +104,7 @@ function EnvVarInput({
                     type="button"
                     onClick={onRemove}
                     className="text-muted-foreground hover:text-destructive transition-colors shrink-0"
-                    title={`Remove ${label}`}
+                    title={t("remove", { label })}
                 >
                     <Trash2 className="h-4 w-4" />
                 </button>
@@ -112,6 +114,7 @@ function EnvVarInput({
 }
 
 export function LocalEnvSection() {
+    const t = useTranslations("dashboard.settings.localEnv")
     const { definedServices, setMode, setEnv, removeEnv, clearAll } =
         useLocalEnvs()
     const [expanded, setExpanded] = useState<string | null>(null)
@@ -125,13 +128,9 @@ export function LocalEnvSection() {
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <Globe className="h-5 w-5" />
-                    APIs Locais
+                    {t("title")}
                 </CardTitle>
-                <CardDescription>
-                    Adicione suas próprias chaves de API para usar localmente no
-                    navegador. Nenhuma dessas informações é enviada para nossos
-                    servidores. Escolha o modo de fallback para cada serviço.
-                </CardDescription>
+                <CardDescription>{t("description")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
                 {KNOWN_SERVICES.map(serviceDef => {
@@ -211,8 +210,10 @@ export function LocalEnvSection() {
                                             className="text-xs text-muted-foreground hover:text-foreground underline"
                                         >
                                             {isExpanded
-                                                ? "Recolher"
-                                                : `${currentEnvs.length} variável(is)`}
+                                                ? t("collapse")
+                                                : t("variableCount", {
+                                                      count: currentEnvs.length,
+                                                  })}
                                         </button>
                                     )}
                                 </div>
@@ -286,7 +287,7 @@ export function LocalEnvSection() {
                             onClick={clearAll}
                         >
                             <Trash2 className="h-4 w-4 mr-1" />
-                            Limpar todas as chaves locais
+                            {t("clearAll")}
                         </Button>
                     </div>
                 )}

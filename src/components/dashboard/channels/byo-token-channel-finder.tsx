@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { createLogger } from "@/lib/logger"
 import { KeyRound, Loader2, ShieldCheck, X } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 
 const logger = createLogger("ByoTokenChannelFinder")
@@ -27,6 +28,7 @@ const PLATFORMS = [
     { id: "facebook", label: "Facebook" },
     { id: "instagram", label: "Instagram" },
     { id: "linkedin", label: "LinkedIn" },
+    { id: "kwai", label: "Kwai" },
 ] as const
 
 type PlatformId = (typeof PLATFORMS)[number]["id"]
@@ -49,24 +51,73 @@ interface ResolveResult {
 export interface ByoTokenChannelFinderProps {
     /** Called when the user picks a channel to use. */
     onChannelSelected?: (platform: string, channel: ResolvedChannel) => void
+    /** Called when a channel is successfully connected/saved in database. */
+    onChannelConnected?: () => void
+    initialPlatform?: PlatformId
 }
 
 export default function ByoTokenChannelFinder({
     onChannelSelected,
+    onChannelConnected,
+    initialPlatform,
 }: ByoTokenChannelFinderProps) {
+    const t = useTranslations("dashboard.channels.byoFinder")
     const [open, setOpen] = useState(false)
-    const [platform, setPlatform] = useState<PlatformId>("youtube")
+    const [platform, setPlatform] = useState<PlatformId>(
+        initialPlatform || "youtube"
+    )
     const [token, setToken] = useState("")
     const [clientId, setClientId] = useState("")
     const [loading, setLoading] = useState(false)
+    const [connectingChannelId, setConnectingChannelId] = useState<
+        string | null
+    >(null)
+    const [connectSuccess, setConnectSuccess] = useState<string | null>(null)
     const [error, setError] = useState<string | null>(null)
     const [results, setResults] = useState<ResolveResult | null>(null)
 
     const needsClientId = platform === "twitch"
 
+    const handleConnectChannel = async (
+        targetPlatform: string,
+        ch: ResolvedChannel
+    ) => {
+        setConnectingChannelId(ch.id)
+        setError(null)
+        setConnectSuccess(null)
+        try {
+            const res = await fetch("/api/byo/connect", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    platform: targetPlatform,
+                    channelId: ch.id,
+                    channelName: ch.name,
+                    accessToken: token,
+                    avatarUrl: ch.avatarUrl,
+                }),
+            })
+
+            const data = await res.json()
+            if (!res.ok || !data.success) {
+                throw new Error(data.message || data.error || t("errorConnect"))
+            }
+
+            setConnectSuccess(t("connectSuccess", { name: ch.name }))
+            onChannelConnected?.()
+            onChannelSelected?.(targetPlatform, ch)
+        } catch (err) {
+            const msg = err instanceof Error ? err.message : t("errorConnect")
+            setError(msg)
+            logger.error("Failed to connect BYO channel", { error: err })
+        } finally {
+            setConnectingChannelId(null)
+        }
+    }
+
     const handleSubmit = async () => {
         if (!token.trim()) {
-            setError("Informe o token de acesso.")
+            setError(t("errorToken"))
             return
         }
         setLoading(true)
@@ -84,17 +135,17 @@ export default function ByoTokenChannelFinder({
             })
             const data = await res.json()
             if (!res.ok) {
-                setError(data?.message || data?.error || "Falha ao consultar.")
+                setError(data?.message || data?.error || t("errorFetch"))
                 return
             }
             const result: ResolveResult = data.results?.[0]
             setResults(result)
             if (!result?.ok) {
-                setError(result?.message || result?.error || "Falha.")
+                setError(result?.message || result?.error || t("errorFetch"))
             }
         } catch (err) {
             logger.error("BYO token lookup failed", { error: err })
-            setError("Erro de rede ao consultar o token.")
+            setError(t("errorNetwork"))
         } finally {
             setLoading(false)
         }
@@ -115,7 +166,7 @@ export default function ByoTokenChannelFinder({
                 className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-1.5 text-sm hover:bg-muted"
             >
                 <KeyRound className="h-4 w-4" />
-                Usar meu próprio token (Local)
+                {t("open")}
             </button>
         )
     }
@@ -126,11 +177,10 @@ export default function ByoTokenChannelFinder({
                 <div>
                     <h3 className="flex items-center gap-2 text-sm font-semibold">
                         <KeyRound className="h-4 w-4" />
-                        Listar canais via token próprio
+                        {t("title")}
                     </h3>
                     <p className="mt-1 text-xs text-muted-foreground">
-                        Cole um token de acesso da plataforma para ver quais
-                        canais ele pode usar. O token não é salvo.
+                        {t("description")}
                     </p>
                 </div>
                 <button
@@ -140,7 +190,7 @@ export default function ByoTokenChannelFinder({
                         reset()
                     }}
                     className="text-muted-foreground hover:text-foreground"
-                    aria-label="Fechar"
+                    aria-label={t("close")}
                 >
                     <X className="h-4 w-4" />
                 </button>
@@ -148,7 +198,9 @@ export default function ByoTokenChannelFinder({
 
             <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
                 <label className="flex flex-col gap-1 text-xs">
-                    <span className="text-muted-foreground">Plataforma</span>
+                    <span className="text-muted-foreground">
+                        {t("platform")}
+                    </span>
                     <select
                         value={platform}
                         onChange={e => {
@@ -167,24 +219,34 @@ export default function ByoTokenChannelFinder({
 
                 {needsClientId && (
                     <label className="flex flex-1 flex-col gap-1 text-xs">
-                        <span className="text-muted-foreground">Client-Id</span>
+                        <span className="text-muted-foreground">
+                            {t("clientId")}
+                        </span>
                         <input
                             type="text"
                             value={clientId}
                             onChange={e => setClientId(e.target.value)}
-                            placeholder="Client-Id da app Twitch"
+                            placeholder={t("clientIdPlaceholder")}
                             className="rounded border border-border bg-background px-2 py-1.5 text-sm"
                         />
                     </label>
                 )}
 
                 <label className="flex flex-1 flex-col gap-1 text-xs">
-                    <span className="text-muted-foreground">Access token</span>
+                    <span className="text-muted-foreground">
+                        {platform === "kwai"
+                            ? t("kwaiTokenLabel")
+                            : t("accessToken")}
+                    </span>
                     <input
-                        type="password"
+                        type={platform === "kwai" ? "text" : "password"}
                         value={token}
                         onChange={e => setToken(e.target.value)}
-                        placeholder="Cole o token aqui"
+                        placeholder={
+                            platform === "kwai"
+                                ? t("kwaiTokenPlaceholder")
+                                : t("tokenPlaceholder")
+                        }
                         autoComplete="off"
                         className="rounded border border-border bg-background px-2 py-1.5 text-sm"
                     />
@@ -194,19 +256,24 @@ export default function ByoTokenChannelFinder({
                     {loading ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Consultando
+                            {t("loading")}
                         </>
                     ) : (
-                        "Listar canais"
+                        t("submit")
                     )}
                 </Button>
             </div>
 
             <p className="mt-2 flex items-center gap-1 text-[11px] text-muted-foreground">
                 <ShieldCheck className="h-3 w-3" />
-                Usado apenas em memória para esta consulta. Nunca armazenamos o
-                token.
+                {t("privacy")}
             </p>
+
+            {connectSuccess && (
+                <div className="mt-3 rounded-md bg-emerald-500/15 p-2 text-xs text-emerald-600 dark:text-emerald-400">
+                    {connectSuccess}
+                </div>
+            )}
 
             {error && (
                 <div className="mt-3 rounded-md bg-destructive/15 p-2 text-xs text-destructive">
@@ -216,7 +283,7 @@ export default function ByoTokenChannelFinder({
 
             {results?.ok && results.channels.length === 0 && (
                 <p className="mt-3 text-xs text-muted-foreground">
-                    Nenhum canal encontrado para este token.
+                    {t("noChannels")}
                 </p>
             )}
 
@@ -250,17 +317,23 @@ export default function ByoTokenChannelFinder({
                                     )}
                                 </div>
                             </div>
-                            {onChannelSelected && (
-                                <Button
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={() =>
-                                        onChannelSelected(results.platform, ch)
-                                    }
-                                >
-                                    Usar
-                                </Button>
-                            )}
+                            <Button
+                                size="sm"
+                                variant="default"
+                                disabled={connectingChannelId === ch.id}
+                                onClick={() =>
+                                    handleConnectChannel(results.platform, ch)
+                                }
+                            >
+                                {connectingChannelId === ch.id ? (
+                                    <>
+                                        <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+                                        {t("connecting")}
+                                    </>
+                                ) : (
+                                    t("connect")
+                                )}
+                            </Button>
                         </div>
                     ))}
                 </div>

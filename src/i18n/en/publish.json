@@ -437,5 +437,11 @@
         "cloudDescription": "Video stored on server for multi-platform publishing. Subject to storage fees.",
         "localDescription": "Upload directly to a single platform. No storage fees.",
         "perPostOverride": "Override for this post"
-    }
+    },
+    "channelSelectNone": "No channel selection needed for selected platforms.",
+    "thumbnailPreview": "Thumbnail preview",
+    "partialPublish": "Partial publication",
+    "tagPlaceholder": "Type a tag and press Enter, or separate with commas",
+    "clickToEdit": "Click to edit",
+    "removeFile": "Remove file"
 }

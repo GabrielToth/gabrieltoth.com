@@ -2,6 +2,7 @@
 
 import { Card } from "@/components/ui/card"
 import Link from "next/link"
+import { useTranslations } from "next-intl"
 
 interface AuthenticationEntryProps {
     onEmailSelected: () => void
@@ -14,6 +15,8 @@ export function AuthenticationEntry({
     onGoogleSelected,
     isLoading = false,
 }: AuthenticationEntryProps) {
+    const t = useTranslations("auth.registrationFlow")
+
     return (
         <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 py-8 sm:py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
             <div className="w-full max-w-md">
@@ -35,10 +38,10 @@ export function AuthenticationEntry({
                         </svg>
                     </div>
                     <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">
-                        Create Account
+                        {t("title")}
                     </h1>
                     <p className="text-muted-foreground text-base sm:text-lg">
-                        Join us today and get started in just a few steps
+                        {t("subtitle")}
                     </p>
                 </div>
 
@@ -49,7 +52,7 @@ export function AuthenticationEntry({
                         onClick={onEmailSelected}
                         disabled={isLoading}
                         className="w-full px-6 py-3 sm:py-3 bg-slate-600 hover:bg-slate-700 disabled:bg-slate-600 disabled:opacity-50 text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 min-h-[44px] text-base sm:text-sm"
-                        aria-label="Sign up with Email"
+                        aria-label={t("signUpWithEmail")}
                     >
                         <svg
                             className="w-5 h-5"
@@ -60,7 +63,7 @@ export function AuthenticationEntry({
                             <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                             <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                         </svg>
-                        Sign up with Email
+                        {t("signUpWithEmail")}
                     </button>
 
                     {/* Google OAuth Button */}
@@ -68,7 +71,7 @@ export function AuthenticationEntry({
                         onClick={onGoogleSelected}
                         disabled={isLoading}
                         className="w-full px-6 py-3 sm:py-3 bg-white hover:bg-slate-100 disabled:bg-white disabled:opacity-50 text-slate-900 font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 min-h-[44px] text-base sm:text-sm"
-                        aria-label="Sign up with Google"
+                        aria-label={t("signUpWithGoogle")}
                     >
                         <svg
                             className="w-5 h-5"
@@ -81,7 +84,7 @@ export function AuthenticationEntry({
                             <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
                             <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                         </svg>
-                        Sign up with Google
+                        {t("signUpWithGoogle")}
                     </button>
 
                     {/* SSO Button */}
@@ -89,7 +92,7 @@ export function AuthenticationEntry({
                         onClick={onGoogleSelected}
                         disabled={isLoading}
                         className="w-full px-6 py-3 sm:py-3 bg-slate-700 hover:bg-slate-600 disabled:bg-slate-700 disabled:opacity-50 text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 min-h-[44px] text-base sm:text-sm"
-                        aria-label="Sign up with SSO"
+                        aria-label={t("signUpWithSso")}
                     >
                         <svg
                             className="w-5 h-5"
@@ -99,7 +102,7 @@ export function AuthenticationEntry({
                         >
                             <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
                         </svg>
-                        Sign up with SSO
+                        {t("signUpWithSso")}
                     </button>
                 </Card>
 
@@ -109,26 +112,26 @@ export function AuthenticationEntry({
                         href="/login"
                         className="text-muted-foreground hover:text-foreground font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring rounded px-2 py-1"
                     >
-                        Back to Login
+                        {t("backToLogin")}
                     </Link>
                 </div>
 
                 {/* Footer */}
                 <div className="mt-8 text-center text-sm text-slate-500">
                     <p>
-                        By signing up, you agree to our{" "}
+                        {t("termsAgreementPrefix")}{" "}
                         <a
                             href="/terms"
                             className="text-primary hover:text-blue-300 focus:outline-none focus:ring-2 focus:ring-ring rounded"
                         >
-                            Terms of Service
+                            {t("termsOfService")}
                         </a>{" "}
-                        and{" "}
+                        {t("and")}{" "}
                         <a
                             href="/privacy"
                             className="text-primary hover:text-blue-300 focus:outline-none focus:ring-2 focus:ring-ring rounded"
                         >
-                            Privacy Policy
+                            {t("privacyPolicy")}
                         </a>
                     </p>
                 </div>

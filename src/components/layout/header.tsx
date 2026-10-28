@@ -119,7 +119,7 @@ export default function Header() {
                             className="text-xl font-bold text-foreground dark:text-foreground hover:text-primary dark:hover:text-primary transition-colors"
                             data-testid="nav-home"
                         >
-                            Gabriel Toth Gonçalves
+                            {t("authorName")}
                         </Link>
                     </div>
 
@@ -158,7 +158,7 @@ export default function Header() {
                                     onClick={toggleMinecraft}
                                     className="text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors ml-1 p-1"
                                     data-testid="minecraft-dropdown-button"
-                                    aria-label="Toggle Minecraft submenu"
+                                    aria-label={t("toggleMinecraftSubmenu")}
                                 >
                                     <svg
                                         className={`h-4 w-4 transition-transform ${
@@ -219,7 +219,7 @@ export default function Header() {
                                     onClick={toggleServices}
                                     className="text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors ml-1 p-1"
                                     data-testid="services-dropdown-button"
-                                    aria-label="Toggle Services submenu"
+                                    aria-label={t("toggleServicesSubmenu")}
                                 >
                                     <svg
                                         className={`h-4 w-4 transition-transform ${
@@ -312,7 +312,7 @@ export default function Header() {
                                         onClick={toggleServices}
                                         className="text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors ml-1 p-1"
                                         data-testid="services-dropdown-button-mid"
-                                        aria-label="Toggle Services submenu"
+                                        aria-label={t("toggleServicesSubmenu")}
                                     >
                                         <svg
                                             className={`h-4 w-4 transition-transform ${
@@ -369,7 +369,7 @@ export default function Header() {
                                         onClick={toggleMinecraft}
                                         className="text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors ml-1 p-1"
                                         data-testid="minecraft-dropdown-button-mid"
-                                        aria-label="Toggle Minecraft submenu"
+                                        aria-label={t("toggleMinecraftSubmenu")}
                                     >
                                         <svg
                                             className={`h-4 w-4 transition-transform ${
@@ -449,7 +449,7 @@ export default function Header() {
                                         onClick={toggleServices}
                                         className="text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors ml-1 p-1"
                                         data-testid="services-dropdown-button-mid-sm"
-                                        aria-label="Toggle Services submenu"
+                                        aria-label={t("toggleServicesSubmenu")}
                                     >
                                         <svg
                                             className={`h-4 w-4 transition-transform ${

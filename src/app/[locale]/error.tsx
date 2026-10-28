@@ -32,7 +32,7 @@ export default function LocaleError({
                         Error
                     </h1>
                     <p className="text-lg text-muted-foreground dark:text-foreground">
-                        Loading...
+                        {t("loading")}
                     </p>
                 </div>
             </div>

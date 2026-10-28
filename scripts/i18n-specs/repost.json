@@ -1,0 +1,74 @@
+{
+    "dashboard.json": {
+        "repost.loading": {
+            "pt-BR": "Carregando...",
+            "en": "Loading...",
+            "es": "Cargando...",
+            "de": "Wird geladen...",
+            "fr": "Chargement..."
+        },
+        "repost.sourceUrlPlaceholder": {
+            "pt-BR": "URL ou handle do canal do YouTube (ex.: https://youtube.com/@canal)",
+            "en": "YouTube channel URL or handle (e.g. https://youtube.com/@channel)",
+            "es": "URL o identificador del canal de YouTube (ej.: https://youtube.com/@canal)",
+            "de": "YouTube-Kanal-URL oder Handle (z. B. https://youtube.com/@kanal)",
+            "fr": "URL ou pseudo de la chaîne YouTube (ex. : https://youtube.com/@chaine)"
+        },
+        "repost.selectTargetGroup": {
+            "pt-BR": "Selecione o grupo de destino...",
+            "en": "Select target group...",
+            "es": "Selecciona el grupo de destino...",
+            "de": "Zielgruppe auswählen...",
+            "fr": "Sélectionnez le groupe cible..."
+        },
+        "repost.checkEvery": {
+            "pt-BR": "Verificar a cada",
+            "en": "Check every",
+            "es": "Comprobar cada",
+            "de": "Prüfen alle",
+            "fr": "Vérifier toutes les"
+        },
+        "repost.minutes": {
+            "pt-BR": "minutos",
+            "en": "minutes",
+            "es": "minutos",
+            "de": "Minuten",
+            "fr": "minutes"
+        },
+        "repost.youtubeChannel": {
+            "pt-BR": "Canal do YouTube",
+            "en": "YouTube Channel",
+            "es": "Canal de YouTube",
+            "de": "YouTube-Kanal",
+            "fr": "Chaîne YouTube"
+        },
+        "repost.noGroup": {
+            "pt-BR": "Sem grupo",
+            "en": "No group",
+            "es": "Sin grupo",
+            "de": "Keine Gruppe",
+            "fr": "Aucun groupe"
+        },
+        "repost.minShort": {
+            "pt-BR": "{count} min",
+            "en": "{count} min",
+            "es": "{count} min",
+            "de": "{count} Min.",
+            "fr": "{count} min"
+        },
+        "repost.lastCheck": {
+            "pt-BR": "Última verificação: {date}",
+            "en": "Last check: {date}",
+            "es": "Última comprobación: {date}",
+            "de": "Letzte Prüfung: {date}",
+            "fr": "Dernière vérification : {date}"
+        },
+        "repost.delete": {
+            "pt-BR": "Excluir",
+            "en": "Delete",
+            "es": "Eliminar",
+            "de": "Löschen",
+            "fr": "Supprimer"
+        }
+    }
+}

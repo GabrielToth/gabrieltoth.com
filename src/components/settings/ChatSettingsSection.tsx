@@ -3,20 +3,20 @@
 import React from "react"
 import { useChatSettings } from "@/hooks/use-chat-settings"
 import type { ChatSettings } from "@/hooks/use-chat-settings"
+import { useTranslations } from "next-intl"
 
 export const ChatSettingsSection: React.FC = () => {
+    const t = useTranslations("dashboard.settings.chat")
     const { settings, updateSettings } = useChatSettings()
 
     return (
         <div className="space-y-6 rounded-xl border border-border bg-card p-6 shadow-sm">
             <div>
                 <h3 className="text-lg font-semibold text-foreground">
-                    Live Chat & Unified Stream Configuration
+                    {t("title")}
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                    Configure chat message timestamps, universal creator display
-                    names, badges, and font sizes across Twitch, Kick, and
-                    YouTube.
+                    {t("description")}
                 </p>
             </div>
 
@@ -24,11 +24,10 @@ export const ChatSettingsSection: React.FC = () => {
                 <div className="flex items-center justify-between pt-4">
                     <div>
                         <h4 className="text-sm font-medium text-foreground">
-                            Show Message Timestamps
+                            {t("showTimestamps")}
                         </h4>
                         <p className="text-xs text-muted-foreground">
-                            Display the message sent time (e.g. 12:34 PM) next
-                            to messages in the unified chat stream.
+                            {t("showTimestampsDesc")}
                         </p>
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
@@ -51,12 +50,10 @@ export const ChatSettingsSection: React.FC = () => {
                 <div className="flex items-center justify-between pt-4">
                     <div>
                         <h4 className="text-sm font-medium text-foreground">
-                            Unify Creator Display Name Across Platforms
+                            {t("universalNickname")}
                         </h4>
                         <p className="text-xs text-muted-foreground">
-                            Display your account's universal nickname for your
-                            own messages across Twitch, Kick, and YouTube
-                            instead of raw platform handles.
+                            {t("universalNicknameDesc")}
                         </p>
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
@@ -79,11 +76,10 @@ export const ChatSettingsSection: React.FC = () => {
                 <div className="flex items-center justify-between pt-4">
                     <div>
                         <h4 className="text-sm font-medium text-foreground">
-                            Show Platform Badges
+                            {t("showBadges")}
                         </h4>
                         <p className="text-xs text-muted-foreground">
-                            Display moderator, subscriber, and VIP badges next
-                            to chat usernames.
+                            {t("showBadgesDesc")}
                         </p>
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
@@ -104,11 +100,10 @@ export const ChatSettingsSection: React.FC = () => {
                 <div className="flex items-center justify-between pt-4">
                     <div>
                         <h4 className="text-sm font-medium text-foreground">
-                            Chat Stream Font Size
+                            {t("fontSize")}
                         </h4>
                         <p className="text-xs text-muted-foreground">
-                            Adjust font size for chat messages in dashboard and
-                            popouts.
+                            {t("fontSizeDesc")}
                         </p>
                     </div>
                     <select
@@ -121,10 +116,10 @@ export const ChatSettingsSection: React.FC = () => {
                         }
                         className="rounded-lg border border-input bg-background px-3 py-1.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                     >
-                        <option value="xs">Small (11px)</option>
-                        <option value="sm">Medium (12px)</option>
-                        <option value="md">Large (14px)</option>
-                        <option value="lg">Extra Large (16px)</option>
+                        <option value="xs">{t("fontSmall")}</option>
+                        <option value="sm">{t("fontMedium")}</option>
+                        <option value="md">{t("fontLarge")}</option>
+                        <option value="lg">{t("fontExtraLarge")}</option>
                     </select>
                 </div>
             </div>

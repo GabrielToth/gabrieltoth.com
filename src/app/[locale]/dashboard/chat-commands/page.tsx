@@ -68,7 +68,7 @@ export default function ChatCommandsPage() {
             }
         } catch (_err) {
             console.error(_err)
-            alert("Failed to load commands")
+            alert(t("loadFailed"))
         } finally {
             setIsLoading(false)
         }
@@ -83,21 +83,21 @@ export default function ChatCommandsPage() {
             })
 
             if (res.ok) {
-                alert(cmd.id ? "Command updated" : "Command created")
+                alert(cmd.id ? t("commandUpdated") : t("commandCreated"))
                 setShowDialog(false)
                 setEditing(null)
                 await fetchCommands()
             } else {
                 const err = await res.json()
-                alert(err.error || "Failed to save command")
+                alert(err.error || t("saveFailed"))
             }
         } catch (_err) {
-            alert("Request failed")
+            alert(t("requestFailed"))
         }
     }
 
     async function deleteCommand(id: string) {
-        if (!confirm("Delete this command?")) return
+        if (!confirm(t("deleteConfirm"))) return
 
         try {
             const res = await fetch(`/api/chat-commands?id=${id}`, {
@@ -105,11 +105,11 @@ export default function ChatCommandsPage() {
             })
 
             if (res.ok) {
-                alert("Command deleted")
+                alert(t("commandDeleted"))
                 await fetchCommands()
             }
         } catch (_err) {
-            alert("Failed to delete command")
+            alert(t("deleteFailed"))
         }
     }
 
@@ -351,13 +351,13 @@ export default function ChatCommandsPage() {
                             {editing?.type === "stream_update" && (
                                 <div className="space-y-2">
                                     <Label htmlFor="updateTitle">
-                                        {t("type") === "stream_update"
-                                            ? "Update Title"
-                                            : "Title Update"}
+                                        {t("updateTitleLabel")}
                                     </Label>
                                     <Input
                                         id="updateTitle"
-                                        placeholder="Stream title or leave empty for category"
+                                        placeholder={t(
+                                            "updateTitlePlaceholder"
+                                        )}
                                         value={editing?.responseTemplate || ""}
                                         onChange={e =>
                                             setEditing({

@@ -1,0 +1,32 @@
+{
+    "auth.json": {
+        "registrationFlow.navBack": {
+            "pt-BR": "Voltar",
+            "en": "Back",
+            "es": "Atrás",
+            "de": "Zurück",
+            "fr": "Retour"
+        },
+        "registrationFlow.navCancel": {
+            "pt-BR": "Cancelar",
+            "en": "Cancel",
+            "es": "Cancelar",
+            "de": "Abbrechen",
+            "fr": "Annuler"
+        },
+        "registrationFlow.navNext": {
+            "pt-BR": "Avançar",
+            "en": "Next",
+            "es": "Siguiente",
+            "de": "Weiter",
+            "fr": "Suivant"
+        },
+        "registrationFlow.redirectingIn": {
+            "pt-BR": "Redirecionando para o login em {countdown} segundos...",
+            "en": "Redirecting to login in {countdown} seconds...",
+            "es": "Redirigiendo al inicio de sesión en {countdown} segundos...",
+            "de": "Weiterleitung zur Anmeldung in {countdown} Sekunden...",
+            "fr": "Redirection vers la connexion dans {countdown} secondes..."
+        }
+    }
+}

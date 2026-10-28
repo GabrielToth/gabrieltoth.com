@@ -1,0 +1,18 @@
+{
+    "dashboard.json": {
+        "channels.statusInDevelopment": {
+            "pt-BR": "Em Desenvolvimento",
+            "en": "In Development",
+            "es": "En desarrollo",
+            "de": "In Entwicklung",
+            "fr": "En développement"
+        },
+        "channels.linkedCount": {
+            "pt-BR": "{count} vinculado(s)",
+            "en": "{count} linked",
+            "es": "{count} vinculado(s)",
+            "de": "{count} verknüpft",
+            "fr": "{count} connecté(s)"
+        }
+    }
+}

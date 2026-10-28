@@ -5,9 +5,10 @@
 
 "use client"
 
-import { useState } from "react"
 import { ModerationRule } from "@/lib/chat/moderation"
 import { BotCommand } from "@/lib/chat/bot-responder"
+import { useTranslations } from "next-intl"
+import { useState } from "react"
 
 interface ChatModerationPanelProps {
     initialRules?: ModerationRule[]
@@ -18,6 +19,7 @@ export function ChatModerationPanel({
     initialRules = [],
     initialCommands = [],
 }: ChatModerationPanelProps) {
+    const t = useTranslations("dashboard.live")
     const [rules, setRules] = useState<ModerationRule[]>(initialRules)
     const [commands, setCommands] = useState<BotCommand[]>(initialCommands)
 
@@ -53,12 +55,12 @@ export function ChatModerationPanel({
         <div className="rounded-xl border border-neutral-800 bg-background p-4 backdrop-blur-sm space-y-6">
             <div>
                 <h3 className="text-sm font-semibold text-neutral-200 border-b border-neutral-800 pb-2">
-                    Chat Moderation Rules
+                    {t("moderationRules")}
                 </h3>
                 <div className="mt-3 flex gap-2">
                     <input
                         type="text"
-                        placeholder="Add blocked keyword..."
+                        placeholder={t("addBlockedKeyword")}
                         value={newPattern}
                         onChange={e => setNewPattern(e.target.value)}
                         className="flex-1 rounded-lg border border-neutral-700 bg-card px-3 py-1.5 text-xs text-neutral-100 focus:outline-none"
@@ -67,7 +69,7 @@ export function ChatModerationPanel({
                         onClick={handleAddRule}
                         className="rounded-lg bg-red-600/80 px-3 py-1.5 text-xs font-semibold text-white hover:bg-red-600"
                     >
-                        Add Rule
+                        {t("addRule")}
                     </button>
                 </div>
                 <ul className="mt-3 space-y-1">
@@ -77,8 +79,8 @@ export function ChatModerationPanel({
                             className="flex items-center justify-between rounded-lg bg-card px-3 py-1.5 text-xs text-neutral-300"
                         >
                             <span>
-                                Keyword: <strong>{rule.pattern}</strong> (
-                                {rule.action})
+                                {t("keywordLabel")}{" "}
+                                <strong>{rule.pattern}</strong> ({rule.action})
                             </span>
                             <button
                                 onClick={() =>
@@ -88,7 +90,7 @@ export function ChatModerationPanel({
                                 }
                                 className="text-neutral-500 hover:text-red-400"
                             >
-                                Remove
+                                {t("remove")}
                             </button>
                         </li>
                     ))}
@@ -97,19 +99,19 @@ export function ChatModerationPanel({
 
             <div>
                 <h3 className="text-sm font-semibold text-neutral-200 border-b border-neutral-800 pb-2">
-                    Automated Bot Commands
+                    {t("botCommands")}
                 </h3>
                 <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <input
                         type="text"
-                        placeholder="Trigger (e.g. !discord)"
+                        placeholder={t("triggerPlaceholder")}
                         value={newTrigger}
                         onChange={e => setNewTrigger(e.target.value)}
                         className="rounded-lg border border-neutral-700 bg-card px-3 py-1.5 text-xs text-neutral-100 focus:outline-none"
                     />
                     <input
                         type="text"
-                        placeholder="Bot response..."
+                        placeholder={t("botResponsePlaceholder")}
                         value={newResponse}
                         onChange={e => setNewResponse(e.target.value)}
                         className="rounded-lg border border-neutral-700 bg-card px-3 py-1.5 text-xs text-neutral-100 focus:outline-none"
@@ -119,7 +121,7 @@ export function ChatModerationPanel({
                     onClick={handleAddCommand}
                     className="mt-2 rounded-lg bg-emerald-600/80 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-600"
                 >
-                    Add Bot Command
+                    {t("addBotCommand")}
                 </button>
                 <ul className="mt-3 space-y-1">
                     {commands.map((cmd, idx) => (
@@ -139,7 +141,7 @@ export function ChatModerationPanel({
                                 }
                                 className="text-neutral-500 hover:text-red-400"
                             >
-                                Remove
+                                {t("remove")}
                             </button>
                         </li>
                     ))}

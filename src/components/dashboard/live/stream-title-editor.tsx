@@ -8,6 +8,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react"
 import { Loader2, CheckCircle2, AlertCircle } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 interface StreamTitleEditorProps {
     platform: string
@@ -33,6 +34,7 @@ export function StreamTitleEditor({
     onUpdateOptimistic,
     executionMode = "cloud",
 }: StreamTitleEditorProps) {
+    const t = useTranslations("dashboard.live")
     const [title, setTitle] = useState(currentTitle || "")
 
     const [game, setGame] = useState(currentGame || "")
@@ -189,13 +191,13 @@ export function StreamTitleEditor({
                     maxLength={140}
                     disabled={saving}
                     className="w-full rounded-md border border-input px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring dark:border-border dark:bg-card dark:text-foreground disabled:opacity-60"
-                    placeholder="Enter stream title..."
+                    placeholder={t("streamTitlePlaceholder")}
                 />
             </div>
 
             <div className="relative" ref={dropdownRef}>
                 <label className="block text-sm font-medium text-foreground dark:text-foreground mb-1">
-                    Jogo / Categoria
+                    {t("gameCategory")}
                 </label>
                 <input
                     type="text"
@@ -208,7 +210,7 @@ export function StreamTitleEditor({
                         setIsDropdownOpen(true)
                     }}
                     className="w-full rounded-md border border-input px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring dark:border-border dark:bg-card dark:text-foreground disabled:opacity-60"
-                    placeholder="Search game or category for connected platforms..."
+                    placeholder={t("searchCategoryPlaceholder")}
                 />
 
                 {/* Dropdown Menu */}
@@ -217,7 +219,9 @@ export function StreamTitleEditor({
                         {loadingCategories ? (
                             <div className="flex items-center justify-center p-3 text-xs text-muted-foreground">
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin text-primary" />
-                                Buscando categorias ({platform})...
+                                {t("searchingCategories", {
+                                    platform,
+                                })}
                             </div>
                         ) : categories.length > 0 ? (
                             categories.map(cat => (
@@ -246,7 +250,7 @@ export function StreamTitleEditor({
                             ))
                         ) : (
                             <div className="p-3 text-center text-xs text-muted-foreground">
-                                Nenhuma categoria encontrada.
+                                {t("noCategoryFound")}
                             </div>
                         )}
                     </div>
@@ -259,7 +263,7 @@ export function StreamTitleEditor({
                     {saving && (
                         <div className="flex items-center text-xs text-blue-500 font-medium animate-pulse">
                             <Loader2 className="mr-1.5 h-4 w-4 animate-spin text-blue-500" />
-                            <span>Sincronizando com a plataforma...</span>
+                            <span>{t("syncingWithPlatform")}</span>
                         </div>
                     )}
 
@@ -298,7 +302,7 @@ export function StreamTitleEditor({
                     {saving ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Saving...
+                            {t("saving")}
                         </>
                     ) : (
                         "Update Stream"

@@ -1,0 +1,207 @@
+{
+    "dashboard.json": {
+        "live.noChatMessages": {
+            "pt-BR": "Nenhuma mensagem no chat ainda",
+            "en": "No chat messages yet",
+            "es": "Aún no hay mensajes en el chat",
+            "de": "Noch keine Chat-Nachrichten",
+            "fr": "Aucun message de chat pour l'instant"
+        },
+        "live.chatMessagesHint": {
+            "pt-BR": "Mensagens das plataformas conectadas aparecerão aqui",
+            "en": "Messages from connected platforms will appear here",
+            "es": "Los mensajes de las plataformas conectadas aparecerán aquí",
+            "de": "Nachrichten von verbundenen Plattformen erscheinen hier",
+            "fr": "Les messages des plateformes connectées apparaîtront ici"
+        },
+        "live.moderationRules": {
+            "pt-BR": "Regras de Moderação do Chat",
+            "en": "Chat Moderation Rules",
+            "es": "Reglas de moderación del chat",
+            "de": "Chat-Moderationsregeln",
+            "fr": "Règles de modération du chat"
+        },
+        "live.addRule": {
+            "pt-BR": "Adicionar Regra",
+            "en": "Add Rule",
+            "es": "Añadir regla",
+            "de": "Regel hinzufügen",
+            "fr": "Ajouter une règle"
+        },
+        "live.keywordLabel": {
+            "pt-BR": "Palavra-chave:",
+            "en": "Keyword:",
+            "es": "Palabra clave:",
+            "de": "Schlüsselwort:",
+            "fr": "Mot-clé :"
+        },
+        "live.addBlockedKeyword": {
+            "pt-BR": "Adicionar palavra-chave bloqueada...",
+            "en": "Add blocked keyword...",
+            "es": "Añadir palabra clave bloqueada...",
+            "de": "Blockiertes Schlüsselwort hinzufügen ...",
+            "fr": "Ajouter un mot-clé bloqué..."
+        },
+        "live.botCommands": {
+            "pt-BR": "Comandos Automáticos do Bot",
+            "en": "Automated Bot Commands",
+            "es": "Comandos automáticos del bot",
+            "de": "Automatische Bot-Befehle",
+            "fr": "Commandes automatiques du bot"
+        },
+        "live.addBotCommand": {
+            "pt-BR": "Adicionar Comando do Bot",
+            "en": "Add Bot Command",
+            "es": "Añadir comando del bot",
+            "de": "Bot-Befehl hinzufügen",
+            "fr": "Ajouter une commande du bot"
+        },
+        "live.botResponsePlaceholder": {
+            "pt-BR": "Resposta do bot...",
+            "en": "Bot response...",
+            "es": "Respuesta del bot...",
+            "de": "Bot-Antwort ...",
+            "fr": "Réponse du bot..."
+        },
+        "live.remove": {
+            "pt-BR": "Remover",
+            "en": "Remove",
+            "es": "Eliminar",
+            "de": "Entfernen",
+            "fr": "Supprimer"
+        },
+        "live.streamHealth": {
+            "pt-BR": "Saúde da Transmissão",
+            "en": "Stream Health",
+            "es": "Salud de la transmisión",
+            "de": "Stream-Zustand",
+            "fr": "Santé du stream"
+        },
+        "live.frameRate": {
+            "pt-BR": "Taxa de Quadros",
+            "en": "Frame Rate",
+            "es": "Velocidad de fotogramas",
+            "de": "Bildrate",
+            "fr": "Fréquence d'images"
+        },
+        "live.droppedFrames": {
+            "pt-BR": "Quadros Descartados",
+            "en": "Dropped Frames",
+            "es": "Fotogramas perdidos",
+            "de": "Verworfene Frames",
+            "fr": "Images perdues"
+        },
+        "live.issuesDetected": {
+            "pt-BR": "Problemas Detectados:",
+            "en": "Issues Detected:",
+            "es": "Problemas detectados:",
+            "de": "Erkannte Probleme:",
+            "fr": "Problèmes détectés :"
+        },
+        "live.streamHealthStatus": {
+            "pt-BR": "Status da Saúde da Transmissão",
+            "en": "Stream Health Status",
+            "es": "Estado de salud de la transmisión",
+            "de": "Status des Stream-Zustands",
+            "fr": "État de santé du stream"
+        },
+        "live.bitrate": {
+            "pt-BR": "Bitrate",
+            "en": "Bitrate",
+            "es": "Bitrate",
+            "de": "Bitrate",
+            "fr": "Débit"
+        },
+        "live.latency": {
+            "pt-BR": "Latência",
+            "en": "Latency",
+            "es": "Latencia",
+            "de": "Latenz",
+            "fr": "Latence"
+        },
+        "live.uptime": {
+            "pt-BR": "Tempo no Ar",
+            "en": "Uptime",
+            "es": "Tiempo en vivo",
+            "de": "Betriebszeit",
+            "fr": "Durée de diffusion"
+        },
+        "live.encoderAndRes": {
+            "pt-BR": "Encoder & Resolução",
+            "en": "Encoder & Resolution",
+            "es": "Codificador y resolución",
+            "de": "Encoder & Auflösung",
+            "fr": "Encodeur et résolution"
+        },
+        "live.titleLabel": {
+            "pt-BR": "Título:",
+            "en": "Title:",
+            "es": "Título:",
+            "de": "Titel:",
+            "fr": "Titre :"
+        },
+        "live.gameCategory": {
+            "pt-BR": "Jogo / Categoria",
+            "en": "Game / Category",
+            "es": "Juego / Categoría",
+            "de": "Spiel / Kategorie",
+            "fr": "Jeu / Catégorie"
+        },
+        "live.noCategoryFound": {
+            "pt-BR": "Nenhuma categoria encontrada.",
+            "en": "No category found.",
+            "es": "No se encontró ninguna categoría.",
+            "de": "Keine Kategorie gefunden.",
+            "fr": "Aucune catégorie trouvée."
+        },
+        "live.syncingWithPlatform": {
+            "pt-BR": "Sincronizando com a plataforma...",
+            "en": "Syncing with the platform...",
+            "es": "Sincronizando con la plataforma...",
+            "de": "Synchronisierung mit der Plattform ...",
+            "fr": "Synchronisation avec la plateforme..."
+        },
+        "live.streamTitlePlaceholder": {
+            "pt-BR": "Digite o título da transmissão...",
+            "en": "Enter stream title...",
+            "es": "Introduce el título de la transmisión...",
+            "de": "Stream-Titel eingeben ...",
+            "fr": "Saisissez le titre du stream..."
+        },
+        "live.searchCategoryPlaceholder": {
+            "pt-BR": "Buscar jogo ou categoria nas plataformas conectadas...",
+            "en": "Search game or category for connected platforms...",
+            "es": "Busca un juego o categoría en las plataformas conectadas...",
+            "de": "Spiel oder Kategorie für verbundene Plattformen suchen ...",
+            "fr": "Rechercher un jeu ou une catégorie pour les plateformes connectées..."
+        },
+        "live.titleRequired": {
+            "pt-BR": "O título é obrigatório",
+            "en": "Title is required",
+            "es": "El título es obligatorio",
+            "de": "Titel ist erforderlich",
+            "fr": "Le titre est obligatoire"
+        },
+        "live.titleMaxLength": {
+            "pt-BR": "O título deve ter no máximo 140 caracteres",
+            "en": "Title must be 140 characters or less",
+            "es": "El título debe tener 140 caracteres o menos",
+            "de": "Der Titel darf höchstens 140 Zeichen lang sein",
+            "fr": "Le titre doit contenir 140 caractères maximum"
+        },
+        "live.descriptionMaxLength": {
+            "pt-BR": "A descrição deve ter no máximo 500 caracteres",
+            "en": "Description must be 500 characters or less",
+            "es": "La descripción debe tener 500 caracteres o menos",
+            "de": "Die Beschreibung darf höchstens 500 Zeichen lang sein",
+            "fr": "La description doit contenir 500 caractères maximum"
+        },
+        "live.chatConfiguration": {
+            "pt-BR": "⚙️ Configuração do Chat",
+            "en": "⚙️ Chat Configuration",
+            "es": "⚙️ Configuración del chat",
+            "de": "⚙️ Chat-Konfiguration",
+            "fr": "⚙️ Configuration du chat"
+        }
+    }
+}

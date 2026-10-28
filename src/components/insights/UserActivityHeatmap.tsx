@@ -128,14 +128,26 @@ export const UserActivityHeatmap: React.FC<UserActivityHeatmapProps> = ({
                         value={selectedActionFilter}
                         onChange={e => setSelectedActionFilter(e.target.value)}
                         className="bg-background border border-border text-xs rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-emerald-500"
-                        aria-label="Filter action logs"
+                        aria-label={t("insights.userActivity.filterAria")}
                     >
-                        <option value="all">All Actions</option>
-                        <option value="auth">Authentication</option>
-                        <option value="post">Posts & Publishing</option>
-                        <option value="channel">Channels</option>
-                        <option value="settings">Settings</option>
-                        <option value="town">Location Search</option>
+                        <option value="all">
+                            {t("insights.userActivity.allActions")}
+                        </option>
+                        <option value="auth">
+                            {t("insights.userActivity.authentication")}
+                        </option>
+                        <option value="post">
+                            {t("insights.userActivity.posts")}
+                        </option>
+                        <option value="channel">
+                            {t("insights.userActivity.channels")}
+                        </option>
+                        <option value="settings">
+                            {t("insights.userActivity.settings")}
+                        </option>
+                        <option value="town">
+                            {t("insights.userActivity.town")}
+                        </option>
                     </select>
                 </div>
             </div>
@@ -181,13 +193,13 @@ export const UserActivityHeatmap: React.FC<UserActivityHeatmapProps> = ({
 
             {/* Legend */}
             <div className="flex items-center justify-end gap-2 text-xs text-muted-foreground border-t border-border/30 pt-3">
-                <span>Less</span>
+                <span>{t("insights.userActivity.less")}</span>
                 <div className="w-3 h-3 rounded bg-background border border-neutral-800" />
                 <div className="w-3 h-3 rounded bg-emerald-950/60 border border-emerald-800/40" />
                 <div className="w-3 h-3 rounded bg-emerald-800/80 border border-emerald-600/50" />
                 <div className="w-3 h-3 rounded bg-emerald-600 border border-emerald-500" />
                 <div className="w-3 h-3 rounded bg-emerald-500 border border-emerald-400" />
-                <span>More</span>
+                <span>{t("insights.userActivity.more")}</span>
             </div>
 
             {/* Detailed Audit Action Log Feed */}
@@ -195,10 +207,12 @@ export const UserActivityHeatmap: React.FC<UserActivityHeatmapProps> = ({
                 <div className="flex items-center justify-between">
                     <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                         <ShieldCheck className="h-4 w-4 text-emerald-400" />
-                        Detailed User Action Logs ({filteredLogs.length})
+                        {t("insights.userActivity.detailedLogs", {
+                            count: filteredLogs.length,
+                        })}
                     </h4>
                     <span className="text-[10px] text-emerald-400 bg-emerald-950/50 border border-emerald-800/40 px-2 py-0.5 rounded-full font-mono">
-                        0-client policy active • standard audit
+                        {t("insights.userActivity.auditPolicy")}
                     </span>
                 </div>
 

@@ -319,7 +319,7 @@ export default function DiscoverPage() {
                         <div className="flex items-center gap-2">
                             <label className="inline-flex items-center gap-1.5 rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white cursor-pointer hover:bg-emerald-700 transition-colors">
                                 <Upload className="h-3.5 w-3.5" />
-                                <span>Importar JSON</span>
+                                <span>{t("importJson")}</span>
                                 <input
                                     type="file"
                                     accept=".json"
@@ -333,10 +333,10 @@ export default function DiscoverPage() {
                                     type="button"
                                     onClick={handleJsonExport}
                                     className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:bg-accent transition-colors"
-                                    title="Exportar lista de descoberta como arquivo JSON"
+                                    title={t("exportTitle")}
                                 >
                                     <Download className="h-3.5 w-3.5" />
-                                    <span>Exportar</span>
+                                    <span>{t("export")}</span>
                                 </button>
                             )}
                         </div>
@@ -363,17 +363,14 @@ export default function DiscoverPage() {
                     className="rounded-lg border border-border bg-card p-4"
                 >
                     <h2 className="mb-2 text-sm font-semibold text-foreground">
-                        Registrar / remover canais vinculados
+                        {t("linkedPanelTitle")}
                     </h2>
                     <p className="mb-3 text-xs text-muted-foreground">
-                        Cada canal conectado pode ser adicionado ou removido da
-                        sua lista de descoberta. O exemplo @ogabrieltoth fica
-                        sempre disponível para você montar seu próprio JSON.
+                        {t("linkedPanelHint")}
                     </p>
                     {linkedChannels.length === 0 ? (
                         <p className="text-sm text-muted-foreground">
-                            Nenhum canal conectado encontrado. Conecte uma
-                            plataforma na aba de canais para registrá-la aqui.
+                            {t("noLinkedChannels")}
                         </p>
                     ) : (
                         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
@@ -405,9 +402,7 @@ export default function DiscoverPage() {
                                             </span>
                                         </span>
                                         <span className="text-xs">
-                                            {registered
-                                                ? "✓ Adicionado"
-                                                : "+ Adicionar"}
+                                            {registered ? t("added") : t("add")}
                                         </span>
                                     </button>
                                 )
@@ -457,7 +452,7 @@ export default function DiscoverPage() {
                     <div className="text-center">
                         <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-border border-t-primary"></div>
                         <p className="text-muted-foreground">
-                            Carregando canais...
+                            {t("loadingChannels")}
                         </p>
                     </div>
                 </div>
@@ -467,17 +462,14 @@ export default function DiscoverPage() {
                         <div className="space-y-3">
                             <Laptop className="h-10 w-10 mx-auto text-emerald-500" />
                             <p className="font-semibold text-foreground">
-                                Modo Local Ativo
+                                {t("localModeActive")}
                             </p>
                             <p className="text-sm text-muted-foreground max-w-md mx-auto">
-                                Nenhum estado local carregado. Suba um arquivo
-                                JSON customizado contendo a lista de canais para
-                                utilizar o descobrimento local sem consumir
-                                créditos da nuvem.
+                                {t("localModeEmpty")}
                             </p>
                             <label className="inline-flex items-center gap-1.5 rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white cursor-pointer hover:bg-emerald-700 transition-colors">
                                 <Upload className="h-4 w-4" />
-                                <span>Carregar JSON Local</span>
+                                <span>{t("loadLocalJson")}</span>
                                 <input
                                     type="file"
                                     accept=".json"
@@ -489,8 +481,10 @@ export default function DiscoverPage() {
                     ) : (
                         <p className="text-muted-foreground">
                             {searchQuery
-                                ? `Nenhum canal encontrado para "${searchQuery}".`
-                                : "Nenhum canal disponível no momento."}
+                                ? t("noChannelForQuery", {
+                                      query: searchQuery,
+                                  })
+                                : t("noChannelsAvailable")}
                         </p>
                     )}
                 </div>

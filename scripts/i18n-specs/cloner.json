@@ -1,0 +1,326 @@
+{
+    "dashboard.json": {
+        "cloner.title": {
+            "pt-BR": "Clonador do YouTube & Auto-Publicação",
+            "en": "YouTube Cloner & Auto-Publisher",
+            "es": "Clonador de YouTube y Auto-Publicación",
+            "de": "YouTube-Kloner & Auto-Veröffentlichung",
+            "fr": "Cloneur YouTube & Auto-Publication"
+        },
+        "cloner.description": {
+            "pt-BR": "Clone canais completos do YouTube com download automático, divisão por categorias e agendamento de postagens.",
+            "en": "Clone entire YouTube channels with automatic download, category splitting and post scheduling.",
+            "es": "Clona canales completos de YouTube con descarga automática, división por categorías y programación de publicaciones.",
+            "de": "Klonen Sie komplette YouTube-Kanäle mit automatischem Download, Kategorienaufteilung und Beitragsplanung.",
+            "fr": "Clonez des chaînes YouTube entières avec téléchargement automatique, répartition par catégories et planification des publications."
+        },
+        "cloner.errResolveChannel": {
+            "pt-BR": "Não foi possível resolver informações do canal do YouTube.",
+            "en": "Could not resolve YouTube channel information.",
+            "es": "No se pudo resolver la información del canal de YouTube.",
+            "de": "YouTube-Kanalinformationen konnten nicht ermittelt werden.",
+            "fr": "Impossible de résoudre les informations de la chaîne YouTube."
+        },
+        "cloner.errSearchApi": {
+            "pt-BR": "Erro ao conectar com API de busca de canais.",
+            "en": "Error connecting to the channel search API.",
+            "es": "Error al conectar con la API de búsqueda de canales.",
+            "de": "Fehler beim Verbinden mit der Kanalsuch-API.",
+            "fr": "Erreur de connexion à l'API de recherche de chaînes."
+        },
+        "cloner.errStartCloning": {
+            "pt-BR": "Falha ao iniciar trabalho de clonagem.",
+            "en": "Failed to start the cloning job.",
+            "es": "Error al iniciar el trabajo de clonación.",
+            "de": "Der Klonauftrag konnte nicht gestartet werden.",
+            "fr": "Échec du démarrage de la tâche de clonage."
+        },
+        "cloner.errCommunication": {
+            "pt-BR": "Erro de comunicação ao criar clonagem.",
+            "en": "Communication error while creating the clone job.",
+            "es": "Error de comunicación al crear la clonación.",
+            "de": "Kommunikationsfehler beim Erstellen des Klonauftrags.",
+            "fr": "Erreur de communication lors de la création du clonage."
+        },
+        "cloner.step1Title": {
+            "pt-BR": "1. Identificar Canal do YouTube",
+            "en": "1. Identify YouTube Channel",
+            "es": "1. Identificar canal de YouTube",
+            "de": "1. YouTube-Kanal identifizieren",
+            "fr": "1. Identifier la chaîne YouTube"
+        },
+        "cloner.step1Desc": {
+            "pt-BR": "Digite a URL completa do canal ou o arroba (ex:",
+            "en": "Enter the full channel URL or the at-handle (e.g.:",
+            "es": "Introduce la URL completa del canal o el identificador (ej.:",
+            "de": "Geben Sie die vollständige Kanal-URL oder den Kanalnamen ein (z. B.:",
+            "fr": "Saisissez l'URL complète de la chaîne ou le pseudo (ex :"
+        },
+        "cloner.step1DescOr": {
+            "pt-BR": "ou",
+            "en": "or",
+            "es": "o",
+            "de": "oder",
+            "fr": "ou"
+        },
+        "cloner.urlPlaceholder": {
+            "pt-BR": "Cole a URL ou @do_canal...",
+            "en": "Paste the URL or @channel_handle...",
+            "es": "Pega la URL o @del_canal...",
+            "de": "URL oder @kanalname einfügen...",
+            "fr": "Collez l'URL ou @pseudo_chaine..."
+        },
+        "cloner.inspecting": {
+            "pt-BR": "Analisando...",
+            "en": "Analyzing...",
+            "es": "Analizando...",
+            "de": "Analyse läuft...",
+            "fr": "Analyse en cours..."
+        },
+        "cloner.analyzeChannel": {
+            "pt-BR": "Analisar Canal",
+            "en": "Analyze Channel",
+            "es": "Analizar canal",
+            "de": "Kanal analysieren",
+            "fr": "Analyser la chaîne"
+        },
+        "cloner.apiKeyPlaceholder": {
+            "pt-BR": "Chave de API do Google própria (opcional para zerar custos de consulta)...",
+            "en": "Your own Google API key (optional, to avoid query costs)...",
+            "es": "Tu propia clave de API de Google (opcional para eliminar costes de consulta)...",
+            "de": "Eigener Google-API-Schlüssel (optional, um Abfragekosten zu vermeiden)...",
+            "fr": "Votre propre clé API Google (facultatif, pour éviter les coûts de requête)..."
+        },
+        "cloner.subscribers": {
+            "pt-BR": "inscritos",
+            "en": "subscribers",
+            "es": "suscriptores",
+            "de": "Abonnenten",
+            "fr": "abonnés"
+        },
+        "cloner.contentsFound": {
+            "pt-BR": "conteúdos encontrados",
+            "en": "items found",
+            "es": "contenidos encontrados",
+            "de": "gefundene Inhalte",
+            "fr": "contenus trouvés"
+        },
+        "cloner.switchChannel": {
+            "pt-BR": "Trocar Canal",
+            "en": "Switch Channel",
+            "es": "Cambiar canal",
+            "de": "Kanal wechseln",
+            "fr": "Changer de chaîne"
+        },
+        "cloner.step2Title": {
+            "pt-BR": "2. Configurações de Destino e Frequência de Postagem",
+            "en": "2. Destination and Publishing Frequency Settings",
+            "es": "2. Configuración de destino y frecuencia de publicación",
+            "de": "2. Ziel- und Veröffentlichungsfrequenz-Einstellungen",
+            "fr": "2. Paramètres de destination et de fréquence de publication"
+        },
+        "cloner.targetGroup": {
+            "pt-BR": "Grupo de Canais de Destino",
+            "en": "Destination Channel Group",
+            "es": "Grupo de canales de destino",
+            "de": "Ziel-Kanalgruppe",
+            "fr": "Groupe de chaînes de destination"
+        },
+        "cloner.selectGroupPlaceholder": {
+            "pt-BR": "Selecione o grupo para repostar...",
+            "en": "Select the group to repost to...",
+            "es": "Selecciona el grupo para republicar...",
+            "de": "Wählen Sie die Gruppe zum Reposten aus...",
+            "fr": "Sélectionnez le groupe de republication..."
+        },
+        "cloner.scheduleFrequency": {
+            "pt-BR": "Frequência de Postagem",
+            "en": "Publishing Frequency",
+            "es": "Frecuencia de publicación",
+            "de": "Veröffentlichungsfrequenz",
+            "fr": "Fréquence de publication"
+        },
+        "cloner.scheduleImmediate": {
+            "pt-BR": "Imediato (Tudo de uma vez)",
+            "en": "Immediate (All at once)",
+            "es": "Inmediato (Todo a la vez)",
+            "de": "Sofort (Alles auf einmal)",
+            "fr": "Immédiat (Tout en une fois)"
+        },
+        "cloner.scheduleDaily": {
+            "pt-BR": "Diário (Programado)",
+            "en": "Daily (Scheduled)",
+            "es": "Diario (Programado)",
+            "de": "Täglich (Geplant)",
+            "fr": "Quotidien (Planifié)"
+        },
+        "cloner.scheduleWeekly": {
+            "pt-BR": "Semanal (Programado)",
+            "en": "Weekly (Scheduled)",
+            "es": "Semanal (Programado)",
+            "de": "Wöchentlich (Geplant)",
+            "fr": "Hebdomadaire (Planifié)"
+        },
+        "cloner.scheduleQuantity": {
+            "pt-BR": "Quantidade de Vídeos por Intervalo",
+            "en": "Number of Videos per Interval",
+            "es": "Cantidad de vídeos por intervalo",
+            "de": "Anzahl der Videos pro Intervall",
+            "fr": "Nombre de vidéos par intervalle"
+        },
+        "cloner.autoUpdateLabel": {
+            "pt-BR": "Clonar novos conteúdos automaticamente assim que forem lançados no canal",
+            "en": "Automatically clone new content as soon as it is published on the channel",
+            "es": "Clonar automáticamente contenido nuevo en cuanto se publique en el canal",
+            "de": "Neue Inhalte automatisch klonen, sobald sie im Kanal veröffentlicht werden",
+            "fr": "Cloner automatiquement les nouveaux contenus dès leur publication sur la chaîne"
+        },
+        "cloner.step3Title": {
+            "pt-BR": "3. Seleção de Conteúdo por Categoria",
+            "en": "3. Content Selection by Category",
+            "es": "3. Selección de contenido por categoría",
+            "de": "3. Inhaltsauswahl nach Kategorie",
+            "fr": "3. Sélection de contenu par catégorie"
+        },
+        "cloner.selectedCount": {
+            "pt-BR": "({count} selecionados)",
+            "en": "({count} selected)",
+            "es": "({count} seleccionados)",
+            "de": "({count} ausgewählt)",
+            "fr": "({count} sélectionnés)"
+        },
+        "cloner.tabVideos": {
+            "pt-BR": "Vídeos",
+            "en": "Videos",
+            "es": "Vídeos",
+            "de": "Videos",
+            "fr": "Vidéos"
+        },
+        "cloner.tabShorts": {
+            "pt-BR": "Shorts",
+            "en": "Shorts",
+            "es": "Shorts",
+            "de": "Shorts",
+            "fr": "Shorts"
+        },
+        "cloner.tabLives": {
+            "pt-BR": "Lives",
+            "en": "Livestreams",
+            "es": "Directos",
+            "de": "Livestreams",
+            "fr": "Directs"
+        },
+        "cloner.tabPodcasts": {
+            "pt-BR": "Podcasts",
+            "en": "Podcasts",
+            "es": "Pódcasts",
+            "de": "Podcasts",
+            "fr": "Podcasts"
+        },
+        "cloner.selectAllTab": {
+            "pt-BR": "Marcar todos desta aba",
+            "en": "Select all in this tab",
+            "es": "Seleccionar todo en esta pestaña",
+            "de": "Alle in diesem Tab auswählen",
+            "fr": "Tout sélectionner dans cet onglet"
+        },
+        "cloner.deselectAllTab": {
+            "pt-BR": "Desmarcar todos desta aba",
+            "en": "Deselect all in this tab",
+            "es": "Deseleccionar todo en esta pestaña",
+            "de": "Alle in diesem Tab abwählen",
+            "fr": "Tout désélectionner dans cet onglet"
+        },
+        "cloner.itemsCount": {
+            "pt-BR": "{count} itens",
+            "en": "{count} items",
+            "es": "{count} elementos",
+            "de": "{count} Elemente",
+            "fr": "{count} éléments"
+        },
+        "cloner.startCloningBtn": {
+            "pt-BR": "Iniciando Clonagem...",
+            "en": "Starting Cloning...",
+            "es": "Iniciando clonación...",
+            "de": "Klonen wird gestartet...",
+            "fr": "Démarrage du clonage..."
+        },
+        "cloner.confirmStart": {
+            "pt-BR": "Confirmar & Iniciar Clonagem",
+            "en": "Confirm & Start Cloning",
+            "es": "Confirmar e iniciar clonación",
+            "de": "Bestätigen & Klonen starten",
+            "fr": "Confirmer & démarrer le clonage"
+        },
+        "cloner.jobsTitle": {
+            "pt-BR": "Progresso dos Trabalhos de Clonagem",
+            "en": "Cloning Job Progress",
+            "es": "Progreso de los trabajos de clonación",
+            "de": "Fortschritt der Klonaufträge",
+            "fr": "Progression des tâches de clonage"
+        },
+        "cloner.cloneNewChannel": {
+            "pt-BR": "+ Clonar Novo Canal",
+            "en": "+ Clone New Channel",
+            "es": "+ Clonar nuevo canal",
+            "de": "+ Neuen Kanal klonen",
+            "fr": "+ Cloner une nouvelle chaîne"
+        },
+        "cloner.loadingJobs": {
+            "pt-BR": "Carregando trabalhos...",
+            "en": "Loading jobs...",
+            "es": "Cargando trabajos...",
+            "de": "Aufträge werden geladen...",
+            "fr": "Chargement des tâches..."
+        },
+        "cloner.noJobs": {
+            "pt-BR": "Nenhum trabalho de clonagem em andamento.",
+            "en": "No cloning job in progress.",
+            "es": "Ningún trabajo de clonación en curso.",
+            "de": "Kein Klonauftrag in Bearbeitung.",
+            "fr": "Aucune tâche de clonage en cours."
+        },
+        "cloner.cloudMode": {
+            "pt-BR": "Modo Cloud",
+            "en": "Cloud Mode",
+            "es": "Modo Cloud",
+            "de": "Cloud-Modus",
+            "fr": "Mode Cloud"
+        },
+        "cloner.localMode": {
+            "pt-BR": "Modo Local",
+            "en": "Local Mode",
+            "es": "Modo Local",
+            "de": "Lokaler Modus",
+            "fr": "Mode local"
+        },
+        "cloner.cost": {
+            "pt-BR": "Custo:",
+            "en": "Cost:",
+            "es": "Coste:",
+            "de": "Kosten:",
+            "fr": "Coût :"
+        },
+        "cloner.freeLocal": {
+            "pt-BR": "Grátis (Local)",
+            "en": "Free (Local)",
+            "es": "Gratis (Local)",
+            "de": "Kostenlos (Lokal)",
+            "fr": "Gratuit (Local)"
+        },
+        "cloner.creditsShort": {
+            "pt-BR": "{count} Cr",
+            "en": "{count} Cr",
+            "es": "{count} Cr",
+            "de": "{count} Cr",
+            "fr": "{count} Cr"
+        },
+        "cloner.processingLocal": {
+            "pt-BR": "Processando via yt-dlp...",
+            "en": "Processing via yt-dlp...",
+            "es": "Procesando vía yt-dlp...",
+            "de": "Verarbeitung über yt-dlp...",
+            "fr": "Traitement via yt-dlp..."
+        }
+    }
+}

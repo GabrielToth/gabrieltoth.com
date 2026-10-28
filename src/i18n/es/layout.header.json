@@ -22,5 +22,11 @@
         "plugins": "Plugins ",
         "contributions": "Contribuciones"
     },
-    "minecraft": "Minecraft "
+    "minecraft": "Minecraft ",
+    "toggleServicesSubmenu": "Alternar submenú de Servicios",
+    "toggleMinecraftSubmenu": "Alternar submenú de Minecraft",
+    "authorName": "Gabriel Toth Gonçalves",
+    "selectLanguage": "Seleccionar idioma",
+    "toggleTheme": "Cambiar tema",
+    "theme": "Tema"
 }

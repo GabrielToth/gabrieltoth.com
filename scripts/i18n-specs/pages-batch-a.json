@@ -1,0 +1,260 @@
+{
+    "dashboard.json": {
+        "chatCommands.updateTitleLabel": {
+            "pt-BR": "Atualizar Título",
+            "en": "Update Title",
+            "es": "Actualizar título",
+            "de": "Titel aktualisieren",
+            "fr": "Mettre à jour le titre"
+        },
+        "chatCommands.updateTitlePlaceholder": {
+            "pt-BR": "Título da stream ou deixe vazio para usar a categoria",
+            "en": "Stream title or leave empty for category",
+            "es": "Título de la transmisión o déjalo vacío para la categoría",
+            "de": "Stream-Titel oder leer lassen für Kategorie",
+            "fr": "Titre du stream ou laisser vide pour la catégorie"
+        },
+        "chatCommands.loadFailed": {
+            "pt-BR": "Falha ao carregar comandos",
+            "en": "Failed to load commands",
+            "es": "No se pudieron cargar los comandos",
+            "de": "Befehle konnten nicht geladen werden",
+            "fr": "Impossible de charger les commandes"
+        },
+        "chatCommands.commandUpdated": {
+            "pt-BR": "Comando atualizado",
+            "en": "Command updated",
+            "es": "Comando actualizado",
+            "de": "Befehl aktualisiert",
+            "fr": "Commande mise à jour"
+        },
+        "chatCommands.commandCreated": {
+            "pt-BR": "Comando criado",
+            "en": "Command created",
+            "es": "Comando creado",
+            "de": "Befehl erstellt",
+            "fr": "Commande créée"
+        },
+        "chatCommands.saveFailed": {
+            "pt-BR": "Falha ao salvar comando",
+            "en": "Failed to save command",
+            "es": "No se pudo guardar el comando",
+            "de": "Befehl konnte nicht gespeichert werden",
+            "fr": "Impossible d'enregistrer la commande"
+        },
+        "chatCommands.requestFailed": {
+            "pt-BR": "Falha na requisição",
+            "en": "Request failed",
+            "es": "La solicitud falló",
+            "de": "Anfrage fehlgeschlagen",
+            "fr": "Échec de la requête"
+        },
+        "chatCommands.deleteConfirm": {
+            "pt-BR": "Excluir este comando?",
+            "en": "Delete this command?",
+            "es": "¿Eliminar este comando?",
+            "de": "Diesen Befehl löschen?",
+            "fr": "Supprimer cette commande ?"
+        },
+        "chatCommands.commandDeleted": {
+            "pt-BR": "Comando excluído",
+            "en": "Command deleted",
+            "es": "Comando eliminado",
+            "de": "Befehl gelöscht",
+            "fr": "Commande supprimée"
+        },
+        "chatCommands.deleteFailed": {
+            "pt-BR": "Falha ao excluir comando",
+            "en": "Failed to delete command",
+            "es": "No se pudo eliminar el comando",
+            "de": "Befehl konnte nicht gelöscht werden",
+            "fr": "Impossible de supprimer la commande"
+        },
+        "streamer.loading": {
+            "pt-BR": "Carregando streamer...",
+            "en": "Loading streamer...",
+            "es": "Cargando streamer...",
+            "de": "Streamer wird geladen...",
+            "fr": "Chargement du streamer..."
+        },
+        "streamer.notFound": {
+            "pt-BR": "Streamer não encontrado",
+            "en": "Streamer not found",
+            "es": "Streamer no encontrado",
+            "de": "Streamer nicht gefunden",
+            "fr": "Streamer introuvable"
+        },
+        "streamer.goHome": {
+            "pt-BR": "Ir para o início",
+            "en": "Go home",
+            "es": "Ir al inicio",
+            "de": "Zur Startseite",
+            "fr": "Retour à l'accueil"
+        },
+        "streamer.livePlayerTitle": {
+            "pt-BR": "Player ao vivo de {name}",
+            "en": "{name} live player",
+            "es": "Reproductor en vivo de {name}",
+            "de": "Live-Player von {name}",
+            "fr": "Lecteur en direct de {name}"
+        },
+        "streamer.player": {
+            "pt-BR": "Player:",
+            "en": "Player:",
+            "es": "Reproductor:",
+            "de": "Player:",
+            "fr": "Lecteur :"
+        },
+        "streamer.noPlayer": {
+            "pt-BR": "Nenhum player disponível para esta plataforma",
+            "en": "No player available for this platform",
+            "es": "No hay reproductor disponible para esta plataforma",
+            "de": "Kein Player für diese Plattform verfügbar",
+            "fr": "Aucun lecteur disponible pour cette plateforme"
+        },
+        "streamer.otherPlatforms": {
+            "pt-BR": "Outras Plataformas",
+            "en": "Other Platforms",
+            "es": "Otras plataformas",
+            "de": "Weitere Plattformen",
+            "fr": "Autres plateformes"
+        },
+        "streamer.watchOn": {
+            "pt-BR": "Assistir no {platform}",
+            "en": "Watch on {platform}",
+            "es": "Ver en {platform}",
+            "de": "Auf {platform} ansehen",
+            "fr": "Regarder sur {platform}"
+        },
+        "streamer.chat": {
+            "pt-BR": "Chat",
+            "en": "Chat",
+            "es": "Chat",
+            "de": "Chat",
+            "fr": "Chat"
+        },
+        "streamer.chatHint": {
+            "pt-BR": "As mensagens serão enviadas para todas as plataformas em que {name} está ao vivo",
+            "en": "Messages will be sent to all platforms {name} is live on",
+            "es": "Los mensajes se enviarán a todas las plataformas donde {name} está en vivo",
+            "de": "Nachrichten werden an alle Plattformen gesendet, auf denen {name} live ist",
+            "fr": "Les messages seront envoyés sur toutes les plateformes où {name} est en direct"
+        },
+        "streamer.typeMessage": {
+            "pt-BR": "Digite uma mensagem...",
+            "en": "Type a message...",
+            "es": "Escribe un mensaje...",
+            "de": "Nachricht eingeben...",
+            "fr": "Saisissez un message..."
+        },
+        "streamer.send": {
+            "pt-BR": "Enviar",
+            "en": "Send",
+            "es": "Enviar",
+            "de": "Senden",
+            "fr": "Envoyer"
+        },
+        "streamer.connectedPlatforms": {
+            "pt-BR": "Plataformas Conectadas",
+            "en": "Connected Platforms",
+            "es": "Plataformas conectadas",
+            "de": "Verbundene Plattformen",
+            "fr": "Plateformes connectées"
+        },
+        "streamer.homeTitle": {
+            "pt-BR": "Gabriel Toth",
+            "en": "Gabriel Toth",
+            "es": "Gabriel Toth",
+            "de": "Gabriel Toth",
+            "fr": "Gabriel Toth"
+        }
+    },
+    "landing.json": {
+        "hero.learnMore": {
+            "pt-BR": "Saiba Mais",
+            "en": "Learn More",
+            "es": "Saber más",
+            "de": "Mehr erfahren",
+            "fr": "En savoir plus"
+        }
+    },
+    "minecraft.json": {
+        "modsComingSoon": {
+            "pt-BR": "Em Breve",
+            "en": "Coming Soon",
+            "es": "Próximamente",
+            "de": "Demnächst",
+            "fr": "Bientôt disponible"
+        },
+        "modsComingSoonDescription": {
+            "pt-BR": "Mais mods em breve. Fique atento!",
+            "en": "More mods coming soon. Stay tuned!",
+            "es": "Más mods próximamente. ¡Mantente atento!",
+            "de": "Weitere Mods folgen bald. Bleib dran!",
+            "fr": "D'autres mods arrivent bientôt. Restez à l'écoute !"
+        },
+        "hypixelQol.aboutTitle": {
+            "pt-BR": "Sobre este Modpack",
+            "en": "About This Modpack",
+            "es": "Acerca de este modpack",
+            "de": "Über dieses Modpack",
+            "fr": "À propos de ce modpack"
+        },
+        "hypixelQol.aboutDescription": {
+            "pt-BR": "O modpack Hypixel QoL foi criado para melhorar sua experiência no Minecraft com melhorias de qualidade de vida, mantendo a sensação vanilla do jogo.",
+            "en": "The Hypixel QoL modpack is designed to enhance your Minecraft experience with quality of life improvements while maintaining the vanilla feel of the game.",
+            "es": "El modpack Hypixel QoL está diseñado para mejorar tu experiencia de Minecraft con mejoras de calidad de vida manteniendo la sensación vanilla del juego.",
+            "de": "Das Hypixel-QoL-Modpack verbessert dein Minecraft-Erlebnis mit Quality-of-Life-Verbesserungen und bewahrt dabei das Vanilla-Gefühl.",
+            "fr": "Le modpack Hypixel QoL améliore votre expérience Minecraft avec des améliorations de qualité de vie tout en conservant l'esprit vanilla."
+        },
+        "hypixelQol.focusesOn": {
+            "pt-BR": "Este modpack foca em:",
+            "en": "This modpack focuses on:",
+            "es": "Este modpack se centra en:",
+            "de": "Dieses Modpack konzentriert sich auf:",
+            "fr": "Ce modpack se concentre sur :"
+        },
+        "hypixelQol.featurePerformance": {
+            "pt-BR": "Otimização de desempenho",
+            "en": "Performance optimization",
+            "es": "Optimización del rendimiento",
+            "de": "Leistungsoptimierung",
+            "fr": "Optimisation des performances"
+        },
+        "hypixelQol.featureQol": {
+            "pt-BR": "Melhorias de qualidade de vida",
+            "en": "Quality of life enhancements",
+            "es": "Mejoras de calidad de vida",
+            "de": "Quality-of-Life-Verbesserungen",
+            "fr": "Améliorations de qualité de vie"
+        },
+        "hypixelQol.featureUi": {
+            "pt-BR": "Interface mais amigável",
+            "en": "Better user interface",
+            "es": "Mejor interfaz de usuario",
+            "de": "Bessere Benutzeroberfläche",
+            "fr": "Meilleure interface utilisateur"
+        },
+        "hypixelQol.featureGameplay": {
+            "pt-BR": "Mecânicas de jogo aprimoradas",
+            "en": "Improved gameplay mechanics",
+            "es": "Mecánicas de juego mejoradas",
+            "de": "Verbesserte Spielmechaniken",
+            "fr": "Mécaniques de jeu améliorées"
+        },
+        "hypixelQol.moreInfoTitle": {
+            "pt-BR": "Mais Informações",
+            "en": "More Information",
+            "es": "Más información",
+            "de": "Weitere Informationen",
+            "fr": "Plus d'informations"
+        },
+        "hypixelQol.moreInfoDescription": {
+            "pt-BR": "Mais detalhes sobre este modpack em breve. Volte para conferir novidades!",
+            "en": "More details about this modpack coming soon. Check back for updates!",
+            "es": "Más detalles sobre este modpack próximamente. ¡Vuelve para ver novedades!",
+            "de": "Weitere Details zu diesem Modpack folgen bald. Schau wieder vorbei!",
+            "fr": "Plus de détails sur ce modpack bientôt. Revenez pour les mises à jour !"
+        }
+    }
+}

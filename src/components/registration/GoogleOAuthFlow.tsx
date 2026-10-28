@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 import { ErrorDisplay } from "./ErrorDisplay"
 
@@ -33,6 +34,7 @@ export function GoogleOAuthFlow({
     googleClientId,
 }: GoogleOAuthFlowProps) {
     const [error, setError] = useState<string | null>(null)
+    const t = useTranslations("auth.registrationFlow")
     const [isLoading, setIsLoading] = useState(false)
     const [isProcessingCallback, setIsProcessingCallback] = useState(false)
 
@@ -207,10 +209,10 @@ export function GoogleOAuthFlow({
                         <div className="animate-spin h-8 w-8 border-4 border-primary dark:border-primary border-t-transparent rounded-full" />
                     </div>
                     <h2 className="text-xl font-semibold text-white mb-2">
-                        Authorizing with Google
+                        {t("authorizingWithGoogle")}
                     </h2>
                     <p className="text-muted-foreground">
-                        Please wait while we complete your authorization...
+                        {t("authorizingWait")}
                     </p>
                 </div>
             </div>
@@ -223,10 +225,10 @@ export function GoogleOAuthFlow({
             {/* Header */}
             <div className="text-center">
                 <h2 className="text-2xl font-bold text-white mb-2">
-                    Sign up with Google
+                    {t("signUpWithGoogle")}
                 </h2>
                 <p className="text-muted-foreground">
-                    Click the button below to authorize with your Google account
+                    {t("authorizeGoogleHint")}
                 </p>
             </div>
 
@@ -242,12 +244,12 @@ export function GoogleOAuthFlow({
                     onClick={handleStartOAuth}
                     disabled={isLoading}
                     className="w-full px-6 py-3 sm:py-3 bg-white hover:bg-muted disabled:bg-white disabled:opacity-50 text-foreground font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 border border-input disabled:cursor-not-allowed min-h-[44px] text-base sm:text-sm"
-                    aria-label="Authorize with Google"
+                    aria-label={t("authorizeWithGoogle")}
                 >
                     {isLoading ? (
                         <>
                             <div className="animate-spin h-5 w-5 border-2 border-primary border-t-transparent rounded-full" />
-                            <span>Authorizing...</span>
+                            <span>{t("authorizing")}</span>
                         </>
                     ) : (
                         <>
@@ -263,7 +265,7 @@ export function GoogleOAuthFlow({
                                 <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
                                 <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                             </svg>
-                            <span>Authorize with Google</span>
+                            <span>{t("authorizeWithGoogle")}</span>
                         </>
                     )}
                 </button>
@@ -274,9 +276,9 @@ export function GoogleOAuthFlow({
                         onClick={handleRetry}
                         disabled={isLoading}
                         className="w-full px-6 py-3 sm:py-3 bg-primary hover:bg-primary disabled:bg-primary disabled:opacity-50 text-white font-semibold rounded-lg transition-colors disabled:cursor-not-allowed min-h-[44px] text-base sm:text-sm"
-                        aria-label="Try authorization again"
+                        aria-label={t("tryAuthorizationAgain")}
                     >
-                        Try Again
+                        {t("tryAgain")}
                     </button>
                 )}
 
@@ -285,7 +287,7 @@ export function GoogleOAuthFlow({
                     onClick={onBack}
                     disabled={isLoading}
                     className="w-full px-6 py-3 sm:py-3 bg-muted hover:bg-muted disabled:bg-muted disabled:opacity-50 text-white font-semibold rounded-lg transition-colors disabled:cursor-not-allowed min-h-[44px] text-base sm:text-sm"
-                    aria-label="Go back to authentication method selection"
+                    aria-label={t("goBackToMethodSelection")}
                 >
                     Back
                 </button>
@@ -293,8 +295,7 @@ export function GoogleOAuthFlow({
 
             {/* Info Text */}
             <p className="text-xs text-muted-foreground text-center">
-                We'll use your Google email and name to create your account.
-                You'll be able to add more information in the next step.
+                {t("googleUsageNote")}
             </p>
         </div>
     )

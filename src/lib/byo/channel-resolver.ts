@@ -26,6 +26,7 @@ export type ByoPlatform =
     | "linkedin"
     | "tiktok"
     | "twitter"
+    | "kwai"
 
 export interface ResolvedChannel {
     /** Stable platform-side id (channel/user/page id). */
@@ -284,6 +285,31 @@ async function resolveTwitter(token: string): Promise<ResolvedChannel[]> {
     ]
 }
 
+async function resolveKwai(token: string): Promise<ResolvedChannel[]> {
+    const trimmed = token.trim()
+    if (!trimmed) return []
+
+    // If token is a Kwai URL, extract handle/id
+    let handle = trimmed
+    const urlMatch = trimmed.match(
+        /kwai\.com\/(?:@|profile\/)?([a-zA-Z0-9_.-]+)/i
+    )
+    if (urlMatch) {
+        handle = urlMatch[1]
+    }
+
+    const cleanId = handle.replace(/^@/, "")
+    const displayName = handle.startsWith("@") ? handle : `@${handle}`
+
+    return [
+        {
+            id: cleanId,
+            name: displayName,
+            detail: "Canal Kwai (BYO / Chave Própria)",
+        },
+    ]
+}
+
 // ---------------------------------------------------------------------------
 // Public API
 // ---------------------------------------------------------------------------
@@ -319,6 +345,9 @@ export async function resolveChannelsForToken(
                 break
             case "twitter":
                 channels = await resolveTwitter(accessToken)
+                break
+            case "kwai":
+                channels = await resolveKwai(accessToken)
                 break
             default:
                 return {

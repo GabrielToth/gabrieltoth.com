@@ -1,0 +1,396 @@
+{
+    "auth.json": {
+        "registrationFlow.title": {
+            "pt-BR": "Criar Conta",
+            "en": "Create Account",
+            "es": "Crear cuenta",
+            "de": "Konto erstellen",
+            "fr": "Créer un compte"
+        },
+        "registrationFlow.subtitle": {
+            "pt-BR": "Junte-se a nós hoje e comece em poucos passos",
+            "en": "Join us today and get started in just a few steps",
+            "es": "Únete hoy y empieza en solo unos pasos",
+            "de": "Machen Sie heute mit und starten Sie in wenigen Schritten",
+            "fr": "Rejoignez-nous aujourd'hui et commencez en quelques étapes"
+        },
+        "registrationFlow.signUpWithEmail": {
+            "pt-BR": "Cadastrar com E-mail",
+            "en": "Sign up with Email",
+            "es": "Registrarse con correo",
+            "de": "Mit E-Mail registrieren",
+            "fr": "S'inscrire par e-mail"
+        },
+        "registrationFlow.signUpWithGoogle": {
+            "pt-BR": "Cadastrar com Google",
+            "en": "Sign up with Google",
+            "es": "Registrarse con Google",
+            "de": "Mit Google registrieren",
+            "fr": "S'inscrire avec Google"
+        },
+        "registrationFlow.signUpWithSso": {
+            "pt-BR": "Cadastrar com SSO",
+            "en": "Sign up with SSO",
+            "es": "Registrarse con SSO",
+            "de": "Mit SSO registrieren",
+            "fr": "S'inscrire avec SSO"
+        },
+        "registrationFlow.backToLogin": {
+            "pt-BR": "Voltar para o Login",
+            "en": "Back to Login",
+            "es": "Volver al inicio de sesión",
+            "de": "Zurück zur Anmeldung",
+            "fr": "Retour à la connexion"
+        },
+        "registrationFlow.termsAgreementPrefix": {
+            "pt-BR": "Ao se cadastrar, você concorda com nossos",
+            "en": "By signing up, you agree to our",
+            "es": "Al registrarte, aceptas nuestros",
+            "de": "Mit der Registrierung stimmen Sie unseren",
+            "fr": "En vous inscrivant, vous acceptez nos"
+        },
+        "registrationFlow.termsOfService": {
+            "pt-BR": "Termos de Serviço",
+            "en": "Terms of Service",
+            "es": "Términos de servicio",
+            "de": "Nutzungsbedingungen",
+            "fr": "Conditions d'utilisation"
+        },
+        "registrationFlow.and": {
+            "pt-BR": "e",
+            "en": "and",
+            "es": "y",
+            "de": "und",
+            "fr": "et"
+        },
+        "registrationFlow.privacyPolicy": {
+            "pt-BR": "Política de Privacidade",
+            "en": "Privacy Policy",
+            "es": "Política de privacidad",
+            "de": "Datenschutzerklärung",
+            "fr": "Politique de confidentialité"
+        },
+        "registrationFlow.emailAddress": {
+            "pt-BR": "Endereço de E-mail",
+            "en": "Email Address",
+            "es": "Dirección de correo",
+            "de": "E-Mail-Adresse",
+            "fr": "Adresse e-mail"
+        },
+        "registrationFlow.emailAvailable": {
+            "pt-BR": "E-mail disponível",
+            "en": "Email is available",
+            "es": "El correo está disponible",
+            "de": "E-Mail ist verfügbar",
+            "fr": "L'e-mail est disponible"
+        },
+        "registrationFlow.emailPlaceholder": {
+            "pt-BR": "voce@exemplo.com",
+            "en": "you@example.com",
+            "es": "tu@ejemplo.com",
+            "de": "sie@beispiel.de",
+            "fr": "vous@exemple.com"
+        },
+        "registrationFlow.emailLabel": {
+            "pt-BR": "Endereço de e-mail",
+            "en": "Email address",
+            "es": "Dirección de correo",
+            "de": "E-Mail-Adresse",
+            "fr": "Adresse e-mail"
+        },
+        "registrationFlow.dismissError": {
+            "pt-BR": "Fechar erro",
+            "en": "Dismiss error",
+            "es": "Descartar error",
+            "de": "Fehler schließen",
+            "fr": "Fermer l'erreur"
+        },
+        "registrationFlow.googleAuthorizingTitle": {
+            "pt-BR": "Autorizando com Google",
+            "en": "Authorizing with Google",
+            "es": "Autorizando con Google",
+            "de": "Autorisierung mit Google",
+            "fr": "Autorisation avec Google"
+        },
+        "registrationFlow.googleAuthorizingDesc": {
+            "pt-BR": "Aguarde enquanto concluímos sua autorização...",
+            "en": "Please wait while we complete your authorization...",
+            "es": "Espera mientras completamos tu autorización...",
+            "de": "Bitte warten Sie, während wir Ihre Autorisierung abschließen...",
+            "fr": "Veuillez patienter pendant que nous finalisons votre autorisation..."
+        },
+        "registrationFlow.googleSignUpTitle": {
+            "pt-BR": "Cadastrar com Google",
+            "en": "Sign up with Google",
+            "es": "Registrarse con Google",
+            "de": "Mit Google registrieren",
+            "fr": "S'inscrire avec Google"
+        },
+        "registrationFlow.googleSignUpDesc": {
+            "pt-BR": "Clique no botão abaixo para autorizar com sua conta Google",
+            "en": "Click the button below to authorize with your Google account",
+            "es": "Haz clic en el botón de abajo para autorizar con tu cuenta de Google",
+            "de": "Klicken Sie auf die Schaltfläche unten, um sich mit Ihrem Google-Konto zu autorisieren",
+            "fr": "Cliquez sur le bouton ci-dessous pour autoriser avec votre compte Google"
+        },
+        "registrationFlow.authorizing": {
+            "pt-BR": "Autorizando...",
+            "en": "Authorizing...",
+            "es": "Autorizando...",
+            "de": "Autorisierung läuft...",
+            "fr": "Autorisation en cours..."
+        },
+        "registrationFlow.authorizeWithGoogle": {
+            "pt-BR": "Autorizar com Google",
+            "en": "Authorize with Google",
+            "es": "Autorizar con Google",
+            "de": "Mit Google autorisieren",
+            "fr": "Autoriser avec Google"
+        },
+        "registrationFlow.tryAgain": {
+            "pt-BR": "Tentar Novamente",
+            "en": "Try Again",
+            "es": "Intentar de nuevo",
+            "de": "Erneut versuchen",
+            "fr": "Réessayer"
+        },
+        "registrationFlow.retryAria": {
+            "pt-BR": "Tentar autorização novamente",
+            "en": "Try authorization again",
+            "es": "Intentar la autorización de nuevo",
+            "de": "Autorisierung erneut versuchen",
+            "fr": "Réessayer l'autorisation"
+        },
+        "registrationFlow.backToMethodAria": {
+            "pt-BR": "Voltar à seleção do método de autenticação",
+            "en": "Go back to authentication method selection",
+            "es": "Volver a la selección del método de autenticación",
+            "de": "Zurück zur Auswahl der Authentifizierungsmethode",
+            "fr": "Retour à la sélection de la méthode d'authentification"
+        },
+        "registrationFlow.goBackPrevStep": {
+            "pt-BR": "Voltar para a etapa anterior",
+            "en": "Go back to previous step",
+            "es": "Volver al paso anterior",
+            "de": "Zum vorherigen Schritt zurückkehren",
+            "fr": "Revenir à l'étape précédente"
+        },
+        "registrationFlow.cancelRegistration": {
+            "pt-BR": "Cancelar cadastro",
+            "en": "Cancel registration",
+            "es": "Cancelar el registro",
+            "de": "Registrierung abbrechen",
+            "fr": "Annuler l'inscription"
+        },
+        "registrationFlow.passwordMeetsRequirements": {
+            "pt-BR": "A senha atende a todos os requisitos",
+            "en": "Password meets all requirements",
+            "es": "La contraseña cumple todos los requisitos",
+            "de": "Passwort erfüllt alle Anforderungen",
+            "fr": "Le mot de passe respecte toutes les exigences"
+        },
+        "registrationFlow.passwordRequirements": {
+            "pt-BR": "Requisitos da Senha:",
+            "en": "Password Requirements:",
+            "es": "Requisitos de la contraseña:",
+            "de": "Passwortanforderungen:",
+            "fr": "Exigences du mot de passe :"
+        },
+        "registrationFlow.confirmPassword": {
+            "pt-BR": "Confirmar Senha",
+            "en": "Confirm Password",
+            "es": "Confirmar contraseña",
+            "de": "Passwort bestätigen",
+            "fr": "Confirmer le mot de passe"
+        },
+        "registrationFlow.passwordsDoNotMatch": {
+            "pt-BR": "As senhas não coincidem",
+            "en": "Passwords do not match",
+            "es": "Las contraseñas no coinciden",
+            "de": "Passwörter stimmen nicht überein",
+            "fr": "Les mots de passe ne correspondent pas"
+        },
+        "registrationFlow.passwordsMatch": {
+            "pt-BR": "As senhas coincidem",
+            "en": "Passwords match",
+            "es": "Las contraseñas coinciden",
+            "de": "Passwörter stimmen überein",
+            "fr": "Les mots de passe correspondent"
+        },
+        "registrationFlow.passwordPlaceholder": {
+            "pt-BR": "Digite uma senha forte",
+            "en": "Enter a strong password",
+            "es": "Introduce una contraseña segura",
+            "de": "Geben Sie ein starkes Passwort ein",
+            "fr": "Saisissez un mot de passe fort"
+        },
+        "registrationFlow.confirmPasswordPlaceholder": {
+            "pt-BR": "Confirme sua senha",
+            "en": "Confirm your password",
+            "es": "Confirma tu contraseña",
+            "de": "Bestätigen Sie Ihr Passwort",
+            "fr": "Confirmez votre mot de passe"
+        },
+        "registrationFlow.confirmPasswordLabel": {
+            "pt-BR": "Confirmar senha",
+            "en": "Confirm password",
+            "es": "Confirmar contraseña",
+            "de": "Passwort bestätigen",
+            "fr": "Confirmer le mot de passe"
+        },
+        "registrationFlow.fullName": {
+            "pt-BR": "Nome Completo",
+            "en": "Full Name",
+            "es": "Nombre completo",
+            "de": "Vollständiger Name",
+            "fr": "Nom complet"
+        },
+        "registrationFlow.validName": {
+            "pt-BR": "✓ Nome válido",
+            "en": "✓ Valid name",
+            "es": "✓ Nombre válido",
+            "de": "✓ Gültiger Name",
+            "fr": "✓ Nom valide"
+        },
+        "registrationFlow.birthDate": {
+            "pt-BR": "Data de Nascimento",
+            "en": "Birth Date",
+            "es": "Fecha de nacimiento",
+            "de": "Geburtsdatum",
+            "fr": "Date de naissance"
+        },
+        "registrationFlow.validBirthDate": {
+            "pt-BR": "✓ Data de nascimento válida",
+            "en": "✓ Valid birth date",
+            "es": "✓ Fecha de nacimiento válida",
+            "de": "✓ Gültiges Geburtsdatum",
+            "fr": "✓ Date de naissance valide"
+        },
+        "registrationFlow.phoneNumber": {
+            "pt-BR": "Número de Telefone",
+            "en": "Phone Number",
+            "es": "Número de teléfono",
+            "de": "Telefonnummer",
+            "fr": "Numéro de téléphone"
+        },
+        "registrationFlow.fullNamePlaceholder": {
+            "pt-BR": "João Silva",
+            "en": "John Doe",
+            "es": "Juan Pérez",
+            "de": "Max Mustermann",
+            "fr": "Jean Dupont"
+        },
+        "registrationFlow.birthDatePlaceholder": {
+            "pt-BR": "DD/MM/AAAA",
+            "en": "DD/MM/YYYY",
+            "es": "DD/MM/AAAA",
+            "de": "TT/MM/JJJJ",
+            "fr": "JJ/MM/AAAA"
+        },
+        "registrationFlow.fullNameLabel": {
+            "pt-BR": "Nome completo",
+            "en": "Full name",
+            "es": "Nombre completo",
+            "de": "Vollständiger Name",
+            "fr": "Nom complet"
+        },
+        "registrationFlow.birthDateLabel": {
+            "pt-BR": "Data de nascimento",
+            "en": "Birth date",
+            "es": "Fecha de nacimiento",
+            "de": "Geburtsdatum",
+            "fr": "Date de naissance"
+        },
+        "registrationFlow.phoneLabel": {
+            "pt-BR": "Número de telefone",
+            "en": "Phone number",
+            "es": "Número de teléfono",
+            "de": "Telefonnummer",
+            "fr": "Numéro de téléphone"
+        },
+        "registrationFlow.phonePlaceholder": {
+            "pt-BR": "+55 (11) 91234-5678",
+            "en": "+1 (555) 123-4567",
+            "es": "+34 612 345 678",
+            "de": "+49 151 12345678",
+            "fr": "+33 6 12 34 56 78"
+        },
+        "registrationFlow.sessionExpired": {
+            "pt-BR": "Sessão Expirada",
+            "en": "Session Expired",
+            "es": "Sesión expirada",
+            "de": "Sitzung abgelaufen",
+            "fr": "Session expirée"
+        },
+        "registrationFlow.startOver": {
+            "pt-BR": "Começar de Novo",
+            "en": "Start Over",
+            "es": "Empezar de nuevo",
+            "de": "Neu beginnen",
+            "fr": "Recommencer"
+        },
+        "registrationFlow.stepEmail": {
+            "pt-BR": "Endereço de E-mail",
+            "en": "Email Address",
+            "es": "Dirección de correo",
+            "de": "E-Mail-Adresse",
+            "fr": "Adresse e-mail"
+        },
+        "registrationFlow.stepPassword": {
+            "pt-BR": "Configuração de Senha",
+            "en": "Password Setup",
+            "es": "Configuración de contraseña",
+            "de": "Passwort einrichten",
+            "fr": "Configuration du mot de passe"
+        },
+        "registrationFlow.stepPersonal": {
+            "pt-BR": "Informações Pessoais",
+            "en": "Personal Information",
+            "es": "Información personal",
+            "de": "Persönliche Informationen",
+            "fr": "Informations personnelles"
+        },
+        "registrationFlow.stepReview": {
+            "pt-BR": "Revisar Informações",
+            "en": "Review Information",
+            "es": "Revisar información",
+            "de": "Informationen prüfen",
+            "fr": "Vérifier les informations"
+        },
+        "registrationFlow.signInLink": {
+            "pt-BR": "Entrar",
+            "en": "Sign in",
+            "es": "Iniciar sesión",
+            "de": "Anmelden",
+            "fr": "Se connecter"
+        },
+        "registrationFlow.formLabel": {
+            "pt-BR": "Formulário de cadastro",
+            "en": "Registration form",
+            "es": "Formulario de registro",
+            "de": "Registrierungsformular",
+            "fr": "Formulaire d'inscription"
+        },
+        "registrationFlow.successTitle": {
+            "pt-BR": "Sucesso!",
+            "en": "Success!",
+            "es": "¡Éxito!",
+            "de": "Erfolg!",
+            "fr": "Succès !"
+        },
+        "registrationFlow.goToLogin": {
+            "pt-BR": "Ir para o Login Agora",
+            "en": "Go to Login Now",
+            "es": "Ir al inicio de sesión ahora",
+            "de": "Jetzt zur Anmeldung",
+            "fr": "Aller à la connexion maintenant"
+        },
+        "registrationFlow.createAccount": {
+            "pt-BR": "Criar Conta",
+            "en": "Create Account",
+            "es": "Crear cuenta",
+            "de": "Konto erstellen",
+            "fr": "Créer un compte"
+        }
+    }
+}

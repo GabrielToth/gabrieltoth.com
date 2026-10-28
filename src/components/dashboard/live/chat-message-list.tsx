@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { RefObject } from "react"
 
 export interface RenderableChatMessage {
@@ -47,6 +48,7 @@ export function ChatMessageList({
     showTimestamps = true,
     fontSize = "xs",
 }: ChatMessageListProps) {
+    const t = useTranslations("dashboard.live")
     const fontSizeClass =
         fontSize === "sm"
             ? "text-xs"
@@ -62,9 +64,9 @@ export function ChatMessageList({
         >
             {messages.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-neutral-500">
-                    <p>No chat messages yet</p>
+                    <p>{t("noChatMessages")}</p>
                     <p className="text-[10px] text-neutral-600 mt-1">
-                        Messages from connected platforms will appear here
+                        {t("chatMessagesHint")}
                     </p>
                 </div>
             ) : (

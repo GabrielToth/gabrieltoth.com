@@ -1,0 +1,103 @@
+{
+    "dashboard.json": {
+        "credits.balanceTitle": {
+            "pt-BR": "Seu saldo de créditos",
+            "en": "Your credit balance",
+            "es": "Tu saldo de créditos",
+            "de": "Dein Guthaben",
+            "fr": "Votre solde de crédits"
+        },
+        "performanceMonitor.toggleTitle": {
+            "pt-BR": "Monitor de Desempenho",
+            "en": "Performance Monitor",
+            "es": "Monitor de rendimiento",
+            "de": "Leistungsmonitor",
+            "fr": "Moniteur de performance"
+        },
+        "performanceMonitor.title": {
+            "pt-BR": "Métricas de Desempenho",
+            "en": "Performance Metrics",
+            "es": "Métricas de rendimiento",
+            "de": "Leistungskennzahlen",
+            "fr": "Métriques de performance"
+        },
+        "performanceMonitor.coreWebVitals": {
+            "pt-BR": "Core Web Vitals",
+            "en": "Core Web Vitals",
+            "es": "Core Web Vitals",
+            "de": "Core Web Vitals",
+            "fr": "Core Web Vitals"
+        },
+        "performanceMonitor.good": {
+            "pt-BR": "Bom",
+            "en": "Good",
+            "es": "Bueno",
+            "de": "Gut",
+            "fr": "Bon"
+        },
+        "performanceMonitor.needsImprovement": {
+            "pt-BR": "Precisa Melhorar",
+            "en": "Needs Improvement",
+            "es": "Necesita mejorar",
+            "de": "Verbesserungswürdig",
+            "fr": "À améliorer"
+        },
+        "performanceMonitor.poor": {
+            "pt-BR": "Ruim",
+            "en": "Poor",
+            "es": "Malo",
+            "de": "Schlecht",
+            "fr": "Mauvais"
+        }
+    },
+    "amazonAffiliate.json": {
+        "openLink": {
+            "pt-BR": "Abrir link ↗",
+            "en": "Open link ↗",
+            "es": "Abrir enlace ↗",
+            "de": "Link öffnen ↗",
+            "fr": "Ouvrir le lien ↗"
+        },
+        "missingTagError": {
+            "pt-BR": "Tag de afiliado ausente. Defina NEXT_PUBLIC_AMAZON_ASSOCIATES_TAG",
+            "en": "Missing affiliate tag. Set NEXT_PUBLIC_AMAZON_ASSOCIATES_TAG",
+            "es": "Falta la etiqueta de afiliado. Configura NEXT_PUBLIC_AMAZON_ASSOCIATES_TAG",
+            "de": "Affiliate-Tag fehlt. Setze NEXT_PUBLIC_AMAZON_ASSOCIATES_TAG",
+            "fr": "Tag d'affiliation manquant. Définissez NEXT_PUBLIC_AMAZON_ASSOCIATES_TAG"
+        },
+        "invalidUrl": {
+            "pt-BR": "URL inválida",
+            "en": "Invalid URL",
+            "es": "URL no válida",
+            "de": "Ungültige URL",
+            "fr": "URL invalide"
+        }
+    },
+    "error.json": {
+        "loading": {
+            "pt-BR": "Carregando...",
+            "en": "Loading...",
+            "es": "Cargando...",
+            "de": "Wird geladen...",
+            "fr": "Chargement..."
+        }
+    },
+    "notFound.json": {
+        "loading": {
+            "pt-BR": "Carregando...",
+            "en": "Loading...",
+            "es": "Cargando...",
+            "de": "Wird geladen...",
+            "fr": "Chargement..."
+        }
+    },
+    "layout.footer.json": {
+        "authorName": {
+            "pt-BR": "Gabriel Toth Gonçalves",
+            "en": "Gabriel Toth Gonçalves",
+            "es": "Gabriel Toth Gonçalves",
+            "de": "Gabriel Toth Gonçalves",
+            "fr": "Gabriel Toth Gonçalves"
+        }
+    }
+}

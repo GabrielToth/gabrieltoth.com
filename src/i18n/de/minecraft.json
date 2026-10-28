@@ -85,5 +85,18 @@
         "description": "Meine Beiträge zur Minecraft-Community",
         "comingSoon": "Beiträge in Kürze",
         "comingSoonText": "Ich dokumentiere meine Beiträge zur Community. Schau bald vorbei!"
+    },
+    "modsComingSoon": "Demnächst",
+    "modsComingSoonDescription": "Weitere Mods folgen bald. Bleib dran!",
+    "hypixelQol": {
+        "aboutTitle": "Über dieses Modpack",
+        "aboutDescription": "Das Hypixel-QoL-Modpack verbessert dein Minecraft-Erlebnis mit Quality-of-Life-Verbesserungen und bewahrt dabei das Vanilla-Gefühl.",
+        "focusesOn": "Dieses Modpack konzentriert sich auf:",
+        "featurePerformance": "Leistungsoptimierung",
+        "featureQol": "Quality-of-Life-Verbesserungen",
+        "featureUi": "Bessere Benutzeroberfläche",
+        "featureGameplay": "Verbesserte Spielmechaniken",
+        "moreInfoTitle": "Weitere Informationen",
+        "moreInfoDescription": "Weitere Details zu diesem Modpack folgen bald. Schau wieder vorbei!"
     }
 }

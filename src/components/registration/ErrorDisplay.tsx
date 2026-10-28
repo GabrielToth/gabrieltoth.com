@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "next-intl"
+
 interface ErrorDisplayProps {
     error: string | null
     fieldError?: string | null
@@ -11,6 +13,8 @@ export function ErrorDisplay({
     fieldError,
     onDismiss,
 }: ErrorDisplayProps) {
+    const t = useTranslations("auth.registrationFlow")
+
     if (!error && !fieldError) return null
 
     return (
@@ -42,7 +46,7 @@ export function ErrorDisplay({
                         <button
                             onClick={onDismiss}
                             className="flex-shrink-0 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 min-h-[44px] min-w-[44px] flex items-center justify-center"
-                            aria-label="Dismiss error"
+                            aria-label={t("dismissError")}
                         >
                             <svg
                                 className="w-5 h-5"

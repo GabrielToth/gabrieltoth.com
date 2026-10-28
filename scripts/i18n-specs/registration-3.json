@@ -1,0 +1,11 @@
+{
+    "auth.json": {
+        "registrationFlow.accountCreated": {
+            "pt-BR": "Conta criada com sucesso!",
+            "en": "Account created successfully!",
+            "es": "¡Cuenta creada correctamente!",
+            "de": "Konto erfolgreich erstellt!",
+            "fr": "Compte créé avec succès !"
+        }
+    }
+}

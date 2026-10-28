@@ -60,10 +60,10 @@ export default function LocaleNotFound() {
                             404
                         </h1>
                         <h2 className="text-3xl font-bold text-foreground dark:text-foreground mb-4">
-                            Page Not Found
+                            {t("title")}
                         </h2>
                         <p className="text-lg text-muted-foreground dark:text-foreground mb-8">
-                            Loading...
+                            {t("loading")}
                         </p>
                     </div>
                 </div>

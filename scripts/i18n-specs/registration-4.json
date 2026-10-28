@@ -1,0 +1,130 @@
+{
+    "auth.json": {
+        "registrationFlow.hide": {
+            "pt-BR": "Ocultar",
+            "en": "Hide",
+            "es": "Ocultar",
+            "de": "Verbergen",
+            "fr": "Masquer"
+        },
+        "registrationFlow.show": {
+            "pt-BR": "Mostrar",
+            "en": "Show",
+            "es": "Mostrar",
+            "de": "Anzeigen",
+            "fr": "Afficher"
+        },
+        "registrationFlow.hidePassword": {
+            "pt-BR": "Ocultar senha",
+            "en": "Hide password",
+            "es": "Ocultar contraseña",
+            "de": "Passwort verbergen",
+            "fr": "Masquer le mot de passe"
+        },
+        "registrationFlow.showPassword": {
+            "pt-BR": "Mostrar senha",
+            "en": "Show password",
+            "es": "Mostrar contraseña",
+            "de": "Passwort anzeigen",
+            "fr": "Afficher le mot de passe"
+        },
+        "registrationFlow.reqMinLength": {
+            "pt-BR": "Pelo menos 8 caracteres",
+            "en": "At least 8 characters",
+            "es": "Al menos 8 caracteres",
+            "de": "Mindestens 8 Zeichen",
+            "fr": "Au moins 8 caractères"
+        },
+        "registrationFlow.reqUppercase": {
+            "pt-BR": "Uma letra maiúscula (A-Z)",
+            "en": "One uppercase letter (A-Z)",
+            "es": "Una letra mayúscula (A-Z)",
+            "de": "Ein Großbuchstabe (A-Z)",
+            "fr": "Une lettre majuscule (A-Z)"
+        },
+        "registrationFlow.reqLowercase": {
+            "pt-BR": "Uma letra minúscula (a-z)",
+            "en": "One lowercase letter (a-z)",
+            "es": "Una letra minúscula (a-z)",
+            "de": "Ein Kleinbuchstabe (a-z)",
+            "fr": "Une lettre minuscule (a-z)"
+        },
+        "registrationFlow.reqNumber": {
+            "pt-BR": "Um número (0-9)",
+            "en": "One number (0-9)",
+            "es": "Un número (0-9)",
+            "de": "Eine Zahl (0-9)",
+            "fr": "Un chiffre (0-9)"
+        },
+        "registrationFlow.reqSpecial": {
+            "pt-BR": "Um caractere especial (!@#$%^&*)",
+            "en": "One special character (!@#$%^&*)",
+            "es": "Un carácter especial (!@#$%^&*)",
+            "de": "Ein Sonderzeichen (!@#$%^&*)",
+            "fr": "Un caractère spécial (!@#$%^&*)"
+        },
+        "registrationFlow.strengthWeak": {
+            "pt-BR": "fraca",
+            "en": "weak",
+            "es": "débil",
+            "de": "schwach",
+            "fr": "faible"
+        },
+        "registrationFlow.strengthFair": {
+            "pt-BR": "razoável",
+            "en": "fair",
+            "es": "aceptable",
+            "de": "mittelmäßig",
+            "fr": "moyen"
+        },
+        "registrationFlow.strengthGood": {
+            "pt-BR": "boa",
+            "en": "good",
+            "es": "buena",
+            "de": "gut",
+            "fr": "bon"
+        },
+        "registrationFlow.strengthStrong": {
+            "pt-BR": "forte",
+            "en": "strong",
+            "es": "fuerte",
+            "de": "stark",
+            "fr": "fort"
+        },
+        "registrationFlow.feedbackRequired": {
+            "pt-BR": "A senha é obrigatória",
+            "en": "Password is required",
+            "es": "La contraseña es obligatoria",
+            "de": "Passwort ist erforderlich",
+            "fr": "Le mot de passe est requis"
+        },
+        "registrationFlow.feedbackTooWeak": {
+            "pt-BR": "Muito fraca - adicione mais tipos de caracteres",
+            "en": "Too weak - add more character types",
+            "es": "Demasiado débil: añade más tipos de caracteres",
+            "de": "Zu schwach – fügen Sie weitere Zeichentypen hinzu",
+            "fr": "Trop faible – ajoutez plus de types de caractères"
+        },
+        "registrationFlow.feedbackFair": {
+            "pt-BR": "Razoável - adicione mais tipos de caracteres",
+            "en": "Fair - add more character types",
+            "es": "Aceptable: añade más tipos de caracteres",
+            "de": "Mittelmäßig – fügen Sie weitere Zeichentypen hinzu",
+            "fr": "Moyen – ajoutez plus de types de caractères"
+        },
+        "registrationFlow.feedbackGood": {
+            "pt-BR": "Boa senha",
+            "en": "Good password",
+            "es": "Buena contraseña",
+            "de": "Gutes Passwort",
+            "fr": "Bon mot de passe"
+        },
+        "registrationFlow.feedbackStrong": {
+            "pt-BR": "Senha forte",
+            "en": "Strong password",
+            "es": "Contraseña fuerte",
+            "de": "Starkes Passwort",
+            "fr": "Mot de passe fort"
+        }
+    }
+}

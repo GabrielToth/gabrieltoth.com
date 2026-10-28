@@ -1,6 +1,7 @@
 "use client"
 
 import { X, PencilLine } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useRef, useState, useCallback, useEffect } from "react"
 
 interface TagInputProps {
@@ -14,10 +15,12 @@ interface TagInputProps {
 export default function TagInput({
     tags,
     onChange,
-    placeholder = "Type a tag and press Enter, or separate with commas",
+    placeholder,
     maxChars = 500,
     disabled = false,
 }: TagInputProps) {
+    const t = useTranslations("publish")
+    const resolvedPlaceholder = placeholder ?? t("tagPlaceholder")
     const [inputValue, setInputValue] = useState("")
     const [editingIndex, setEditingIndex] = useState<number | null>(null)
     const [editValue, setEditValue] = useState("")
@@ -184,7 +187,7 @@ export default function TagInput({
                                     type="button"
                                     onClick={() => startEditing(index)}
                                     className="flex items-center gap-0.5 hover:underline"
-                                    title="Click to edit"
+                                    title={t("clickToEdit")}
                                 >
                                     <span>{tag}</span>
                                     <PencilLine className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -210,7 +213,7 @@ export default function TagInput({
                     onChange={e => setInputValue(e.target.value)}
                     onKeyDown={handleKeyDown}
                     onPaste={handlePaste}
-                    placeholder={tags.length === 0 ? placeholder : ""}
+                    placeholder={tags.length === 0 ? resolvedPlaceholder : ""}
                     disabled={disabled || isAtLimit}
                     className="min-w-[80px] flex-1 border-0 bg-transparent p-0 text-sm outline-none placeholder:text-neutral-400 focus:ring-0 disabled:cursor-not-allowed dark:placeholder:text-neutral-500"
                 />

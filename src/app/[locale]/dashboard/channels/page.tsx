@@ -34,14 +34,26 @@ interface ConnectedChannel {
 // localOnly = only works in local development (no production OAuth app review)
 const ALL_PLATFORMS = [
     { id: "youtube", name: "YouTube", implemented: true },
-    { id: "tiktok", name: "TikTok", implemented: true },
+    { id: "tiktok", name: "TikTok", implemented: true, byoAvailable: true },
     { id: "twitch", name: "Twitch", implemented: true },
     { id: "kick", name: "Kick", implemented: true },
-    { id: "facebook", name: "Facebook", implemented: true, localOnly: true },
-    { id: "instagram", name: "Instagram", implemented: true, localOnly: true },
+    {
+        id: "facebook",
+        name: "Facebook",
+        implemented: true,
+        localOnly: true,
+        byoAvailable: true,
+    },
+    {
+        id: "instagram",
+        name: "Instagram",
+        implemented: true,
+        localOnly: true,
+        byoAvailable: true,
+    },
     { id: "twitter", name: "Twitter/X", implemented: true },
-    { id: "linkedin", name: "LinkedIn", implemented: false },
-    { id: "kwai", name: "Kwai", implemented: false },
+    { id: "linkedin", name: "LinkedIn", implemented: true },
+    { id: "kwai", name: "Kwai", implemented: true, byoOnly: true },
 ] as const
 
 const PLATFORM_ICONS: Record<string, string> = {
@@ -71,6 +83,14 @@ export default function ChannelsPage() {
         message: string
         onConfirm: () => void
     } | null>(null)
+    const [byoModalPlatform, setByoModalPlatform] = useState<string | null>(
+        null
+    )
+    const [byoChannelId, setByoChannelId] = useState("")
+    const [byoChannelName, setByoChannelName] = useState("")
+    const [byoAccessToken, setByoAccessToken] = useState("")
+    const [byoSubmitting, setByoSubmitting] = useState(false)
+    const [byoError, setByoError] = useState<string | null>(null)
 
     const fetchChannels = useCallback(async () => {
         try {
@@ -98,26 +118,95 @@ export default function ChannelsPage() {
     const handleConnect = async (platform: string) => {
         if (connectingPlatform) return
 
-        // TikTok only supports one connected account per user (no account selector in OAuth)
-        if (platform === "tiktok") {
-            const connectedTikTok = channels.find(
-                ch => ch.platform === "tiktok" && ch.isConnected
-            )
-            if (connectedTikTok) {
-                setConfirmDialog({
-                    message: t("channels.tiktokSingleAccountNotice", {
-                        accountName: connectedTikTok.accountName,
-                    }),
-                    onConfirm: () => {
-                        setConfirmDialog(null)
-                        startOAuthFlow(platform)
-                    },
-                })
-                return
+        if (platform === "kwai") {
+            setByoModalPlatform("kwai")
+            setByoChannelId("")
+            setByoChannelName("")
+            setByoAccessToken("")
+            setByoError(null)
+            return
+        }
+
+        if (
+            platform === "facebook" ||
+            platform === "instagram" ||
+            platform === "tiktok"
+        ) {
+            // TikTok only supports one connected account per user (no account selector in OAuth)
+            if (platform === "tiktok") {
+                const connectedTikTok = channels.find(
+                    ch => ch.platform === "tiktok" && ch.isConnected
+                )
+                if (connectedTikTok) {
+                    setConfirmDialog({
+                        message: t("channels.tiktokSingleAccountNotice", {
+                            accountName: connectedTikTok.accountName,
+                        }),
+                        onConfirm: () => {
+                            setConfirmDialog(null)
+                            setByoModalPlatform("tiktok")
+                            setByoChannelId("")
+                            setByoChannelName("")
+                            setByoAccessToken("")
+                            setByoError(null)
+                        },
+                    })
+                    return
+                }
             }
+            setByoModalPlatform(platform)
+            setByoChannelId("")
+            setByoChannelName("")
+            setByoAccessToken("")
+            setByoError(null)
+            return
         }
 
         startOAuthFlow(platform)
+    }
+
+    const handleByoSubmit = async () => {
+        if (!byoModalPlatform) return
+        if (!byoChannelId.trim() || !byoChannelName.trim()) {
+            setByoError(t("channels.byoErrorRequired"))
+            return
+        }
+
+        setByoSubmitting(true)
+        setByoError(null)
+        try {
+            const response = await fetch("/api/byo/connect", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    platform: byoModalPlatform,
+                    channelId: byoChannelId.trim(),
+                    channelName: byoChannelName.trim(),
+                    accessToken: byoAccessToken.trim() || undefined,
+                }),
+            })
+
+            const data = await response.json()
+            if (!response.ok || !data.success) {
+                throw new Error(
+                    data.message || data.error || t("channels.byoErrorConnect")
+                )
+            }
+
+            await fetchChannels()
+            setByoModalPlatform(null)
+            setByoChannelId("")
+            setByoChannelName("")
+            setByoAccessToken("")
+        } catch (err) {
+            setByoError(
+                err instanceof Error
+                    ? err.message
+                    : t("channels.byoErrorConnect")
+            )
+        } finally {
+            setByoSubmitting(false)
+        }
     }
 
     const startOAuthFlow = (platform: string) => {
@@ -198,7 +287,7 @@ export default function ChannelsPage() {
                 <TutorialLauncher category="channels" />
             </div>
 
-            <ByoTokenChannelFinder />
+            <ByoTokenChannelFinder onChannelConnected={fetchChannels} />
 
             {error && (
                 <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
@@ -306,7 +395,7 @@ export default function ChannelsPage() {
                                 </span>
                                 <span className="flex items-center gap-1">
                                     <span className="h-2 w-2 rounded-full bg-amber-500 inline-block" />{" "}
-                                    Dev / Sandbox
+                                    {t("channels.byoLegend")}
                                 </span>
                                 <span className="flex items-center gap-1">
                                     <span className="h-2 w-2 rounded-full bg-neutral-400 inline-block" />{" "}
@@ -319,19 +408,31 @@ export default function ChannelsPage() {
                                 const connectedList =
                                     platformConnectedChannels[platform.id] || []
                                 const hasConnected = connectedList.length > 0
+                                const isByo =
+                                    Boolean(
+                                        (platform as { byoOnly?: boolean })
+                                            .byoOnly
+                                    ) ||
+                                    Boolean(
+                                        (platform as { byoAvailable?: boolean })
+                                            .byoAvailable
+                                    ) ||
+                                    Boolean(
+                                        (platform as { localOnly?: boolean })
+                                            .localOnly
+                                    )
+
                                 const statusColor = platform.implemented
-                                    ? (platform as { localOnly?: boolean })
-                                          .localOnly
+                                    ? isByo
                                         ? "bg-amber-500"
                                         : "bg-emerald-500"
                                     : "bg-neutral-400"
 
                                 const statusTooltip = platform.implemented
-                                    ? (platform as { localOnly?: boolean })
-                                          .localOnly
-                                        ? "Ambiente Dev / Sandbox"
-                                        : "Disponível e Operacional"
-                                    : "Em Desenvolvimento"
+                                    ? isByo
+                                        ? t("channels.byoLegend")
+                                        : t("channels.statusOperational")
+                                    : t("channels.statusInDevelopment")
 
                                 return (
                                     <div
@@ -357,7 +458,9 @@ export default function ChannelsPage() {
                                         </span>
                                         {hasConnected && (
                                             <span className="text-[9px] font-mono font-bold text-emerald-500 mt-0.5">
-                                                {connectedList.length} linked
+                                                {t("channels.linkedCount", {
+                                                    count: connectedList.length,
+                                                })}
                                             </span>
                                         )}
                                         <Button
@@ -411,6 +514,135 @@ export default function ChannelsPage() {
                             onClick={confirmDialog?.onConfirm}
                         >
                             {t("channels.confirm")}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            {/* BYO / Token Connection Dialog */}
+            <Dialog
+                open={Boolean(byoModalPlatform)}
+                onOpenChange={open => {
+                    if (!open) {
+                        setByoModalPlatform(null)
+                        setByoError(null)
+                    }
+                }}
+            >
+                <DialogContent className="max-w-md">
+                    <DialogHeader>
+                        <DialogTitle>
+                            {t("channels.byoModalTitle", {
+                                platform:
+                                    (byoModalPlatform &&
+                                        ALL_PLATFORMS.find(
+                                            p => p.id === byoModalPlatform
+                                        )?.name) ||
+                                    byoModalPlatform ||
+                                    "",
+                            })}
+                        </DialogTitle>
+                        <DialogDescription className="text-xs pt-1">
+                            {byoModalPlatform === "kwai"
+                                ? t("channels.byoNoticeKwai")
+                                : t("channels.byoNoticeRestricted")}
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <div className="space-y-3 py-2 text-xs">
+                        <label className="flex flex-col gap-1">
+                            <span className="font-medium text-foreground">
+                                {t("channels.byoChannelId")} *
+                            </span>
+                            <input
+                                type="text"
+                                value={byoChannelId}
+                                onChange={e => setByoChannelId(e.target.value)}
+                                placeholder={
+                                    byoModalPlatform === "kwai"
+                                        ? t("channels.byoChannelIdPlaceholder")
+                                        : "ex: 10485729104859"
+                                }
+                                className="rounded border border-border bg-background px-2.5 py-1.5 text-sm"
+                            />
+                        </label>
+
+                        <label className="flex flex-col gap-1">
+                            <span className="font-medium text-foreground">
+                                {t("channels.byoChannelName")} *
+                            </span>
+                            <input
+                                type="text"
+                                value={byoChannelName}
+                                onChange={e =>
+                                    setByoChannelName(e.target.value)
+                                }
+                                placeholder={t(
+                                    "channels.byoChannelNamePlaceholder"
+                                )}
+                                className="rounded border border-border bg-background px-2.5 py-1.5 text-sm"
+                            />
+                        </label>
+
+                        <label className="flex flex-col gap-1">
+                            <span className="font-medium text-foreground">
+                                {t("channels.byoAccessToken")}
+                            </span>
+                            <input
+                                type="password"
+                                value={byoAccessToken}
+                                onChange={e =>
+                                    setByoAccessToken(e.target.value)
+                                }
+                                placeholder={
+                                    byoModalPlatform === "kwai"
+                                        ? t(
+                                              "channels.byoAccessTokenPlaceholderKwai"
+                                          )
+                                        : t(
+                                              "channels.byoAccessTokenPlaceholder"
+                                          )
+                                }
+                                className="rounded border border-border bg-background px-2.5 py-1.5 text-sm"
+                            />
+                        </label>
+
+                        {byoError && (
+                            <div className="rounded-md bg-destructive/15 p-2 text-xs text-destructive">
+                                {byoError}
+                            </div>
+                        )}
+                    </div>
+
+                    <DialogFooter className="flex-col sm:flex-row gap-2">
+                        {byoModalPlatform !== "kwai" && (
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-xs text-muted-foreground mr-auto"
+                                onClick={() => {
+                                    const p = byoModalPlatform
+                                    setByoModalPlatform(null)
+                                    if (p) startOAuthFlow(p)
+                                }}
+                            >
+                                {t("channels.byoTryOAuth")}
+                            </Button>
+                        )}
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setByoModalPlatform(null)}
+                        >
+                            {t("channels.cancel")}
+                        </Button>
+                        <Button
+                            variant="default"
+                            size="sm"
+                            disabled={byoSubmitting}
+                            onClick={handleByoSubmit}
+                        >
+                            {byoSubmitting ? "..." : t("channels.byoSubmit")}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

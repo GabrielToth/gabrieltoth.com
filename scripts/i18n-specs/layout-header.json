@@ -1,0 +1,25 @@
+{
+    "layout.header.json": {
+        "toggleServicesSubmenu": {
+            "pt-BR": "Alternar submenu de Serviços",
+            "en": "Toggle Services submenu",
+            "es": "Alternar submenú de Servicios",
+            "de": "Dienste-Untermenü umschalten",
+            "fr": "Basculer le sous-menu Services"
+        },
+        "toggleMinecraftSubmenu": {
+            "pt-BR": "Alternar submenu de Minecraft",
+            "en": "Toggle Minecraft submenu",
+            "es": "Alternar submenú de Minecraft",
+            "de": "Minecraft-Untermenü umschalten",
+            "fr": "Basculer le sous-menu Minecraft"
+        },
+        "authorName": {
+            "pt-BR": "Gabriel Toth Gonçalves",
+            "en": "Gabriel Toth Gonçalves",
+            "es": "Gabriel Toth Gonçalves",
+            "de": "Gabriel Toth Gonçalves",
+            "fr": "Gabriel Toth Gonçalves"
+        }
+    }
+}

@@ -1,6 +1,7 @@
 "use client"
 
 import { useRegistration } from "@/hooks/useRegistration"
+import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 import { AuthenticationEntry } from "./AuthenticationEntry"
 import { EmailInput } from "./EmailInput"
@@ -24,6 +25,7 @@ export function RegistrationFlow() {
         personal: false,
     })
     const [sessionWarning, setSessionWarning] = useState(false)
+    const t = useTranslations("auth.registrationFlow")
 
     // Initialize registration session on mount
     useEffect(() => {
@@ -324,17 +326,16 @@ export function RegistrationFlow() {
                         </div>
                     </div>
                     <h2 className="text-2xl font-bold text-foreground dark:text-foreground mb-2">
-                        Session Expired
+                        {t("sessionExpired")}
                     </h2>
                     <p className="text-muted-foreground dark:text-muted-foreground mb-6">
-                        Your registration session has expired. Please start
-                        over.
+                        {t("sessionExpiredDesc")}
                     </p>
                     <a
                         href="/register"
                         className="inline-block px-6 py-2 bg-primary hover:bg-primary text-primary-foreground font-medium rounded-lg transition-colors"
                     >
-                        Start Over
+                        {t("startOver")}
                     </a>
                 </div>
             </div>
@@ -348,7 +349,7 @@ export function RegistrationFlow() {
                 <div
                     className="w-full max-w-md"
                     role="main"
-                    aria-label="Registration form"
+                    aria-label={t("registrationForm")}
                 >
                     {/* Progress Indicator */}
                     <ProgressIndicator
@@ -398,7 +399,7 @@ export function RegistrationFlow() {
                                 {registration.currentStep === 1 && (
                                     <div>
                                         <h2 className="text-xl font-semibold text-white mb-4">
-                                            Email Address
+                                            {t("stepEmailAddress")}
                                         </h2>
                                         <EmailInput
                                             value={registration.formData.email}
@@ -418,7 +419,7 @@ export function RegistrationFlow() {
                                 {registration.currentStep === 2 && (
                                     <div>
                                         <h2 className="text-xl font-semibold text-white mb-4">
-                                            Password Setup
+                                            {t("stepPasswordSetup")}
                                         </h2>
                                         <PasswordSetup
                                             value={
@@ -449,7 +450,7 @@ export function RegistrationFlow() {
                                 {registration.currentStep === 3 && (
                                     <div>
                                         <h2 className="text-xl font-semibold text-white mb-4">
-                                            Personal Information
+                                            {t("stepPersonalInfo")}
                                         </h2>
                                         <PersonalDataForm
                                             name={registration.formData.name}
@@ -483,7 +484,7 @@ export function RegistrationFlow() {
                                 {registration.currentStep === 4 && (
                                     <div>
                                         <h2 className="text-xl font-semibold text-white mb-4">
-                                            Review Information
+                                            {t("stepReviewInfo")}
                                         </h2>
                                         <VerificationReview
                                             email={registration.formData.email}
@@ -518,7 +519,7 @@ export function RegistrationFlow() {
                                 {registration.currentStep === 2 && (
                                     <div>
                                         <h2 className="text-xl font-semibold text-white mb-4">
-                                            Review Information
+                                            {t("stepReviewInfo")}
                                         </h2>
                                         <VerificationReview
                                             email={registration.formData.email}
@@ -583,10 +584,10 @@ export function RegistrationFlow() {
             <div className="w-full max-w-md">
                 <div className="bg-card rounded-lg shadow-xl p-8 border border-border dark:border-border">
                     <h1 className="text-3xl font-bold text-foreground dark:text-foreground mb-2 text-center">
-                        Create Account
+                        {t("createAccount")}
                     </h1>
                     <p className="text-muted-foreground dark:text-muted-foreground text-center mb-6">
-                        Join us today and get started in just a few steps
+                        {t("joinToday")}
                     </p>
 
                     <AuthenticationEntry
@@ -596,12 +597,12 @@ export function RegistrationFlow() {
                     />
 
                     <p className="text-center text-muted-foreground dark:text-muted-foreground mt-6">
-                        Already have an account?{" "}
+                        {t("alreadyHaveAccount")}{" "}
                         <a
                             href="/login"
                             className="text-primary dark:text-primary hover:text-primary dark:hover:text-primary font-medium"
                         >
-                            Sign in
+                            {t("signIn")}
                         </a>
                     </p>
                 </div>

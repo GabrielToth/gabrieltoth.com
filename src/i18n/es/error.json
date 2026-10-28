@@ -3,5 +3,6 @@
     "subtitle": "Encontramos un error inesperado. Por favor, intente de nuevo o vuelva a la página de inicio.",
     "tryAgain": "Intentar de Nuevo",
     "homeButton": "Página de Inicio",
-    "contactText": "Si este problema persiste, contáctenos para obtener soporte."
+    "contactText": "Si este problema persiste, contáctenos para obtener soporte.",
+    "loading": "Cargando..."
 }

@@ -1,0 +1,11 @@
+{
+    "auth.json": {
+        "registrationFlow.joinToday": {
+            "pt-BR": "Junte-se a nós hoje e comece em poucos passos",
+            "en": "Join us today and get started in just a few steps",
+            "es": "Únete hoy y empieza en solo unos pasos",
+            "de": "Treten Sie noch heute bei und starten Sie in wenigen Schritten",
+            "fr": "Rejoignez-nous aujourd'hui et commencez en quelques étapes"
+        }
+    }
+}

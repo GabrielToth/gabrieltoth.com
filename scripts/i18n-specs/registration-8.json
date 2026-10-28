@@ -1,0 +1,74 @@
+{
+    "auth.json": {
+        "registrationFlow.sessionExpired": {
+            "pt-BR": "Sessão Expirada",
+            "en": "Session Expired",
+            "es": "Sesión expirada",
+            "de": "Sitzung abgelaufen",
+            "fr": "Session expirée"
+        },
+        "registrationFlow.sessionExpiredDesc": {
+            "pt-BR": "Sua sessão de cadastro expirou. Por favor, comece novamente.",
+            "en": "Your registration session has expired. Please start over.",
+            "es": "Tu sesión de registro ha expirado. Por favor, empieza de nuevo.",
+            "de": "Ihre Registrierungssitzung ist abgelaufen. Bitte beginnen Sie von vorn.",
+            "fr": "Votre session d'inscription a expiré. Veuillez recommencer."
+        },
+        "registrationFlow.startOver": {
+            "pt-BR": "Começar de novo",
+            "en": "Start Over",
+            "es": "Empezar de nuevo",
+            "de": "Neu beginnen",
+            "fr": "Recommencer"
+        },
+        "registrationFlow.registrationForm": {
+            "pt-BR": "Formulário de cadastro",
+            "en": "Registration form",
+            "es": "Formulario de registro",
+            "de": "Registrierungsformular",
+            "fr": "Formulaire d'inscription"
+        },
+        "registrationFlow.stepEmailAddress": {
+            "pt-BR": "Endereço de E-mail",
+            "en": "Email Address",
+            "es": "Dirección de correo electrónico",
+            "de": "E-Mail-Adresse",
+            "fr": "Adresse e-mail"
+        },
+        "registrationFlow.stepPasswordSetup": {
+            "pt-BR": "Configuração de Senha",
+            "en": "Password Setup",
+            "es": "Configuración de contraseña",
+            "de": "Passwort einrichten",
+            "fr": "Configuration du mot de passe"
+        },
+        "registrationFlow.stepPersonalInfo": {
+            "pt-BR": "Informações Pessoais",
+            "en": "Personal Information",
+            "es": "Información personal",
+            "de": "Persönliche Informationen",
+            "fr": "Informations personnelles"
+        },
+        "registrationFlow.stepReviewInfo": {
+            "pt-BR": "Revisar Informações",
+            "en": "Review Information",
+            "es": "Revisar información",
+            "de": "Informationen überprüfen",
+            "fr": "Vérifier les informations"
+        },
+        "registrationFlow.alreadyHaveAccount": {
+            "pt-BR": "Já tem uma conta?",
+            "en": "Already have an account?",
+            "es": "¿Ya tienes una cuenta?",
+            "de": "Sie haben bereits ein Konto?",
+            "fr": "Vous avez déjà un compte ?"
+        },
+        "registrationFlow.signIn": {
+            "pt-BR": "Entrar",
+            "en": "Sign in",
+            "es": "Iniciar sesión",
+            "de": "Anmelden",
+            "fr": "Se connecter"
+        }
+    }
+}

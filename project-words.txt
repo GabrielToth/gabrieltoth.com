@@ -1580,3 +1580,16 @@ n'avez
 pouvez
 twilio
 creds
+# German and Spanish translation terms
+Registrierungssitzung
+Standardaudit
+Nicknamen
+Plattformnamen
+Moderationsregeln
+Klonauftrag
+Klonauftrags
+Klonaufträge
+Livestreams
+Pódcasts
+submenú
+sepáralas

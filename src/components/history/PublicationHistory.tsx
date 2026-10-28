@@ -27,6 +27,7 @@ import {
     Clock,
     ExternalLink,
 } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useMemo, useState } from "react"
 
 interface PublicationRecord {
@@ -54,6 +55,7 @@ export default function PublicationHistory({
     publications = [],
     onRetry,
 }: PublicationHistoryProps) {
+    const t = useTranslations("dashboard.history")
     const [currentPage, setCurrentPage] = useState(1)
     const [filterNetwork, setFilterNetwork] = useState<string>("all")
     const [filterStatus, setFilterStatus] = useState<string>("all")
@@ -120,21 +122,19 @@ export default function PublicationHistory({
     return (
         <div className="space-y-4 rounded-lg border p-4">
             <div className="space-y-2">
-                <h3 className="font-semibold">Publication History</h3>
-                <p className="text-sm text-muted-foreground">
-                    View and manage your published posts
-                </p>
+                <h3 className="font-semibold">{t("title")}</h3>
+                <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
             </div>
 
             <div className="space-y-3">
                 <Input
-                    placeholder="Search publications..."
+                    placeholder={t("searchPlaceholder")}
                     value={searchTerm}
                     onChange={e => {
                         setSearchTerm(e.target.value)
                         setCurrentPage(1)
                     }}
-                    aria-label="Search publications"
+                    aria-label={t("searchAria")}
                 />
 
                 <div className="grid grid-cols-2 gap-2">
@@ -146,10 +146,12 @@ export default function PublicationHistory({
                         }}
                     >
                         <SelectTrigger>
-                            <SelectValue placeholder="Filter by network" />
+                            <SelectValue placeholder={t("filterNetwork")} />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">All Networks</SelectItem>
+                            <SelectItem value="all">
+                                {t("allNetworks")}
+                            </SelectItem>
                             {uniqueNetworks.map(network => (
                                 <SelectItem key={network} value={network}>
                                     {network}
@@ -166,13 +168,21 @@ export default function PublicationHistory({
                         }}
                     >
                         <SelectTrigger>
-                            <SelectValue placeholder="Filter by status" />
+                            <SelectValue placeholder={t("filterStatus")} />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">All Status</SelectItem>
-                            <SelectItem value="success">Success</SelectItem>
-                            <SelectItem value="failed">Failed</SelectItem>
-                            <SelectItem value="pending">Pending</SelectItem>
+                            <SelectItem value="all">
+                                {t("allStatus")}
+                            </SelectItem>
+                            <SelectItem value="success">
+                                {t("statusSuccess")}
+                            </SelectItem>
+                            <SelectItem value="failed">
+                                {t("statusFailed")}
+                            </SelectItem>
+                            <SelectItem value="pending">
+                                {t("statusPending")}
+                            </SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
@@ -181,7 +191,7 @@ export default function PublicationHistory({
             {paginatedPublications.length === 0 ? (
                 <div className="rounded-lg border border-dashed p-8 text-center">
                     <p className="text-sm text-muted-foreground">
-                        No publications found
+                        {t("noResults")}
                     </p>
                 </div>
             ) : (
@@ -241,7 +251,7 @@ export default function PublicationHistory({
                             <DialogContent className="max-w-md">
                                 <DialogHeader>
                                     <DialogTitle>
-                                        Publication Details
+                                        {t("detailsTitle")}
                                     </DialogTitle>
                                     <DialogDescription>
                                         {format(pub.publishedAt, "PPP p")}
@@ -251,7 +261,7 @@ export default function PublicationHistory({
                                 <div className="space-y-4">
                                     <div>
                                         <h4 className="font-medium mb-2">
-                                            Content
+                                            {t("content")}
                                         </h4>
                                         <p className="text-sm text-foreground line-clamp-4">
                                             {pub.content}
@@ -260,7 +270,7 @@ export default function PublicationHistory({
 
                                     <div>
                                         <h4 className="font-medium mb-2">
-                                            Networks
+                                            {t("networks")}
                                         </h4>
                                         <div className="space-y-2">
                                             {pub.networks.map(
@@ -316,7 +326,7 @@ export default function PublicationHistory({
                                                 }}
                                                 className="w-full"
                                             >
-                                                Retry Failed
+                                                {t("retryFailed")}
                                             </Button>
                                         )}
                                 </div>

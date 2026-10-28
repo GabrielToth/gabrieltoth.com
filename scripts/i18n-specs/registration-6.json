@@ -1,0 +1,53 @@
+{
+    "auth.json": {
+        "registrationFlow.validPhone": {
+            "pt-BR": "✓ Telefone válido ({phone})",
+            "en": "✓ Valid phone ({phone})",
+            "es": "✓ Teléfono válido ({phone})",
+            "de": "✓ Gültige Telefonnummer ({phone})",
+            "fr": "✓ Téléphone valide ({phone})"
+        },
+        "registrationFlow.phoneHint": {
+            "pt-BR": "Suporta formatos internacionais (ex.: +1 555 123 4567, +55 11 98765-4321)",
+            "en": "Supports international formats (e.g., +1 555 123 4567, +55 11 98765-4321)",
+            "es": "Compatible con formatos internacionales (ej.: +1 555 123 4567, +55 11 98765-4321)",
+            "de": "Unterstützt internationale Formate (z. B. +1 555 123 4567, +55 11 98765-4321)",
+            "fr": "Prend en charge les formats internationaux (ex. : +1 555 123 4567, +55 11 98765-4321)"
+        },
+        "registrationFlow.completeProfileTitle": {
+            "pt-BR": "Complete seu Perfil",
+            "en": "Complete Your Profile",
+            "es": "Completa tu perfil",
+            "de": "Vervollständigen Sie Ihr Profil",
+            "fr": "Complétez votre profil"
+        },
+        "registrationFlow.completeProfileDesc": {
+            "pt-BR": "Preenchemos seu nome a partir do Google. Informe sua data de nascimento e número de telefone.",
+            "en": "We've pre-filled your name from Google. Please provide your birth date and phone number.",
+            "es": "Hemos rellenado tu nombre desde Google. Proporciona tu fecha de nacimiento y número de teléfono.",
+            "de": "Wir haben Ihren Namen von Google übernommen. Bitte geben Sie Ihr Geburtsdatum und Ihre Telefonnummer an.",
+            "fr": "Nous avons pré-rempli votre nom depuis Google. Veuillez fournir votre date de naissance et votre numéro de téléphone."
+        },
+        "registrationFlow.prefilledFromGoogle": {
+            "pt-BR": "Preenchido a partir da sua conta Google. Você pode editar se necessário.",
+            "en": "Pre-filled from your Google account. You can edit this if needed.",
+            "es": "Rellenado desde tu cuenta de Google. Puedes editarlo si es necesario.",
+            "de": "Aus Ihrem Google-Konto übernommen. Sie können dies bei Bedarf bearbeiten.",
+            "fr": "Pré-rempli depuis votre compte Google. Vous pouvez le modifier si nécessaire."
+        },
+        "registrationFlow.proceedToNextStep": {
+            "pt-BR": "Avançar para a próxima etapa",
+            "en": "Proceed to next step",
+            "es": "Continuar al siguiente paso",
+            "de": "Zum nächsten Schritt fortfahren",
+            "fr": "Passer à l'étape suivante"
+        },
+        "registrationFlow.infoSecure": {
+            "pt-BR": "Suas informações são seguras e serão usadas apenas para criar sua conta.",
+            "en": "Your information is secure and will only be used to create your account.",
+            "es": "Tu información es segura y solo se usará para crear tu cuenta.",
+            "de": "Ihre Daten sind sicher und werden nur zur Erstellung Ihres Kontos verwendet.",
+            "fr": "Vos informations sont sécurisées et ne serviront qu'à créer votre compte."
+        }
+    }
+}

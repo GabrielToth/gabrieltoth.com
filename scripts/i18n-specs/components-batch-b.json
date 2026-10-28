@@ -1,0 +1,477 @@
+{
+    "dashboard.json": {
+        "settings.reconnectNeeded": {
+            "pt-BR": "Reconexão necessária",
+            "en": "Reconnect needed",
+            "es": "Reconexión necesaria",
+            "de": "Erneute Verbindung nötig",
+            "fr": "Reconnexion nécessaire"
+        },
+        "settings.reconnectScopesAnalytics": {
+            "pt-BR": "Novos escopos necessários: desconecte e reconecte para acessar dados de analytics, membros e afiliados",
+            "en": "New scopes required: disconnect and reconnect to access analytics, members, and affiliates data",
+            "es": "Se requieren nuevos permisos: desconecta y vuelve a conectar para acceder a datos de analíticas, miembros y afiliados",
+            "de": "Neue Berechtigungen erforderlich: Trennen und erneut verbinden, um Analysen-, Mitglieder- und Partnerdaten zu nutzen",
+            "fr": "Nouveaux scopes requis : déconnectez puis reconnectez pour accéder aux données d'analytique, de membres et d'affiliés"
+        },
+        "settings.reconnectScopesFeatures": {
+            "pt-BR": "Novos escopos necessários: desconecte e reconecte para acessar novos recursos",
+            "en": "New scopes required: disconnect and reconnect to access new features",
+            "es": "Se requieren nuevos permisos: desconecta y vuelve a conectar para acceder a nuevas funciones",
+            "de": "Neue Berechtigungen erforderlich: Trennen und erneut verbinden, um neue Funktionen zu nutzen",
+            "fr": "Nouveaux scopes requis : déconnectez puis reconnectez pour accéder aux nouvelles fonctionnalités"
+        },
+        "settings.loadingSettings": {
+            "pt-BR": "Carregando configurações...",
+            "en": "Loading settings...",
+            "es": "Cargando ajustes...",
+            "de": "Einstellungen werden geladen...",
+            "fr": "Chargement des paramètres..."
+        },
+        "settings.localEnvTab": {
+            "pt-BR": "ENV Local",
+            "en": "Local ENV",
+            "es": "ENV local",
+            "de": "Lokale ENV",
+            "fr": "ENV local"
+        },
+        "settings.chat.title": {
+            "pt-BR": "Configuração do Chat ao Vivo e da Stream Unificada",
+            "en": "Live Chat & Unified Stream Configuration",
+            "es": "Configuración del chat en vivo y stream unificado",
+            "de": "Live-Chat- und Unified-Stream-Konfiguration",
+            "fr": "Configuration du chat en direct et du stream unifié"
+        },
+        "settings.chat.description": {
+            "pt-BR": "Configure carimbos de data/hora, nome universal do criador, badges e tamanho da fonte no Twitch, Kick e YouTube.",
+            "en": "Configure chat message timestamps, universal creator display names, badges, and font sizes across Twitch, Kick, and YouTube.",
+            "es": "Configura marcas de tiempo, nombre universal del creador, insignias y tamaño de fuente en Twitch, Kick y YouTube.",
+            "de": "Konfiguriere Zeitstempel, universellen Anzeigenamen, Badges und Schriftgrößen für Twitch, Kick und YouTube.",
+            "fr": "Configurez les horodatages, le nom universel du créateur, les badges et la taille de police sur Twitch, Kick et YouTube."
+        },
+        "settings.chat.showTimestamps": {
+            "pt-BR": "Mostrar carimbo de data/hora das mensagens",
+            "en": "Show Message Timestamps",
+            "es": "Mostrar marcas de tiempo de los mensajes",
+            "de": "Zeitstempel für Nachrichten anzeigen",
+            "fr": "Afficher l'horodatage des messages"
+        },
+        "settings.chat.showTimestampsDesc": {
+            "pt-BR": "Exibe o horário de envio (ex.: 12:34) ao lado das mensagens no chat unificado.",
+            "en": "Display the message sent time (e.g. 12:34 PM) next to messages in the unified chat stream.",
+            "es": "Muestra la hora de envío (p. ej., 12:34) junto a los mensajes del chat unificado.",
+            "de": "Zeigt die Sendezeit (z. B. 12:34) neben Nachrichten im einheitlichen Chat an.",
+            "fr": "Affiche l'heure d'envoi (ex. 12:34) à côté des messages du chat unifié."
+        },
+        "settings.chat.universalNickname": {
+            "pt-BR": "Unificar nome de exibição do criador entre plataformas",
+            "en": "Unify Creator Display Name Across Platforms",
+            "es": "Unificar el nombre del creador entre plataformas",
+            "de": "Anzeigename des Erstellers plattformübergreifend vereinheitlichen",
+            "fr": "Unifier le nom d'affichage du créateur entre les plateformes"
+        },
+        "settings.chat.universalNicknameDesc": {
+            "pt-BR": "Exibe seu apelido universal nas suas próprias mensagens no Twitch, Kick e YouTube em vez do nome bruto da plataforma.",
+            "en": "Display your account's universal nickname for your own messages across Twitch, Kick, and YouTube instead of raw platform handles.",
+            "es": "Muestra tu apodo universal en tus propios mensajes en Twitch, Kick y YouTube en lugar del nombre de la plataforma.",
+            "de": "Zeigt deinen universellen Nicknamen für deine eigenen Nachrichten auf Twitch, Kick und YouTube statt der rohen Plattformnamen.",
+            "fr": "Affiche votre pseudo universel pour vos propres messages sur Twitch, Kick et YouTube au lieu des identifiants bruts."
+        },
+        "settings.chat.showBadges": {
+            "pt-BR": "Mostrar badges da plataforma",
+            "en": "Show Platform Badges",
+            "es": "Mostrar insignias de la plataforma",
+            "de": "Plattform-Badges anzeigen",
+            "fr": "Afficher les badges de la plateforme"
+        },
+        "settings.chat.showBadgesDesc": {
+            "pt-BR": "Exibe badges de moderador, inscrito e VIP ao lado dos nomes no chat.",
+            "en": "Display moderator, subscriber, and VIP badges next to chat usernames.",
+            "es": "Muestra insignias de moderador, suscriptor y VIP junto a los nombres del chat.",
+            "de": "Zeigt Moderator-, Abonnenten- und VIP-Badges neben Chat-Benutzernamen an.",
+            "fr": "Affiche les badges modérateur, abonné et VIP à côté des noms du chat."
+        },
+        "settings.chat.fontSize": {
+            "pt-BR": "Tamanho da fonte do chat",
+            "en": "Chat Stream Font Size",
+            "es": "Tamaño de fuente del chat",
+            "de": "Schriftgröße des Chats",
+            "fr": "Taille de police du chat"
+        },
+        "settings.chat.fontSizeDesc": {
+            "pt-BR": "Ajusta o tamanho da fonte das mensagens do chat no painel e nas janelas popout.",
+            "en": "Adjust font size for chat messages in dashboard and popouts.",
+            "es": "Ajusta el tamaño de fuente de los mensajes del chat en el panel y ventanas emergentes.",
+            "de": "Passt die Schriftgröße der Chatnachrichten im Dashboard und in Popouts an.",
+            "fr": "Ajuste la taille de police des messages du chat dans le tableau de bord et les fenêtres détachées."
+        },
+        "settings.chat.fontSmall": {
+            "pt-BR": "Pequeno (11px)",
+            "en": "Small (11px)",
+            "es": "Pequeño (11px)",
+            "de": "Klein (11px)",
+            "fr": "Petit (11px)"
+        },
+        "settings.chat.fontMedium": {
+            "pt-BR": "Médio (12px)",
+            "en": "Medium (12px)",
+            "es": "Mediano (12px)",
+            "de": "Mittel (12px)",
+            "fr": "Moyen (12px)"
+        },
+        "settings.chat.fontLarge": {
+            "pt-BR": "Grande (14px)",
+            "en": "Large (14px)",
+            "es": "Grande (14px)",
+            "de": "Groß (14px)",
+            "fr": "Grand (14px)"
+        },
+        "settings.chat.fontExtraLarge": {
+            "pt-BR": "Extra Grande (16px)",
+            "en": "Extra Large (16px)",
+            "es": "Extra grande (16px)",
+            "de": "Extra groß (16px)",
+            "fr": "Très grand (16px)"
+        },
+        "settings.localEnv.title": {
+            "pt-BR": "APIs Locais",
+            "en": "Local APIs",
+            "es": "APIs locales",
+            "de": "Lokale APIs",
+            "fr": "API locales"
+        },
+        "settings.localEnv.description": {
+            "pt-BR": "Adicione suas próprias chaves de API para usar localmente no navegador. Nenhuma dessas informações é enviada para nossos servidores. Escolha o modo de fallback para cada serviço.",
+            "en": "Add your own API keys to use locally in the browser. None of this information is sent to our servers. Choose the fallback mode for each service.",
+            "es": "Añade tus propias claves de API para usarlas localmente en el navegador. Esta información no se envía a nuestros servidores. Elige el modo de respaldo para cada servicio.",
+            "de": "Füge eigene API-Schlüssel hinzu, die lokal im Browser verwendet werden. Keine dieser Informationen wird an unsere Server gesendet. Wähle den Fallback-Modus für jeden Dienst.",
+            "fr": "Ajoutez vos propres clés d'API pour une utilisation locale dans le navigateur. Aucune de ces informations n'est envoyée à nos serveurs. Choisissez le mode de repli pour chaque service."
+        },
+        "settings.localEnv.collapse": {
+            "pt-BR": "Recolher",
+            "en": "Collapse",
+            "es": "Contraer",
+            "de": "Einklappen",
+            "fr": "Réduire"
+        },
+        "settings.localEnv.variableCount": {
+            "pt-BR": "{count} variável(is)",
+            "en": "{count} variable(s)",
+            "es": "{count} variable(s)",
+            "de": "{count} Variable(n)",
+            "fr": "{count} variable(s)"
+        },
+        "settings.localEnv.remove": {
+            "pt-BR": "Remover {label}",
+            "en": "Remove {label}",
+            "es": "Eliminar {label}",
+            "de": "{label} entfernen",
+            "fr": "Supprimer {label}"
+        },
+        "settings.localEnv.clearAll": {
+            "pt-BR": "Limpar todas as chaves locais",
+            "en": "Clear all local keys",
+            "es": "Borrar todas las claves locales",
+            "de": "Alle lokalen Schlüssel löschen",
+            "fr": "Effacer toutes les clés locales"
+        },
+        "notifications.ariaLabel": {
+            "pt-BR": "Notificações do sistema",
+            "en": "System notifications",
+            "es": "Notificaciones del sistema",
+            "de": "Systembenachrichtigungen",
+            "fr": "Notifications système"
+        },
+        "notifications.title": {
+            "pt-BR": "Notificações",
+            "en": "Notifications",
+            "es": "Notificaciones",
+            "de": "Benachrichtigungen",
+            "fr": "Notifications"
+        },
+        "notifications.errors": {
+            "pt-BR": "{count, plural, one {# erro} other {# erros}}",
+            "en": "{count, plural, one {# error} other {# errors}}",
+            "es": "{count, plural, one {# error} other {# errores}}",
+            "de": "{count, plural, one {# Fehler} other {# Fehler}}",
+            "fr": "{count, plural, one {# erreur} other {# erreurs}}"
+        },
+        "notifications.warnings": {
+            "pt-BR": "{count, plural, one {# aviso} other {# avisos}}",
+            "en": "{count, plural, one {# warning} other {# warnings}}",
+            "es": "{count, plural, one {# advertencia} other {# advertencias}}",
+            "de": "{count, plural, one {# Warnung} other {# Warnungen}}",
+            "fr": "{count, plural, one {# avertissement} other {# avertissements}}"
+        },
+        "notifications.allClear": {
+            "pt-BR": "Tudo certo — nenhum problema detectado",
+            "en": "All clear — no issues detected",
+            "es": "Todo en orden — no se detectaron problemas",
+            "de": "Alles in Ordnung — keine Probleme erkannt",
+            "fr": "Tout est normal — aucun problème détecté"
+        },
+        "history.title": {
+            "pt-BR": "Histórico de Publicações",
+            "en": "Publication History",
+            "es": "Historial de publicaciones",
+            "de": "Veröffentlichungsverlauf",
+            "fr": "Historique des publications"
+        },
+        "history.subtitle": {
+            "pt-BR": "Veja e gerencie suas publicações",
+            "en": "View and manage your published posts",
+            "es": "Ve y gestiona tus publicaciones",
+            "de": "Anzeigen und Verwalten deiner veröffentlichten Beiträge",
+            "fr": "Consultez et gérez vos publications"
+        },
+        "history.searchPlaceholder": {
+            "pt-BR": "Buscar publicações...",
+            "en": "Search publications...",
+            "es": "Buscar publicaciones...",
+            "de": "Veröffentlichungen suchen...",
+            "fr": "Rechercher des publications..."
+        },
+        "history.searchAria": {
+            "pt-BR": "Buscar publicações",
+            "en": "Search publications",
+            "es": "Buscar publicaciones",
+            "de": "Veröffentlichungen suchen",
+            "fr": "Rechercher des publications"
+        },
+        "history.filterNetwork": {
+            "pt-BR": "Filtrar por rede",
+            "en": "Filter by network",
+            "es": "Filtrar por red",
+            "de": "Nach Netzwerk filtern",
+            "fr": "Filtrer par réseau"
+        },
+        "history.filterStatus": {
+            "pt-BR": "Filtrar por status",
+            "en": "Filter by status",
+            "es": "Filtrar por estado",
+            "de": "Nach Status filtern",
+            "fr": "Filtrer par statut"
+        },
+        "history.allNetworks": {
+            "pt-BR": "Todas as Redes",
+            "en": "All Networks",
+            "es": "Todas las redes",
+            "de": "Alle Netzwerke",
+            "fr": "Tous les réseaux"
+        },
+        "history.allStatus": {
+            "pt-BR": "Todos os Status",
+            "en": "All Status",
+            "es": "Todos los estados",
+            "de": "Alle Status",
+            "fr": "Tous les statuts"
+        },
+        "history.statusSuccess": {
+            "pt-BR": "Sucesso",
+            "en": "Success",
+            "es": "Éxito",
+            "de": "Erfolg",
+            "fr": "Succès"
+        },
+        "history.statusFailed": {
+            "pt-BR": "Falha",
+            "en": "Failed",
+            "es": "Fallido",
+            "de": "Fehlgeschlagen",
+            "fr": "Échec"
+        },
+        "history.statusPending": {
+            "pt-BR": "Pendente",
+            "en": "Pending",
+            "es": "Pendiente",
+            "de": "Ausstehend",
+            "fr": "En attente"
+        },
+        "history.noResults": {
+            "pt-BR": "Nenhuma publicação encontrada",
+            "en": "No publications found",
+            "es": "No se encontraron publicaciones",
+            "de": "Keine Veröffentlichungen gefunden",
+            "fr": "Aucune publication trouvée"
+        },
+        "history.detailsTitle": {
+            "pt-BR": "Detalhes da Publicação",
+            "en": "Publication Details",
+            "es": "Detalles de la publicación",
+            "de": "Veröffentlichungsdetails",
+            "fr": "Détails de la publication"
+        },
+        "history.content": {
+            "pt-BR": "Conteúdo",
+            "en": "Content",
+            "es": "Contenido",
+            "de": "Inhalt",
+            "fr": "Contenu"
+        },
+        "history.networks": {
+            "pt-BR": "Redes",
+            "en": "Networks",
+            "es": "Redes",
+            "de": "Netzwerke",
+            "fr": "Réseaux"
+        },
+        "history.retryFailed": {
+            "pt-BR": "Tentar Novamente",
+            "en": "Retry Failed",
+            "es": "Reintentar fallidos",
+            "de": "Fehlgeschlagene erneut versuchen",
+            "fr": "Réessayer les échecs"
+        },
+        "insights.comparisonEmpty": {
+            "pt-BR": "Selecione canais acima para ver os dados de comparação",
+            "en": "Select channels above to see comparison data",
+            "es": "Selecciona canales arriba para ver los datos de comparación",
+            "de": "Wähle oben Kanäle aus, um Vergleichsdaten zu sehen",
+            "fr": "Sélectionnez des chaînes ci-dessus pour voir les données de comparaison"
+        },
+        "insights.userActivity.filterAria": {
+            "pt-BR": "Filtrar registros de ações",
+            "en": "Filter action logs",
+            "es": "Filtrar registros de acciones",
+            "de": "Aktionsprotokolle filtern",
+            "fr": "Filtrer les journaux d'actions"
+        },
+        "insights.userActivity.allActions": {
+            "pt-BR": "Todas as Ações",
+            "en": "All Actions",
+            "es": "Todas las acciones",
+            "de": "Alle Aktionen",
+            "fr": "Toutes les actions"
+        },
+        "insights.userActivity.authentication": {
+            "pt-BR": "Autenticação",
+            "en": "Authentication",
+            "es": "Autenticación",
+            "de": "Authentifizierung",
+            "fr": "Authentification"
+        },
+        "insights.userActivity.posts": {
+            "pt-BR": "Posts e Publicações",
+            "en": "Posts & Publishing",
+            "es": "Posts y publicaciones",
+            "de": "Beiträge & Veröffentlichungen",
+            "fr": "Posts et publications"
+        },
+        "insights.userActivity.channels": {
+            "pt-BR": "Canais",
+            "en": "Channels",
+            "es": "Canales",
+            "de": "Kanäle",
+            "fr": "Chaînes"
+        },
+        "insights.userActivity.settings": {
+            "pt-BR": "Configurações",
+            "en": "Settings",
+            "es": "Ajustes",
+            "de": "Einstellungen",
+            "fr": "Paramètres"
+        },
+        "insights.userActivity.town": {
+            "pt-BR": "Busca de Localização",
+            "en": "Location Search",
+            "es": "Búsqueda de ubicación",
+            "de": "Ortssuche",
+            "fr": "Recherche de lieu"
+        },
+        "insights.userActivity.less": {
+            "pt-BR": "Menos",
+            "en": "Less",
+            "es": "Menos",
+            "de": "Weniger",
+            "fr": "Moins"
+        },
+        "insights.userActivity.more": {
+            "pt-BR": "Mais",
+            "en": "More",
+            "es": "Más",
+            "de": "Mehr",
+            "fr": "Plus"
+        },
+        "insights.userActivity.detailedLogs": {
+            "pt-BR": "Registros Detalhados de Ações ({count})",
+            "en": "Detailed User Action Logs ({count})",
+            "es": "Registros detallados de acciones ({count})",
+            "de": "Detaillierte Benutzeraktionsprotokolle ({count})",
+            "fr": "Journaux détaillés des actions ({count})"
+        },
+        "insights.userActivity.auditPolicy": {
+            "pt-BR": "Política 0-client ativa • auditoria padrão",
+            "en": "0-client policy active • standard audit",
+            "es": "Política 0-client activa • auditoría estándar",
+            "de": "0-Client-Richtlinie aktiv • Standardaudit",
+            "fr": "Politique 0-client active • audit standard"
+        }
+    },
+    "publish.json": {
+        "channelSelectNone": {
+            "pt-BR": "Nenhuma seleção de canal necessária para as plataformas selecionadas.",
+            "en": "No channel selection needed for selected platforms.",
+            "es": "No se necesita selección de canal para las plataformas seleccionadas.",
+            "de": "Für die ausgewählten Plattformen ist keine Kanalauswahl erforderlich.",
+            "fr": "Aucune sélection de chaîne nécessaire pour les plateformes sélectionnées."
+        },
+        "thumbnailPreview": {
+            "pt-BR": "Pré-visualização da miniatura",
+            "en": "Thumbnail preview",
+            "es": "Vista previa de la miniatura",
+            "de": "Vorschaubild",
+            "fr": "Aperçu de la miniature"
+        },
+        "partialPublish": {
+            "pt-BR": "Publicação parcial",
+            "en": "Partial publication",
+            "es": "Publicación parcial",
+            "de": "Teilweise veröffentlicht",
+            "fr": "Publication partielle"
+        },
+        "tagPlaceholder": {
+            "pt-BR": "Digite uma tag e pressione Enter, ou separe com vírgulas",
+            "en": "Type a tag and press Enter, or separate with commas",
+            "es": "Escribe una etiqueta y pulsa Enter, o sepáralas con comas",
+            "de": "Tag eingeben und Enter drücken oder durch Kommas trennen",
+            "fr": "Saisissez un tag et appuyez sur Entrée, ou séparez par des virgules"
+        },
+        "clickToEdit": {
+            "pt-BR": "Clique para editar",
+            "en": "Click to edit",
+            "es": "Haz clic para editar",
+            "de": "Zum Bearbeiten klicken",
+            "fr": "Cliquez pour modifier"
+        },
+        "removeFile": {
+            "pt-BR": "Remover arquivo",
+            "en": "Remove file",
+            "es": "Eliminar archivo",
+            "de": "Datei entfernen",
+            "fr": "Supprimer le fichier"
+        }
+    },
+    "layout.header.json": {
+        "selectLanguage": {
+            "pt-BR": "Selecionar idioma",
+            "en": "Select language",
+            "es": "Seleccionar idioma",
+            "de": "Sprache auswählen",
+            "fr": "Choisir la langue"
+        },
+        "toggleTheme": {
+            "pt-BR": "Alternar tema",
+            "en": "Toggle theme",
+            "es": "Cambiar tema",
+            "de": "Design umschalten",
+            "fr": "Changer de thème"
+        },
+        "theme": {
+            "pt-BR": "Tema",
+            "en": "Theme",
+            "es": "Tema",
+            "de": "Design",
+            "fr": "Thème"
+        }
+    }
+}

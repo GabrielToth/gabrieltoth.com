@@ -1,0 +1,11 @@
+{
+    "dashboard.json": {
+        "live.triggerPlaceholder": {
+            "pt-BR": "Gatilho (ex.: !discord)",
+            "en": "Trigger (e.g. !discord)",
+            "es": "Disparador (ej.: !discord)",
+            "de": "Auslöser (z. B. !discord)",
+            "fr": "Déclencheur (ex. : !discord)"
+        }
+    }
+}

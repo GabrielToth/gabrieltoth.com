@@ -6,6 +6,7 @@ import {
     validateMinimumAge,
     validateName,
 } from "@/lib/validation"
+import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 
 interface PersonalDataFormProps {
@@ -33,6 +34,7 @@ export function PersonalDataForm({
     const [birthDateError, setBirthDateError] = useState<string | null>(null)
     const [phoneError, setPhoneError] = useState<string | null>(null)
     const [normalizedPhone, setNormalizedPhone] = useState<string | null>(null)
+    const t = useTranslations("auth.registrationFlow")
 
     const nameValidation = validateName(name)
     const birthDateFormatValidation = validateBirthDateFormat(birthDate)
@@ -89,7 +91,7 @@ export function PersonalDataForm({
                     htmlFor="name"
                     className="block text-sm sm:text-base font-medium text-foreground dark:text-foreground mb-2"
                 >
-                    Full Name
+                    {t("fullName")}
                 </label>
                 <input
                     id="name"
@@ -97,7 +99,7 @@ export function PersonalDataForm({
                     value={name}
                     onChange={e => onNameChange(e.target.value)}
                     disabled={disabled}
-                    placeholder="John Doe"
+                    placeholder={t("fullNamePlaceholder")}
                     className={`w-full px-4 py-3 sm:py-2 text-base sm:text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all min-h-[44px] sm:min-h-auto ${
                         nameError
                             ? "border-red-500 focus:ring-red-200 dark:border-red-400 dark:focus:ring-red-900"
@@ -105,7 +107,7 @@ export function PersonalDataForm({
                               ? "border-green-500 focus:ring-green-200 dark:border-green-400 dark:focus:ring-green-900"
                               : "border-input dark:border-input focus:ring-ring dark:focus:ring-ring"
                     } bg-card text-foreground dark:text-foreground`}
-                    aria-label="Full name"
+                    aria-label={t("fullNameLabel")}
                     aria-describedby={nameError ? "name-error" : undefined}
                     required
                 />
@@ -120,7 +122,7 @@ export function PersonalDataForm({
                 )}
                 {nameValidation.isValid && name && (
                     <p className="mt-2 text-sm text-green-600 dark:text-green-400">
-                        ✓ Valid name
+                        {t("validName")}
                     </p>
                 )}
             </div>
@@ -131,7 +133,7 @@ export function PersonalDataForm({
                     htmlFor="birthDate"
                     className="block text-sm sm:text-base font-medium text-foreground dark:text-foreground mb-2"
                 >
-                    Birth Date
+                    {t("birthDate")}
                 </label>
                 <input
                     id="birthDate"
@@ -139,7 +141,7 @@ export function PersonalDataForm({
                     value={birthDate}
                     onChange={e => onBirthDateChange(e.target.value)}
                     disabled={disabled}
-                    placeholder="DD/MM/YYYY"
+                    placeholder={t("birthDatePlaceholder")}
                     className={`w-full px-4 py-3 sm:py-2 text-base sm:text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all min-h-[44px] sm:min-h-auto ${
                         birthDateError
                             ? "border-red-500 focus:ring-red-200 dark:border-red-400 dark:focus:ring-red-900"
@@ -149,7 +151,7 @@ export function PersonalDataForm({
                               ? "border-green-500 focus:ring-green-200 dark:border-green-400 dark:focus:ring-green-900"
                               : "border-input dark:border-input focus:ring-ring dark:focus:ring-ring"
                     } bg-card text-foreground dark:text-foreground`}
-                    aria-label="Birth date"
+                    aria-label={t("birthDateLabel")}
                     aria-describedby={
                         birthDateError ? "birthDate-error" : "birthDate-hint"
                     }
@@ -168,7 +170,7 @@ export function PersonalDataForm({
                     ageValidation.isValid &&
                     birthDate && (
                         <p className="mt-2 text-sm text-green-600 dark:text-green-400">
-                            ✓ Valid birth date
+                            {t("validBirthDate")}
                         </p>
                     )}
                 <p
@@ -186,7 +188,7 @@ export function PersonalDataForm({
                     htmlFor="phone"
                     className="block text-sm sm:text-base font-medium text-foreground dark:text-foreground mb-2"
                 >
-                    Phone Number
+                    {t("phoneNumber")}
                 </label>
                 <input
                     id="phone"
@@ -194,7 +196,7 @@ export function PersonalDataForm({
                     value={phone}
                     onChange={e => onPhoneChange(e.target.value)}
                     disabled={disabled}
-                    placeholder="+1 (555) 123-4567"
+                    placeholder={t("phonePlaceholder")}
                     className={`w-full px-4 py-3 sm:py-2 text-base sm:text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all min-h-[44px] sm:min-h-auto ${
                         phoneError
                             ? "border-red-500 focus:ring-red-200 dark:border-red-400 dark:focus:ring-red-900"
@@ -202,7 +204,7 @@ export function PersonalDataForm({
                               ? "border-green-500 focus:ring-green-200 dark:border-green-400 dark:focus:ring-green-900"
                               : "border-input dark:border-input focus:ring-ring dark:focus:ring-ring"
                     } bg-card text-foreground dark:text-foreground`}
-                    aria-label="Phone number"
+                    aria-label={t("phoneLabel")}
                     aria-describedby={phoneError ? "phone-error" : "phone-hint"}
                     required
                 />
@@ -217,15 +219,16 @@ export function PersonalDataForm({
                 )}
                 {phoneValidation.isValid && phone && (
                     <p className="mt-2 text-sm text-green-600 dark:text-green-400">
-                        ✓ Valid phone ({normalizedPhone})
+                        {t("validPhone", {
+                            phone: normalizedPhone ?? phone,
+                        })}
                     </p>
                 )}
                 <p
                     id="phone-hint"
                     className="mt-2 text-xs text-muted-foreground dark:text-muted-foreground"
                 >
-                    Supports international formats (e.g., +1 555 123 4567, +55
-                    11 98765-4321)
+                    {t("phoneHint")}
                 </p>
             </div>
         </div>

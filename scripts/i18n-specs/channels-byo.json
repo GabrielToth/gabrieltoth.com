@@ -1,0 +1,207 @@
+{
+    "dashboard.json": {
+        "channels.statusOperational": {
+            "pt-BR": "Disponível e Operacional",
+            "en": "Available and Operational",
+            "es": "Disponible y operativo",
+            "de": "Verfügbar und betriebsbereit",
+            "fr": "Disponible et opérationnel"
+        },
+        "channels.byoChannelIdPlaceholder": {
+            "pt-BR": "@seu_canal ou ID",
+            "en": "@your_channel or ID",
+            "es": "@tu_canal o ID",
+            "de": "@dein_kanal oder ID",
+            "fr": "@votre_chaine ou ID"
+        },
+        "channels.byoChannelNamePlaceholder": {
+            "pt-BR": "ex: Minha Página / Canal",
+            "en": "e.g. My Page / Channel",
+            "es": "ej: Mi Página / Canal",
+            "de": "z. B. Meine Seite / Kanal",
+            "fr": "ex : Ma Page / Chaîne"
+        },
+        "channels.byoAccessTokenPlaceholder": {
+            "pt-BR": "EAABw... (cole seu access token aqui)",
+            "en": "EAABw... (paste your access token here)",
+            "es": "EAABw... (pega tu access token aquí)",
+            "de": "EAABw... (Access-Token hier einfügen)",
+            "fr": "EAABw... (collez votre access token ici)"
+        },
+        "channels.byoAccessTokenPlaceholderKwai": {
+            "pt-BR": "Token ou chave de transmissão (opcional)",
+            "en": "Token or stream key (optional)",
+            "es": "Token o clave de transmisión (opcional)",
+            "de": "Token oder Stream-Key (optional)",
+            "fr": "Token ou clé de diffusion (facultatif)"
+        },
+        "channels.byoErrorRequired": {
+            "pt-BR": "Preencha o identificador e o nome do canal.",
+            "en": "Fill in the channel identifier and name.",
+            "es": "Completa el identificador y el nombre del canal.",
+            "de": "Bitte Kanal-ID und Kanalnamen ausfüllen.",
+            "fr": "Renseignez l'identifiant et le nom de la chaîne."
+        },
+        "channels.byoErrorConnect": {
+            "pt-BR": "Erro ao conectar canal",
+            "en": "Failed to connect channel",
+            "es": "Error al conectar el canal",
+            "de": "Kanal konnte nicht verbunden werden",
+            "fr": "Échec de la connexion de la chaîne"
+        },
+        "channels.byoFinder.open": {
+            "pt-BR": "Usar meu próprio token (BYO)",
+            "en": "Use my own token (BYO)",
+            "es": "Usar mi propio token (BYO)",
+            "de": "Eigenen Token verwenden (BYO)",
+            "fr": "Utiliser mon propre token (BYO)"
+        },
+        "channels.byoFinder.title": {
+            "pt-BR": "Listar canais via token próprio",
+            "en": "List channels with your own token",
+            "es": "Listar canales con tu propio token",
+            "de": "Kanäle mit eigenem Token auflisten",
+            "fr": "Lister les chaînes avec votre propre token"
+        },
+        "channels.byoFinder.description": {
+            "pt-BR": "Cole um token de acesso da plataforma para ver quais canais ele pode usar. O token fica vinculado apenas à sua conta e é armazenado criptografado ao conectar.",
+            "en": "Paste a platform access token to see which channels it can use. The token is bound only to your account and stored encrypted when you connect.",
+            "es": "Pega un token de acceso de la plataforma para ver qué canales puede usar. El token queda vinculado solo a tu cuenta y se guarda cifrado al conectar.",
+            "de": "Füge einen Access-Token der Plattform ein, um zu sehen, welche Kanäle er nutzen kann. Der Token wird nur mit deinem Konto verknüpft und beim Verbinden verschlüsselt gespeichert.",
+            "fr": "Collez un access token de la plateforme pour voir les chaînes qu'il peut utiliser. Le token est lié uniquement à votre compte et stocké chiffré lors de la connexion."
+        },
+        "channels.byoFinder.platform": {
+            "pt-BR": "Plataforma",
+            "en": "Platform",
+            "es": "Plataforma",
+            "de": "Plattform",
+            "fr": "Plateforme"
+        },
+        "channels.byoFinder.clientId": {
+            "pt-BR": "Client-Id",
+            "en": "Client ID",
+            "es": "Client ID",
+            "de": "Client-ID",
+            "fr": "Client ID"
+        },
+        "channels.byoFinder.clientIdPlaceholder": {
+            "pt-BR": "Client-Id da app Twitch",
+            "en": "Twitch app Client ID",
+            "es": "Client ID de la app de Twitch",
+            "de": "Twitch-App Client-ID",
+            "fr": "Client ID de l'app Twitch"
+        },
+        "channels.byoFinder.accessToken": {
+            "pt-BR": "Access token",
+            "en": "Access token",
+            "es": "Access token",
+            "de": "Access-Token",
+            "fr": "Access token"
+        },
+        "channels.byoFinder.kwaiTokenLabel": {
+            "pt-BR": "Identificador, @usuário ou Token",
+            "en": "Identifier, @handle or token",
+            "es": "Identificador, @usuario o token",
+            "de": "Kennung, @Benutzername oder Token",
+            "fr": "Identifiant, @utilisateur ou token"
+        },
+        "channels.byoFinder.kwaiTokenPlaceholder": {
+            "pt-BR": "@seu_canal_kwai ou token",
+            "en": "@your_kwai_channel or token",
+            "es": "@tu_canal_kwai o token",
+            "de": "@dein_kwai_kanal oder Token",
+            "fr": "@votre_chaine_kwai ou token"
+        },
+        "channels.byoFinder.tokenPlaceholder": {
+            "pt-BR": "Cole o token aqui",
+            "en": "Paste the token here",
+            "es": "Pega el token aquí",
+            "de": "Token hier einfügen",
+            "fr": "Collez le token ici"
+        },
+        "channels.byoFinder.submit": {
+            "pt-BR": "Listar canais",
+            "en": "List channels",
+            "es": "Listar canales",
+            "de": "Kanäle auflisten",
+            "fr": "Lister les chaînes"
+        },
+        "channels.byoFinder.loading": {
+            "pt-BR": "Consultando",
+            "en": "Checking",
+            "es": "Consultando",
+            "de": "Wird geprüft",
+            "fr": "Vérification"
+        },
+        "channels.byoFinder.privacy": {
+            "pt-BR": "Usado apenas para esta consulta. Ao vincular, o token é salvo criptografado somente na sua conta.",
+            "en": "Used only for this lookup. When you connect, the token is stored encrypted only in your account.",
+            "es": "Se usa solo para esta consulta. Al vincular, el token se guarda cifrado solo en tu cuenta.",
+            "de": "Wird nur für diese Abfrage verwendet. Beim Verbinden wird der Token verschlüsselt nur in deinem Konto gespeichert.",
+            "fr": "Utilisé uniquement pour cette recherche. Lors de la connexion, le token est stocké chiffré uniquement dans votre compte."
+        },
+        "channels.byoFinder.connectSuccess": {
+            "pt-BR": "Canal {name} vinculado com sucesso!",
+            "en": "Channel {name} connected successfully!",
+            "es": "¡Canal {name} vinculado con éxito!",
+            "de": "Kanal {name} erfolgreich verbunden!",
+            "fr": "Chaîne {name} connectée avec succès !"
+        },
+        "channels.byoFinder.errorToken": {
+            "pt-BR": "Informe o token de acesso.",
+            "en": "Enter the access token.",
+            "es": "Introduce el access token.",
+            "de": "Bitte Access-Token eingeben.",
+            "fr": "Saisissez l'access token."
+        },
+        "channels.byoFinder.errorFetch": {
+            "pt-BR": "Não foi possível consultar o token.",
+            "en": "Could not check the token.",
+            "es": "No se pudo consultar el token.",
+            "de": "Token konnte nicht geprüft werden.",
+            "fr": "Impossible de vérifier le token."
+        },
+        "channels.byoFinder.errorNetwork": {
+            "pt-BR": "Erro de rede ao consultar o token.",
+            "en": "Network error while checking the token.",
+            "es": "Error de red al consultar el token.",
+            "de": "Netzwerkfehler bei der Token-Prüfung.",
+            "fr": "Erreur réseau lors de la vérification du token."
+        },
+        "channels.byoFinder.errorConnect": {
+            "pt-BR": "Erro ao vincular canal",
+            "en": "Failed to connect channel",
+            "es": "Error al vincular el canal",
+            "de": "Kanal konnte nicht verbunden werden",
+            "fr": "Échec de la connexion de la chaîne"
+        },
+        "channels.byoFinder.noChannels": {
+            "pt-BR": "Nenhum canal encontrado para este token.",
+            "en": "No channels found for this token.",
+            "es": "No se encontraron canales para este token.",
+            "de": "Keine Kanäle für diesen Token gefunden.",
+            "fr": "Aucune chaîne trouvée pour ce token."
+        },
+        "channels.byoFinder.connecting": {
+            "pt-BR": "Vinculando...",
+            "en": "Connecting...",
+            "es": "Vinculando...",
+            "de": "Wird verbunden...",
+            "fr": "Connexion..."
+        },
+        "channels.byoFinder.connect": {
+            "pt-BR": "Vincular canal",
+            "en": "Connect channel",
+            "es": "Vincular canal",
+            "de": "Kanal verbinden",
+            "fr": "Connecter la chaîne"
+        },
+        "channels.byoFinder.close": {
+            "pt-BR": "Fechar",
+            "en": "Close",
+            "es": "Cerrar",
+            "de": "Schließen",
+            "fr": "Fermer"
+        }
+    }
+}

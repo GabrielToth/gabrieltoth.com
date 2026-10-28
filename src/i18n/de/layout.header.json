@@ -22,5 +22,11 @@
         "plugins": "Plugins ",
         "contributions": "Beiträge"
     },
-    "minecraft": "Minecraft "
+    "minecraft": "Minecraft ",
+    "toggleServicesSubmenu": "Dienste-Untermenü umschalten",
+    "toggleMinecraftSubmenu": "Minecraft-Untermenü umschalten",
+    "authorName": "Gabriel Toth Gonçalves",
+    "selectLanguage": "Sprache auswählen",
+    "toggleTheme": "Design umschalten",
+    "theme": "Design"
 }

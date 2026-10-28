@@ -61,7 +61,7 @@ export default function StreamerPage() {
     const _searchParams = useSearchParams()
     const slug = params.slug as string
     const locale = params.locale as string
-    const _t = useTranslations("streamer")
+    const t = useTranslations("dashboard.streamer")
 
     const [streamer, setStreamer] = useState<StreamerData | null>(null)
     const [loading, setLoading] = useState(true)
@@ -144,7 +144,7 @@ export default function StreamerPage() {
             <div className="flex items-center justify-center min-h-screen bg-background">
                 <div className="text-center">
                     <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-neutral-700 border-t-blue-500"></div>
-                    <p className="text-neutral-400">Loading streamer...</p>
+                    <p className="text-neutral-400">{t("loading")}</p>
                 </div>
             </div>
         )
@@ -154,14 +154,12 @@ export default function StreamerPage() {
         return (
             <div className="flex items-center justify-center min-h-screen bg-background">
                 <div className="text-center">
-                    <p className="text-neutral-400 text-lg">
-                        Streamer not found
-                    </p>
+                    <p className="text-neutral-400 text-lg">{t("notFound")}</p>
                     <a
                         href={`/${locale}`}
                         className="mt-4 inline-block text-sm text-indigo-400 hover:text-indigo-300"
                     >
-                        Go home
+                        {t("goHome")}
                     </a>
                 </div>
             </div>
@@ -224,7 +222,7 @@ export default function StreamerPage() {
                         {hasPlayers.length > 0 && (
                             <div className="flex items-center gap-2 mb-2">
                                 <span className="text-xs text-neutral-500">
-                                    Player:
+                                    {t("player")}
                                 </span>
                                 {hasPlayers.map(p => {
                                     const color =
@@ -258,7 +256,10 @@ export default function StreamerPage() {
                         {currentEmbed ? (
                             <div className="aspect-video rounded-xl overflow-hidden bg-black">
                                 <iframe
-                                    title={`${streamer?.displayName || "Streamer"} live player`}
+                                    title={t("livePlayerTitle", {
+                                        name:
+                                            streamer?.displayName || "Streamer",
+                                    })}
                                     src={currentEmbed}
                                     className="h-full w-full"
                                     allow="autoplay; encrypted-media"
@@ -268,7 +269,7 @@ export default function StreamerPage() {
                         ) : (
                             <div className="aspect-video rounded-xl bg-background flex items-center justify-center">
                                 <p className="text-neutral-500">
-                                    No player available for this platform
+                                    {t("noPlayer")}
                                 </p>
                             </div>
                         )}
@@ -276,7 +277,7 @@ export default function StreamerPage() {
                         {livePlatforms.length > 0 && (
                             <div className="rounded-xl border border-neutral-800 bg-background p-4">
                                 <h3 className="text-sm font-semibold text-neutral-200 mb-3">
-                                    Other Platforms
+                                    {t("otherPlatforms")}
                                 </h3>
                                 <div className="flex flex-wrap gap-2">
                                     {livePlatforms.map(p => {
@@ -294,7 +295,9 @@ export default function StreamerPage() {
                                                     backgroundColor: color,
                                                 }}
                                             >
-                                                Watch on {p.platform}
+                                                {t("watchOn", {
+                                                    platform: p.platform,
+                                                })}
                                             </a>
                                         )
                                     })}
@@ -306,12 +309,13 @@ export default function StreamerPage() {
                     <div className="space-y-4">
                         <div className="rounded-xl border border-neutral-800 bg-background p-4">
                             <h3 className="text-sm font-semibold text-neutral-200 mb-3">
-                                Chat
+                                {t("chat")}
                             </h3>
                             <div className="space-y-3">
                                 <p className="text-[11px] text-neutral-400">
-                                    Messages will be sent to all platforms{" "}
-                                    {streamer.displayName} is live on
+                                    {t("chatHint", {
+                                        name: streamer.displayName,
+                                    })}
                                 </p>
                                 <div className="flex gap-2">
                                     <input
@@ -324,7 +328,7 @@ export default function StreamerPage() {
                                             if (e.key === "Enter")
                                                 handleSendChat()
                                         }}
-                                        placeholder="Type a message..."
+                                        placeholder={t("typeMessage")}
                                         className="flex-1 rounded-lg border border-neutral-700 bg-card px-3 py-2 text-sm text-neutral-100 placeholder-neutral-500 focus:outline-none focus:border-neutral-500"
                                     />
                                     <button
@@ -334,7 +338,7 @@ export default function StreamerPage() {
                                         }
                                         className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-50"
                                     >
-                                        Send
+                                        {t("send")}
                                     </button>
                                 </div>
                             </div>
@@ -342,7 +346,7 @@ export default function StreamerPage() {
 
                         <div className="rounded-xl border border-neutral-800 bg-background p-4">
                             <h3 className="text-sm font-semibold text-neutral-200 mb-3">
-                                Connected Platforms
+                                {t("connectedPlatforms")}
                             </h3>
                             <div className="space-y-2">
                                 {streamer.platforms.map(p => {

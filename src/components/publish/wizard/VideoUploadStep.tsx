@@ -160,7 +160,7 @@ export default function VideoUploadStep({
                         <button
                             onClick={removeFile}
                             className="rounded-full p-1.5 text-muted-foreground hover:bg-accent dark:hover:bg-accent"
-                            aria-label="Remove file"
+                            aria-label={t("removeFile")}
                         >
                             <X className="h-4 w-4" />
                         </button>

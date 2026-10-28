@@ -260,7 +260,7 @@ export const ChannelComparison: React.FC<ChannelComparisonProps> = ({
                     {selectedChannels.length === 0 && (
                         <div className="rounded-lg border border-border bg-muted p-4 text-center">
                             <p className="text-sm text-muted-foreground">
-                                Select channels above to see comparison data
+                                {t("comparisonEmpty")}
                             </p>
                         </div>
                     )}

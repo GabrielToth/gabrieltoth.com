@@ -19,7 +19,7 @@ export default async function Footer({ locale }: FooterProps) {
                         {/* Company Info */}
                         <div className="col-span-1 md:col-span-1">
                             <h3 className="text-lg font-bold mb-4">
-                                Gabriel Toth Gonçalves
+                                {t("authorName")}
                             </h3>
                             <p className="text-muted-foreground text-sm leading-relaxed">
                                 {t("companyDescription")}
@@ -143,7 +143,7 @@ export default async function Footer({ locale }: FooterProps) {
                     <div className="mt-12 pt-8 border-t border-border">
                         <div className="text-center">
                             <p className="text-gray-300 text-sm">
-                                © 2025 Gabriel Toth Gonçalves. {t("rights")}
+                                © 2025 {t("authorName")}. {t("rights")}
                             </p>
                             <div className="mt-2 flex justify-center space-x-4 text-xs text-gray-300">
                                 <Link

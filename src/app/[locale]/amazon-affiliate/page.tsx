@@ -20,9 +20,7 @@ export default function AmazonAffiliatePage() {
         try {
             /* c8 ignore start */
             if (!tag) {
-                setError(
-                    "Missing affiliate tag. Set NEXT_PUBLIC_AMAZON_ASSOCIATES_TAG"
-                )
+                setError(t("missingTagError"))
                 return
             }
             /* c8 ignore stop */
@@ -30,7 +28,7 @@ export default function AmazonAffiliatePage() {
             setAffiliateUrl(out)
         } catch (e: unknown) {
             /* c8 ignore next */
-            setError((e as Error)?.message || "Invalid URL")
+            setError((e as Error)?.message || t("invalidUrl"))
         }
     }
 
@@ -72,7 +70,7 @@ export default function AmazonAffiliatePage() {
                                 rel="noopener noreferrer"
                                 className="inline-block mt-2 text-primary hover:underline"
                             >
-                                Open link ↗
+                                {t("openLink")}
                             </a>
                         </div>
                     )}

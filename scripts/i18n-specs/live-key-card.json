@@ -1,0 +1,95 @@
+{
+    "dashboard.json": {
+        "live.streamKey": {
+            "pt-BR": "Chave da Transmissão",
+            "en": "Stream Key",
+            "es": "Clave de transmisión",
+            "de": "Stream-Schlüssel",
+            "fr": "Clé de stream"
+        },
+        "live.loadingStreamKey": {
+            "pt-BR": "Carregando chave da transmissão...",
+            "en": "Loading stream key...",
+            "es": "Cargando clave de transmisión...",
+            "de": "Stream-Schlüssel wird geladen ...",
+            "fr": "Chargement de la clé de stream..."
+        },
+        "live.retry": {
+            "pt-BR": "Tentar novamente",
+            "en": "Retry",
+            "es": "Reintentar",
+            "de": "Erneut versuchen",
+            "fr": "Réessayer"
+        },
+        "live.noStreamKey": {
+            "pt-BR": "Nenhuma chave de transmissão disponível. Verifique se sua conta da Twitch possui as permissões necessárias.",
+            "en": "No stream key available. Ensure your Twitch account has the required permissions.",
+            "es": "No hay ninguna clave de transmisión disponible. Asegúrate de que tu cuenta de Twitch tenga los permisos necesarios.",
+            "de": "Kein Stream-Schlüssel verfügbar. Stellen Sie sicher, dass Ihr Twitch-Konto über die erforderlichen Berechtigungen verfügt.",
+            "fr": "Aucune clé de stream disponible. Vérifiez que votre compte Twitch dispose des autorisations requises."
+        },
+        "live.hideStreamKey": {
+            "pt-BR": "Ocultar chave da transmissão",
+            "en": "Hide stream key",
+            "es": "Ocultar clave de transmisión",
+            "de": "Stream-Schlüssel ausblenden",
+            "fr": "Masquer la clé de stream"
+        },
+        "live.showStreamKey": {
+            "pt-BR": "Mostrar chave da transmissão",
+            "en": "Show stream key",
+            "es": "Mostrar clave de transmisión",
+            "de": "Stream-Schlüssel anzeigen",
+            "fr": "Afficher la clé de stream"
+        },
+        "live.copied": {
+            "pt-BR": "Copiado!",
+            "en": "Copied!",
+            "es": "¡Copiado!",
+            "de": "Kopiert!",
+            "fr": "Copié !"
+        },
+        "live.copyToClipboard": {
+            "pt-BR": "Copiar para a área de transferência",
+            "en": "Copy to clipboard",
+            "es": "Copiar al portapapeles",
+            "de": "In die Zwischenablage kopieren",
+            "fr": "Copier dans le presse-papiers"
+        },
+        "live.resetOnTwitch": {
+            "pt-BR": "Redefinir na Twitch →",
+            "en": "Reset on Twitch →",
+            "es": "Restablecer en Twitch →",
+            "de": "Auf Twitch zurücksetzen →",
+            "fr": "Réinitialiser sur Twitch →"
+        },
+        "live.kickKeyPlaceholder": {
+            "pt-BR": "Digite sua chave de transmissão do Kick...",
+            "en": "Enter your Kick stream key...",
+            "es": "Introduce tu clave de transmisión de Kick...",
+            "de": "Geben Sie Ihren Kick-Stream-Schlüssel ein ...",
+            "fr": "Saisissez votre clé de stream Kick..."
+        },
+        "live.saveToBrowser": {
+            "pt-BR": "Salvar no Navegador",
+            "en": "Save to Browser",
+            "es": "Guardar en el navegador",
+            "de": "Im Browser speichern",
+            "fr": "Enregistrer dans le navigateur"
+        },
+        "live.saved": {
+            "pt-BR": "Salvo",
+            "en": "Saved",
+            "es": "Guardado",
+            "de": "Gespeichert",
+            "fr": "Enregistré"
+        },
+        "live.kickKeyLocalNote": {
+            "pt-BR": "O Kick não fornece chaves de transmissão via API. Sua chave é armazenada apenas no seu navegador (localStorage).",
+            "en": "Kick does not provide stream keys via API. Your key is stored in your browser only (localStorage).",
+            "es": "Kick no proporciona claves de transmisión a través de la API. Tu clave se guarda solo en tu navegador (localStorage).",
+            "de": "Kick stellt Stream-Schlüssel nicht über die API bereit. Ihr Schlüssel wird nur in Ihrem Browser gespeichert (localStorage).",
+            "fr": "Kick ne fournit pas de clés de stream via l'API. Votre clé est stockée uniquement dans votre navigateur (localStorage)."
+        }
+    }
+}

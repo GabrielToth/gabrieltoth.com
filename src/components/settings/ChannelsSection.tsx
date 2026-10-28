@@ -226,9 +226,11 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                 {youtubeChannel.needsReconnect && (
                                     <span
                                         className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800 cursor-help dark:bg-amber-900/30 dark:text-amber-300"
-                                        title="New scopes required: disconnect and reconnect to access analytics, members, and affiliates data"
+                                        title={t(
+                                            "settings.reconnectScopesAnalytics"
+                                        )}
                                     >
-                                        Reconnect needed
+                                        {t("settings.reconnectNeeded")}
                                     </span>
                                 )}
                                 {confirmDisconnect === youtubeChannel.id ? (
@@ -345,9 +347,11 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                         {channel.needsReconnect && (
                                             <span
                                                 className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800 cursor-help dark:bg-amber-900/30 dark:text-amber-300"
-                                                title="New scopes required: disconnect and reconnect to access new features"
+                                                title={t(
+                                                    "settings.reconnectScopesFeatures"
+                                                )}
                                             >
-                                                Reconnect needed
+                                                {t("settings.reconnectNeeded")}
                                             </span>
                                         )}
                                         {confirmDisconnect === channel.id ? (

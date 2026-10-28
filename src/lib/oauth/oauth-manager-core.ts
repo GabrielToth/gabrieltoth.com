@@ -33,6 +33,12 @@ export class OAuthManager {
      * Initialize OAuth configurations for all platforms
      */
     private initializeConfigs(): void {
+        const defaultBaseUrl = (
+            process.env.NEXT_PUBLIC_APP_URL ||
+            process.env.APP_URL ||
+            "http://localhost:3000"
+        ).replace(/\/$/, "")
+
         // YouTube (uses same Google Cloud OAuth credentials as Google Sign-In)
         // Prefer GOOGLE_CLIENT_ID/SECRET since they're more likely to be up-to-date
         const youtubeClientId =
@@ -47,7 +53,7 @@ export class OAuthManager {
                 clientSecret: youtubeClientSecret,
                 redirectUri:
                     process.env.YOUTUBE_REDIRECT_URI ||
-                    "http://localhost:3000/api/oauth/callback/youtube",
+                    `${defaultBaseUrl}/api/oauth/callback/youtube`,
                 scopes: [
                     "https://www.googleapis.com/auth/youtube.upload",
                     "https://www.googleapis.com/auth/youtube",
@@ -70,7 +76,7 @@ export class OAuthManager {
                 clientSecret: process.env.FACEBOOK_APP_SECRET,
                 redirectUri:
                     process.env.FACEBOOK_REDIRECT_URI ||
-                    "http://localhost:3000/api/oauth/callback/facebook",
+                    `${defaultBaseUrl}/api/oauth/callback/facebook`,
                 scopes: [
                     "pages_manage_posts",
                     "pages_read_engagement",
@@ -86,7 +92,9 @@ export class OAuthManager {
             this.configs.set("instagram", {
                 clientId: process.env.INSTAGRAM_APP_ID,
                 clientSecret: process.env.INSTAGRAM_APP_SECRET,
-                redirectUri: process.env.INSTAGRAM_REDIRECT_URI ?? "",
+                redirectUri:
+                    process.env.INSTAGRAM_REDIRECT_URI ||
+                    `${defaultBaseUrl}/api/oauth/callback/instagram`,
                 scopes: [
                     "instagram_basic",
                     "instagram_content_publish",
@@ -111,7 +119,7 @@ export class OAuthManager {
                 clientSecret: process.env.TWITTER_CLIENT_SECRET,
                 redirectUri:
                     process.env.TWITTER_REDIRECT_URI ||
-                    "http://localhost:3000/api/oauth/callback/twitter",
+                    `${defaultBaseUrl}/api/oauth/callback/twitter`,
                 scopes: [
                     "tweet.write",
                     "tweet.read",
@@ -134,7 +142,7 @@ export class OAuthManager {
                 clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
                 redirectUri:
                     process.env.LINKEDIN_REDIRECT_URI ||
-                    "http://localhost:3000/api/oauth/callback/linkedin",
+                    `${defaultBaseUrl}/api/oauth/callback/linkedin`,
                 // Valid scopes for LinkedIn Standalone App:
                 // w_member_social, openid, profile, email
                 // NOTE: r_liteprofile, r_emailaddress, w_organization_social are invalid
@@ -153,7 +161,7 @@ export class OAuthManager {
                 clientSecret: process.env.TIKTOK_CLIENT_SECRET,
                 redirectUri:
                     process.env.TIKTOK_REDIRECT_URI ||
-                    "http://localhost:3000/api/oauth/callback/tiktok",
+                    `${defaultBaseUrl}/api/oauth/callback/tiktok`,
                 scopes: [
                     "user.info.basic",
                     "user.info.profile",
@@ -173,7 +181,7 @@ export class OAuthManager {
                 clientSecret: process.env.KICK_CLIENT_SECRET,
                 redirectUri:
                     process.env.KICK_REDIRECT_URI ||
-                    "http://localhost:3000/api/oauth/callback/kick",
+                    `${defaultBaseUrl}/api/oauth/callback/kick`,
                 scopes: [
                     "user:read",
                     "channel:read",
@@ -194,7 +202,7 @@ export class OAuthManager {
                 clientSecret: process.env.TWITCH_CLIENT_SECRET,
                 redirectUri:
                     process.env.TWITCH_REDIRECT_URI ||
-                    "http://localhost:3000/api/oauth/callback/twitch",
+                    `${defaultBaseUrl}/api/oauth/callback/twitch`,
                 scopes: [
                     "chat:read",
                     "chat:edit",

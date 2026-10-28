@@ -437,5 +437,11 @@
         "cloudDescription": "Video almacenado en el servidor para publicación multiplataforma. Sujeto a tarifas.",
         "localDescription": "Subida directa a una plataforma. Sin tarifas de almacenamiento.",
         "perPostOverride": "Anular para esta publicación"
-    }
+    },
+    "channelSelectNone": "No se necesita selección de canal para las plataformas seleccionadas.",
+    "thumbnailPreview": "Vista previa de la miniatura",
+    "partialPublish": "Publicación parcial",
+    "tagPlaceholder": "Escribe una etiqueta y pulsa Enter, o sepáralas con comas",
+    "clickToEdit": "Haz clic para editar",
+    "removeFile": "Eliminar archivo"
 }

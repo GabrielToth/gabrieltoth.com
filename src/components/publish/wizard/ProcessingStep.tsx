@@ -224,7 +224,7 @@ export default function ProcessingStep({
                         <>
                             <AlertCircle className="h-16 w-16 text-amber-500" />
                             <h3 className="mt-4 text-lg font-semibold text-amber-700">
-                                Publicação parcial
+                                {t("partialPublish")}
                             </h3>
                             <p className="mt-2 text-sm text-muted-foreground">
                                 {getResultsSummary(processing.results)}

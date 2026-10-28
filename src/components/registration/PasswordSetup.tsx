@@ -2,6 +2,7 @@
 
 import { calculatePasswordStrength } from "@/lib/auth/password-strength"
 import { validatePassword } from "@/lib/validation"
+import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 
 interface PasswordSetupProps {
@@ -25,9 +26,28 @@ export function PasswordSetup({
     const [showConfirm, setShowConfirm] = useState(false)
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [error, setError] = useState<string | null>(null)
+    const t = useTranslations("auth.registrationFlow")
 
     const validation = validatePassword(value)
     const strength = calculatePasswordStrength(value)
+    const strengthLabelKey =
+        strength.strength === "weak"
+            ? "Weak"
+            : strength.strength === "fair"
+              ? "Fair"
+              : strength.strength === "good"
+                ? "Good"
+                : "Strong"
+    const feedbackKey =
+        strength.strength === "weak"
+            ? value
+                ? "TooWeak"
+                : "Required"
+            : strength.strength === "fair"
+              ? "Fair"
+              : strength.strength === "good"
+                ? "Good"
+                : "Strong"
     const passwordsMatch = value && confirmValue && value === confirmValue
 
     // Update validation state whenever password or confirm password changes
@@ -69,11 +89,10 @@ export function PasswordSetup({
                         htmlFor="password"
                         className="block text-sm sm:text-base font-medium text-foreground dark:text-foreground"
                     >
-                        Password
+                        {t("password")}
                     </label>
                     <p className="text-xs sm:text-sm text-muted-foreground dark:text-muted-foreground font-medium">
-                        Required: 8+ characters, uppercase, lowercase, number,
-                        special character (!@#$%^&*)
+                        {t("passwordRequirementsSummary")}
                     </p>
                 </div>
                 <div className="relative">
@@ -83,7 +102,7 @@ export function PasswordSetup({
                         value={value}
                         onChange={e => onChange(e.target.value)}
                         disabled={disabled}
-                        placeholder="Enter a strong password"
+                        placeholder={t("passwordPlaceholder")}
                         className={`w-full px-4 py-3 sm:py-2 text-base sm:text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all min-h-[44px] sm:min-h-auto ${
                             value && !validation.isValid
                                 ? "border-red-500 focus:ring-red-200 dark:border-red-400 dark:focus:ring-red-900"
@@ -100,10 +119,10 @@ export function PasswordSetup({
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground dark:text-muted-foreground hover:text-foreground dark:hover:text-muted-foreground text-sm font-medium min-h-[44px] min-w-[44px] flex items-center justify-center"
                         aria-label={
-                            showPassword ? "Hide password" : "Show password"
+                            showPassword ? t("hidePassword") : t("showPassword")
                         }
                     >
-                        {showPassword ? "Hide" : "Show"}
+                        {showPassword ? t("hide") : t("show")}
                     </button>
                 </div>
                 {/* Real-time password validation feedback */}
@@ -119,7 +138,7 @@ export function PasswordSetup({
                 {value && validation.isValid && (
                     <p className="text-sm text-green-600 dark:text-green-400 mt-2 flex items-center gap-1">
                         <span className="text-lg">âœ“</span>
-                        Password meets all requirements
+                        {t("passwordMeetsRequirements")}
                     </p>
                 )}
             </div>
@@ -142,11 +161,11 @@ export function PasswordSetup({
                             />
                         </div>
                         <span className="text-sm font-medium capitalize text-foreground dark:text-foreground">
-                            {strength.strength}
+                            {t(`strength${strengthLabelKey}`)}
                         </span>
                     </div>
                     <p className="text-sm text-muted-foreground dark:text-muted-foreground">
-                        {strength.feedback}
+                        {t(`feedback${feedbackKey}`)}
                     </p>
                 </div>
             )}
@@ -165,7 +184,7 @@ export function PasswordSetup({
                     className="text-sm font-medium text-foreground dark:text-foreground"
                     id="password-requirements"
                 >
-                    Password Requirements:
+                    {t("passwordRequirements")}
                 </p>
                 <ul className="space-y-1 text-sm">
                     <li
@@ -176,7 +195,7 @@ export function PasswordSetup({
                         }`}
                     >
                         {validation.requirements.minLength ? "âœ“" : "â—‹"} At
-                        least 8 characters
+                        {t("reqMinLength")}
                     </li>
                     <li
                         className={`transition-colors ${
@@ -186,7 +205,7 @@ export function PasswordSetup({
                         }`}
                     >
                         {validation.requirements.hasUppercase ? "âœ“" : "â—‹"}{" "}
-                        One uppercase letter (A-Z)
+                        {t("reqUppercase")}
                     </li>
                     <li
                         className={`transition-colors ${
@@ -196,7 +215,7 @@ export function PasswordSetup({
                         }`}
                     >
                         {validation.requirements.hasLowercase ? "âœ“" : "â—‹"}{" "}
-                        One lowercase letter (a-z)
+                        {t("reqLowercase")}
                     </li>
                     <li
                         className={`transition-colors ${
@@ -206,7 +225,7 @@ export function PasswordSetup({
                         }`}
                     >
                         {validation.requirements.hasNumber ? "âœ“" : "â—‹"} One
-                        number (0-9)
+                        {t("reqNumber")}
                     </li>
                     <li
                         className={`transition-colors ${
@@ -216,7 +235,7 @@ export function PasswordSetup({
                         }`}
                     >
                         {validation.requirements.hasSpecial ? "âœ“" : "â—‹"} One
-                        special character (!@#$%^&*)
+                        {t("reqSpecial")}
                     </li>
                 </ul>
             </div>
@@ -227,7 +246,7 @@ export function PasswordSetup({
                     htmlFor="confirm"
                     className="block text-sm sm:text-base font-medium text-foreground dark:text-foreground mb-2"
                 >
-                    Confirm Password
+                    {t("confirmPassword")}
                 </label>
                 <div className="relative">
                     <input
@@ -236,7 +255,7 @@ export function PasswordSetup({
                         value={confirmValue}
                         onChange={e => onConfirmChange(e.target.value)}
                         disabled={disabled}
-                        placeholder="Confirm your password"
+                        placeholder={t("confirmPasswordPlaceholder")}
                         className={`w-full px-4 py-3 sm:py-2 text-base sm:text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all min-h-[44px] sm:min-h-auto ${
                             confirmValue && !passwordsMatch
                                 ? "border-red-500 focus:ring-red-200 dark:border-red-400 dark:focus:ring-red-900"
@@ -246,7 +265,7 @@ export function PasswordSetup({
                                   ? "border-green-500 focus:ring-green-200 dark:border-green-400 dark:focus:ring-green-900"
                                   : "border-input dark:border-input focus:ring-ring dark:focus:ring-ring"
                         } bg-card text-foreground dark:text-foreground`}
-                        aria-label="Confirm password"
+                        aria-label={t("confirmPasswordLabel")}
                         aria-invalid={Boolean(confirmValue && !passwordsMatch)}
                     />
                     <button
@@ -254,10 +273,10 @@ export function PasswordSetup({
                         onClick={() => setShowConfirm(!showConfirm)}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground dark:text-muted-foreground hover:text-foreground dark:hover:text-muted-foreground text-sm font-medium min-h-[44px] min-w-[44px] flex items-center justify-center"
                         aria-label={
-                            showConfirm ? "Hide password" : "Show password"
+                            showConfirm ? t("hidePassword") : t("showPassword")
                         }
                     >
-                        {showConfirm ? "Hide" : "Show"}
+                        {showConfirm ? t("hide") : t("show")}
                     </button>
                 </div>
                 {/* Real-time confirm password feedback */}
@@ -267,13 +286,13 @@ export function PasswordSetup({
                         role="alert"
                     >
                         <span className="text-lg">âœ•</span>
-                        Passwords do not match
+                        {t("passwordsDoNotMatch")}
                     </p>
                 )}
                 {confirmValue && passwordsMatch && validation.isValid && (
                     <p className="text-sm text-green-600 dark:text-green-400 mt-2 flex items-center gap-1">
                         <span className="text-lg">âœ“</span>
-                        Passwords match
+                        {t("passwordsMatch")}
                     </p>
                 )}
             </div>

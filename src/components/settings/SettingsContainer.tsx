@@ -286,7 +286,7 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = () => {
         return (
             <div className="flex h-64 items-center justify-center">
                 <div className="text-sm text-muted-foreground">
-                    Loading settings...
+                    {t("loadingSettings")}
                 </div>
             </div>
         )
@@ -323,7 +323,9 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = () => {
                     <TabsTrigger value="integrations">
                         {t("tabs.integrations")}
                     </TabsTrigger>
-                    <TabsTrigger value="localenv">Local ENV</TabsTrigger>
+                    <TabsTrigger value="localenv">
+                        {t("localEnvTab")}
+                    </TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="profile" className="space-y-6">

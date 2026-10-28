@@ -83,31 +83,27 @@ export default async function HypixelQolPage({ params }: HypixelQolPageProps) {
                     <div className="max-w-7xl mx-auto">
                         <div className="bg-[var(--background)] border border-neutral-700 rounded-lg p-8">
                             <h2 className="text-3xl font-bold mb-6 text-[#10b981]">
-                                About This Modpack
+                                {t("hypixelQol.aboutTitle")}
                             </h2>
                             <p className="text-muted-foreground mb-4 text-lg leading-relaxed">
-                                The Hypixel QoL modpack is designed to enhance
-                                your Minecraft experience with quality of life
-                                improvements while maintaining the vanilla feel
-                                of the game.
+                                {t("hypixelQol.aboutDescription")}
                             </p>
                             <p className="text-muted-foreground mb-4 text-lg leading-relaxed">
-                                This modpack focuses on:
+                                {t("hypixelQol.focusesOn")}
                             </p>
                             <ul className="list-disc list-inside text-muted-foreground space-y-2 mb-6">
-                                <li>Performance optimization</li>
-                                <li>Quality of life enhancements</li>
-                                <li>Better user interface</li>
-                                <li>Improved gameplay mechanics</li>
+                                <li>{t("hypixelQol.featurePerformance")}</li>
+                                <li>{t("hypixelQol.featureQol")}</li>
+                                <li>{t("hypixelQol.featureUi")}</li>
+                                <li>{t("hypixelQol.featureGameplay")}</li>
                             </ul>
 
                             <div className="mt-8 pt-8 border-t border-neutral-700">
                                 <h3 className="text-2xl font-bold mb-4 text-white">
-                                    More Information
+                                    {t("hypixelQol.moreInfoTitle")}
                                 </h3>
                                 <p className="text-muted-foreground">
-                                    More details about this modpack coming soon.
-                                    Check back for updates!
+                                    {t("hypixelQol.moreInfoDescription")}
                                 </p>
                             </div>
                         </div>

@@ -53,7 +53,7 @@ interface CloneJob {
 }
 
 export default function ClonerPage() {
-    const _t = useTranslations("dashboard.cloner")
+    const t = useTranslations("dashboard.cloner")
     const [groups, setGroups] = useState<ChannelGroup[]>([])
     const [jobs, setJobs] = useState<CloneJob[]>([])
     const [loadingJobs, setLoadingJobs] = useState(true)
@@ -168,17 +168,10 @@ export default function ClonerPage() {
                 setSelectedVideoIds(allIds)
                 setStep("configure")
             } else {
-                setErrorMsg(
-                    data.error ||
-                        "Não foi possível resolver informações do canal do YouTube."
-                )
+                setErrorMsg(data.error || t("errResolveChannel"))
             }
         } catch (err) {
-            setErrorMsg(
-                err instanceof Error
-                    ? err.message
-                    : "Erro ao conectar com API de busca de canais."
-            )
+            setErrorMsg(err instanceof Error ? err.message : t("errSearchApi"))
         } finally {
             setInspecting(false)
         }
@@ -255,15 +248,11 @@ export default function ClonerPage() {
                 setStep("progress")
                 fetchInitialData()
             } else {
-                setErrorMsg(
-                    data.error || "Falha ao iniciar trabalho de clonagem."
-                )
+                setErrorMsg(data.error || t("errStartCloning"))
             }
         } catch (err) {
             setErrorMsg(
-                err instanceof Error
-                    ? err.message
-                    : "Erro de comunicação ao criar clonagem."
+                err instanceof Error ? err.message : t("errCommunication")
             )
         } finally {
             setSubmitting(false)
@@ -275,12 +264,10 @@ export default function ClonerPage() {
             <div className="flex items-start justify-between">
                 <div>
                     <h1 className="text-2xl font-bold tracking-tight text-foreground">
-                        YouTube Cloner & Auto-Publisher
+                        {t("title")}
                     </h1>
                     <p className="text-sm text-muted-foreground">
-                        Clone canais completos do YouTube com download
-                        automático, divisão por categorias e agendamento de
-                        postagens.
+                        {t("description")}
                     </p>
                 </div>
                 <TutorialLauncher category="cloner" />
@@ -299,14 +286,14 @@ export default function ClonerPage() {
                     <div className="flex items-center justify-between flex-wrap gap-2">
                         <div className="max-w-xl space-y-1">
                             <h2 className="text-base font-semibold text-neutral-200">
-                                1. Identificar Canal do YouTube
+                                {t("step1Title")}
                             </h2>
                             <p className="text-xs text-neutral-400">
-                                Digite a URL completa do canal ou o arroba (ex:{" "}
+                                {t("step1Desc")}{" "}
                                 <span className="font-mono text-primary">
                                     https://www.youtube.com/@Maple-Circuit
                                 </span>{" "}
-                                ou{" "}
+                                {t("step1DescOr")}{" "}
                                 <span className="font-mono text-primary">
                                     @Maple-Circuit
                                 </span>
@@ -326,7 +313,7 @@ export default function ClonerPage() {
                                 type="text"
                                 value={urlInput}
                                 onChange={e => setUrlInput(e.target.value)}
-                                placeholder="Cole a URL ou @do_canal..."
+                                placeholder={t("urlPlaceholder")}
                                 className="w-full rounded-lg border border-neutral-700 bg-background pl-9 pr-3 py-2 text-sm text-neutral-100 placeholder-neutral-500 focus:border-primary focus:outline-none"
                                 onKeyDown={e =>
                                     e.key === "Enter" && handleInspect()
@@ -341,12 +328,12 @@ export default function ClonerPage() {
                             {inspecting ? (
                                 <>
                                     <RefreshCw className="h-4 w-4 animate-spin" />
-                                    <span>Analisando...</span>
+                                    <span>{t("inspecting")}</span>
                                 </>
                             ) : (
                                 <>
                                     <Sparkles className="h-4 w-4" />
-                                    <span>Analisar Canal</span>
+                                    <span>{t("analyzeChannel")}</span>
                                 </>
                             )}
                         </button>
@@ -355,7 +342,7 @@ export default function ClonerPage() {
                     <div className="flex items-center gap-2 pt-1 text-xs text-neutral-400">
                         <input
                             type="text"
-                            placeholder="Chave de API do Google própria (opcional para zerar custos de consulta)..."
+                            placeholder={t("apiKeyPlaceholder")}
                             value={customApiKey}
                             onChange={e => setCustomApiKey(e.target.value)}
                             className="w-full max-w-lg rounded border border-neutral-800 bg-background px-3 py-1.5 text-xs text-neutral-200 placeholder-neutral-500 focus:outline-none focus:border-primary"
@@ -388,9 +375,9 @@ export default function ClonerPage() {
                                 <p className="text-xs text-neutral-400">
                                     {inspectedChannel.handle} ·{" "}
                                     {inspectedChannel.subscriberCountFormatted}{" "}
-                                    inscritos ·{" "}
+                                    {t("subscribers")} ·{" "}
                                     {inspectedChannel.totalVideosCount}{" "}
-                                    conteúdos encontrados
+                                    {t("contentsFound")}
                                 </p>
                             </div>
                         </div>
@@ -404,7 +391,7 @@ export default function ClonerPage() {
                                 onClick={() => setStep("search")}
                                 className="text-xs text-neutral-400 hover:text-neutral-200 underline"
                             >
-                                Trocar Canal
+                                {t("switchChannel")}
                             </button>
                         </div>
                     </div>
@@ -412,13 +399,13 @@ export default function ClonerPage() {
                     {/* Target Group & Publishing Schedule Settings */}
                     <div className="rounded-xl border border-neutral-800 bg-background/60 p-4 space-y-4">
                         <h3 className="text-sm font-semibold text-neutral-200 border-b border-neutral-800 pb-2">
-                            2. Configurações de Destino e Frequência de Postagem
+                            {t("step2Title")}
                         </h3>
 
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
                             <div>
                                 <label className="block font-medium text-neutral-300 mb-1">
-                                    Grupo de Canais de Destino
+                                    {t("targetGroup")}
                                 </label>
                                 <select
                                     value={targetGroupId}
@@ -428,7 +415,7 @@ export default function ClonerPage() {
                                     className="w-full rounded-md border border-neutral-700 bg-background px-3 py-2 text-neutral-200 focus:outline-none focus:border-primary"
                                 >
                                     <option value="">
-                                        Selecione o grupo para repostar...
+                                        {t("selectGroupPlaceholder")}
                                     </option>
                                     {groups.map(g => (
                                         <option key={g.id} value={g.id}>
@@ -440,7 +427,7 @@ export default function ClonerPage() {
 
                             <div>
                                 <label className="block font-medium text-neutral-300 mb-1">
-                                    Frequência de Postagem
+                                    {t("scheduleFrequency")}
                                 </label>
                                 <select
                                     value={scheduleType}
@@ -453,20 +440,20 @@ export default function ClonerPage() {
                                     className="w-full rounded-md border border-neutral-700 bg-background px-3 py-2 text-neutral-200 focus:outline-none focus:border-primary"
                                 >
                                     <option value="immediate">
-                                        Imediato (Tudo de uma vez)
+                                        {t("scheduleImmediate")}
                                     </option>
                                     <option value="daily">
-                                        Diário (Programado)
+                                        {t("scheduleDaily")}
                                     </option>
                                     <option value="weekly">
-                                        Semanal (Programado)
+                                        {t("scheduleWeekly")}
                                     </option>
                                 </select>
                             </div>
 
                             <div>
                                 <label className="block font-medium text-neutral-300 mb-1">
-                                    Quantidade de Vídeos por Intervalo
+                                    {t("scheduleQuantity")}
                                 </label>
                                 <input
                                     type="number"
@@ -495,8 +482,7 @@ export default function ClonerPage() {
                                 htmlFor="autoUpdate"
                                 className="text-neutral-300 cursor-pointer"
                             >
-                                Clonar novos conteúdos automaticamente assim que
-                                forem lançados no canal
+                                {t("autoUpdateLabel")}
                             </label>
                         </div>
                     </div>
@@ -505,11 +491,11 @@ export default function ClonerPage() {
                     <div className="rounded-xl border border-neutral-800 bg-background/60 p-4 space-y-4">
                         <div className="flex items-center justify-between border-b border-neutral-800 pb-3 flex-wrap gap-2">
                             <div className="flex items-center gap-1 font-semibold text-sm text-neutral-200">
-                                <span>
-                                    3. Seleção de Conteúdo por Categoria
-                                </span>
+                                <span>{t("step3Title")}</span>
                                 <span className="text-xs text-neutral-400 font-mono">
-                                    ({selectedVideoIds.size} selecionados)
+                                    {t("selectedCount", {
+                                        count: selectedVideoIds.size,
+                                    })}
                                 </span>
                             </div>
 
@@ -524,7 +510,7 @@ export default function ClonerPage() {
                                 >
                                     <Film className="h-3.5 w-3.5" />
                                     <span>
-                                        Vídeos (
+                                        {t("tabVideos")} (
                                         {
                                             inspectedChannel.categories.videos
                                                 .length
@@ -542,7 +528,7 @@ export default function ClonerPage() {
                                 >
                                     <Tv className="h-3.5 w-3.5" />
                                     <span>
-                                        Shorts (
+                                        {t("tabShorts")} (
                                         {
                                             inspectedChannel.categories.shorts
                                                 .length
@@ -560,7 +546,7 @@ export default function ClonerPage() {
                                 >
                                     <Radio className="h-3.5 w-3.5" />
                                     <span>
-                                        Lives (
+                                        {t("tabLives")} (
                                         {
                                             inspectedChannel.categories.lives
                                                 .length
@@ -578,7 +564,7 @@ export default function ClonerPage() {
                                 >
                                     <Mic className="h-3.5 w-3.5" />
                                     <span>
-                                        Podcasts (
+                                        {t("tabPodcasts")} (
                                         {
                                             inspectedChannel.categories.podcasts
                                                 .length
@@ -601,8 +587,7 @@ export default function ClonerPage() {
                             if (list.length === 0) {
                                 return (
                                     <div className="p-8 text-center text-xs text-neutral-500">
-                                        Nenhum conteúdo encontrado nesta
-                                        categoria.
+                                        {t("noContentInCategory")}
                                     </div>
                                 )
                             }
@@ -623,12 +608,14 @@ export default function ClonerPage() {
                                             )}
                                             <span>
                                                 {allSelected
-                                                    ? "Desmarcar todos desta aba"
-                                                    : "Marcar todos desta aba"}
+                                                    ? t("deselectAllTab")
+                                                    : t("selectAllTab")}
                                             </span>
                                         </button>
                                         <span className="font-mono">
-                                            {list.length} itens
+                                            {t("itemsCount", {
+                                                count: list.length,
+                                            })}
                                         </span>
                                     </div>
 
@@ -741,14 +728,12 @@ export default function ClonerPage() {
                                 {submitting ? (
                                     <>
                                         <RefreshCw className="h-4 w-4 animate-spin" />
-                                        <span>Iniciando Clonagem...</span>
+                                        <span>{t("startCloningBtn")}</span>
                                     </>
                                 ) : (
                                     <>
                                         <Download className="h-4 w-4" />
-                                        <span>
-                                            Confirmar & Iniciar Clonagem
-                                        </span>
+                                        <span>{t("confirmStart")}</span>
                                     </>
                                 )}
                             </button>
@@ -762,23 +747,23 @@ export default function ClonerPage() {
                 <div className="rounded-xl border border-neutral-800 bg-background/60 p-4 space-y-4">
                     <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
                         <h3 className="text-sm font-semibold text-neutral-200">
-                            Progresso dos Trabalhos de Clonagem
+                            {t("jobsTitle")}
                         </h3>
                         <button
                             onClick={() => setStep("search")}
                             className="text-xs bg-primary text-primary-foreground px-3 py-1 rounded-lg font-medium hover:bg-primary/90"
                         >
-                            + Clonar Novo Canal
+                            {t("cloneNewChannel")}
                         </button>
                     </div>
 
                     {loadingJobs ? (
                         <div className="p-8 text-center text-xs text-neutral-500">
-                            Carregando trabalhos...
+                            {t("loadingJobs")}
                         </div>
                     ) : jobs.length === 0 ? (
                         <div className="p-8 text-center text-xs text-neutral-500">
-                            Nenhum trabalho de clonagem em andamento.
+                            {t("noJobs")}
                         </div>
                     ) : (
                         <div className="space-y-3">
@@ -821,8 +806,8 @@ export default function ClonerPage() {
                                                 }`}
                                             >
                                                 {job.execution_mode === "cloud"
-                                                    ? "Cloud Mode"
-                                                    : "Local Mode"}
+                                                    ? t("cloudMode")
+                                                    : t("localMode")}
                                             </span>
                                             <span
                                                 className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase ${
@@ -841,7 +826,7 @@ export default function ClonerPage() {
                                         <div className="flex justify-between text-[11px] text-neutral-400 font-mono">
                                             <span>
                                                 {job.current_step ||
-                                                    "Processando via yt-dlp..."}
+                                                    t("processingLocal")}
                                             </span>
                                             <span>
                                                 {job.progress_percentage || 25}%
@@ -863,25 +848,32 @@ export default function ClonerPage() {
                                             <span className="flex items-center gap-1">
                                                 <Film className="h-3 w-3 text-neutral-500" />
                                                 <span>
-                                                    {job.processed_videos || 0}{" "}
-                                                    / {job.total_videos || 1}{" "}
-                                                    vídeos
+                                                    {t("videosProgress", {
+                                                        processed:
+                                                            job.processed_videos ||
+                                                            0,
+                                                        total:
+                                                            job.total_videos ||
+                                                            1,
+                                                    })}
                                                 </span>
                                             </span>
                                             <span className="flex items-center gap-1">
                                                 <Clock className="h-3 w-3 text-neutral-500" />
                                                 <span>
-                                                    Tempo Restante:{" "}
+                                                    {t("remainingTime")}{" "}
                                                     {job.estimated_time_remaining ||
                                                         "00:04:30"}
                                                 </span>
                                             </span>
                                         </div>
                                         <span>
-                                            Custo:{" "}
+                                            {t("cost")}{" "}
                                             {job.credit_cost
-                                                ? `${job.credit_cost} Cr`
-                                                : "Grátis (Local)"}
+                                                ? t("creditsShort", {
+                                                      count: job.credit_cost,
+                                                  })
+                                                : t("freeLocal")}
                                         </span>
                                     </div>
                                 </div>

@@ -1,6 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
+import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 
 interface SuccessMessageProps {
@@ -10,10 +11,12 @@ interface SuccessMessageProps {
 }
 
 export function SuccessMessage({
-    message = "Account created successfully!",
+    message,
     redirectUrl = "/login",
     redirectDelay = 2000,
 }: SuccessMessageProps) {
+    const t = useTranslations("auth.registrationFlow")
+    const resolvedMessage = message ?? t("accountCreated")
     const router = useRouter()
     const [countdown, setCountdown] = useState(redirectDelay / 1000)
 
@@ -53,17 +56,15 @@ export function SuccessMessage({
                 </div>
 
                 <h2 className="text-2xl font-bold text-foreground dark:text-foreground mb-2">
-                    Success!
+                    {t("successTitle")}
                 </h2>
                 <p className="text-muted-foreground dark:text-muted-foreground mb-6">
-                    {message}
+                    {resolvedMessage}
                 </p>
 
                 <div className="bg-primary/5 dark:bg-primary/10 border dark:border-white/10 dark:border-border rounded-lg p-4 mb-6">
                     <p className="text-sm text-primary dark:text-primary">
-                        Redirecting to login in{" "}
-                        <span className="font-bold">{countdown}</span>{" "}
-                        seconds...
+                        {t("redirectingIn", { countdown })}
                     </p>
                 </div>
 
@@ -71,7 +72,7 @@ export function SuccessMessage({
                     onClick={() => router.push(redirectUrl)}
                     className="w-full px-4 py-3 bg-primary hover:bg-primary text-primary-foreground font-medium rounded-lg transition-colors min-h-[44px]"
                 >
-                    Go to Login Now
+                    {t("goToLogin")}
                 </button>
             </div>
         </div>

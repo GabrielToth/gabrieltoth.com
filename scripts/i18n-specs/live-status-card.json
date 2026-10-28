@@ -1,0 +1,32 @@
+{
+    "dashboard.json": {
+        "live.viewers": {
+            "pt-BR": "Espectadores",
+            "en": "Viewers",
+            "es": "Espectadores",
+            "de": "Zuschauer",
+            "fr": "Spectateurs"
+        },
+        "live.game": {
+            "pt-BR": "Jogo",
+            "en": "Game",
+            "es": "Juego",
+            "de": "Spiel",
+            "fr": "Jeu"
+        },
+        "live.checking": {
+            "pt-BR": "Verificando...",
+            "en": "Checking...",
+            "es": "Verificando...",
+            "de": "Wird geprüft ...",
+            "fr": "Vérification..."
+        },
+        "live.bitrateForPlatform": {
+            "pt-BR": "Taxa de Bits ({platform})",
+            "en": "Bitrate ({platform})",
+            "es": "Tasa de bits ({platform})",
+            "de": "Bitrate ({platform})",
+            "fr": "Débit ({platform})"
+        }
+    }
+}

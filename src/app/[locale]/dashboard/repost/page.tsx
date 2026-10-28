@@ -22,7 +22,7 @@ interface RepostConfig {
 }
 
 export default function RepostPage() {
-    const _t = useTranslations("dashboard.repost")
+    const t = useTranslations("dashboard.repost")
     const [configs, setConfigs] = useState<RepostConfig[]>([])
     const [groups, setGroups] = useState<ChannelGroup[]>([])
     const [loading, setLoading] = useState(true)
@@ -104,7 +104,7 @@ export default function RepostPage() {
     if (loading)
         return (
             <div className="flex items-center justify-center h-64">
-                <p className="text-muted-foreground">Loading...</p>
+                <p className="text-muted-foreground">{t("loading")}</p>
             </div>
         )
 
@@ -113,11 +113,10 @@ export default function RepostPage() {
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-2xl font-bold text-foreground">
-                        Auto Repost
+                        {t("title")}
                     </h1>
                     <p className="mt-1 text-sm text-muted-foreground">
-                        Automatically repost YouTube videos to other platforms
-                        in your groups
+                        {t("description")}
                     </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -126,7 +125,7 @@ export default function RepostPage() {
                         onClick={() => setShowForm(!showForm)}
                         className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
                     >
-                        {showForm ? "Cancel" : "New Config"}
+                        {showForm ? t("cancel") : t("newConfig")}
                     </button>
                 </div>
             </div>
@@ -136,7 +135,7 @@ export default function RepostPage() {
                     <input
                         value={sourceUrl}
                         onChange={e => setSourceUrl(e.target.value)}
-                        placeholder="YouTube channel URL or handle (e.g. https://youtube.com/@channel)"
+                        placeholder={t("sourceUrlPlaceholder")}
                         className="w-full rounded-lg border border-neutral-700 bg-card px-3 py-2 text-sm text-neutral-100 focus:outline-none"
                     />
                     <select
@@ -144,7 +143,7 @@ export default function RepostPage() {
                         onChange={e => setTargetGroupId(e.target.value)}
                         className="w-full rounded-lg border border-neutral-700 bg-card px-3 py-2 text-sm text-neutral-100 focus:outline-none"
                     >
-                        <option value="">Select target group...</option>
+                        <option value="">{t("selectTargetGroup")}</option>
                         {groups.map(g => (
                             <option key={g.id} value={g.id}>
                                 {g.name}
@@ -153,7 +152,7 @@ export default function RepostPage() {
                     </select>
                     <div className="flex items-center gap-2">
                         <label className="text-xs text-neutral-400">
-                            Check every
+                            {t("checkEvery")}
                         </label>
                         <input
                             type="number"
@@ -165,7 +164,7 @@ export default function RepostPage() {
                             className="w-20 rounded-lg border border-neutral-700 bg-card px-3 py-2 text-sm text-neutral-100 focus:outline-none"
                         />
                         <span className="text-xs text-neutral-400">
-                            minutes
+                            {t("minutes")}
                         </span>
                     </div>
                     <button
@@ -173,17 +172,14 @@ export default function RepostPage() {
                         disabled={saving || !sourceUrl.trim()}
                         className="w-full rounded-lg bg-indigo-600 py-2 text-sm font-semibold text-white disabled:opacity-50"
                     >
-                        {saving ? "Creating..." : "Create Auto Repost"}
+                        {saving ? t("saving") : t("save")}
                     </button>
                 </div>
             )}
 
             {configs.length === 0 && !showForm && (
                 <div className="rounded-lg border border-border bg-card p-8 text-center">
-                    <p className="text-muted-foreground">
-                        No auto-repost configs yet. Create one to start
-                        reposting YouTube videos automatically.
-                    </p>
+                    <p className="text-muted-foreground">{t("noConfigs")}</p>
                 </div>
             )}
 
@@ -197,14 +193,21 @@ export default function RepostPage() {
                             <p className="text-sm font-semibold text-neutral-200">
                                 {config.source_channel?.title ||
                                     config.source_channel_url ||
-                                    "YouTube Channel"}
+                                    t("youtubeChannel")}
                             </p>
                             <p className="text-xs text-neutral-400">
-                                &rarr; {config.target_group?.name || "No group"}{" "}
-                                &middot; Every {config.check_interval_minutes}
-                                min
+                                &rarr;{" "}
+                                {config.target_group?.name || t("noGroup")}{" "}
+                                &middot;{" "}
+                                {t("minShort", {
+                                    count: config.check_interval_minutes,
+                                })}
                                 {config.last_checked_at &&
-                                    ` &middot; Last check: ${new Date(config.last_checked_at).toLocaleString()}`}
+                                    ` · ${t("lastCheck", {
+                                        date: new Date(
+                                            config.last_checked_at
+                                        ).toLocaleString(),
+                                    })}`}
                             </p>
                         </div>
                         <div className="flex items-center gap-2">
@@ -222,7 +225,7 @@ export default function RepostPage() {
                                 onClick={() => handleDelete(config.id)}
                                 className="text-neutral-600 hover:text-red-400 text-xs"
                             >
-                                Delete
+                                {t("delete")}
                             </button>
                         </div>
                     </div>

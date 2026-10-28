@@ -1,6 +1,7 @@
 "use client"
 
 import { validateEmail } from "@/lib/validation"
+import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 
 interface EmailInputProps {
@@ -19,6 +20,7 @@ export function EmailInput({
     const [isChecking, setIsChecking] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [isAvailable, setIsAvailable] = useState<boolean | null>(null)
+    const t = useTranslations("auth.registrationFlow")
 
     // Debounced email uniqueness check
     useEffect(() => {
@@ -74,7 +76,7 @@ export function EmailInput({
                 htmlFor="email"
                 className="block text-sm sm:text-base font-medium text-foreground dark:text-foreground mb-2"
             >
-                Email Address
+                {t("emailAddress")}
             </label>
             <div className="relative">
                 <input
@@ -83,7 +85,7 @@ export function EmailInput({
                     value={value}
                     onChange={e => onChange(e.target.value)}
                     disabled={disabled}
-                    placeholder="you@example.com"
+                    placeholder={t("emailPlaceholder")}
                     className={`w-full px-4 py-3 sm:py-2 text-base sm:text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all min-h-[44px] sm:min-h-auto ${
                         error
                             ? "border-red-500 focus:ring-red-200 dark:border-red-400 dark:focus:ring-red-900"
@@ -91,7 +93,7 @@ export function EmailInput({
                               ? "border-green-500 focus:ring-green-200 dark:border-green-400 dark:focus:ring-green-900"
                               : "border-input dark:border-input focus:ring-ring dark:focus:ring-ring"
                     } ${disabled ? "bg-muted dark:bg-muted cursor-not-allowed" : "bg-card text-foreground dark:text-foreground"}`}
-                    aria-label="Email address"
+                    aria-label={t("emailLabel")}
                     aria-describedby={
                         error
                             ? "email-error"
@@ -125,7 +127,7 @@ export function EmailInput({
                     id="email-success"
                     className="mt-2 text-sm text-green-600 dark:text-green-400"
                 >
-                    Email is available
+                    {t("emailAvailable")}
                 </p>
             )}
         </div>

@@ -32,7 +32,7 @@ export default function LandingHeroSection({
                         href={"#features"}
                         className="px-8 py-4 border-2 border-blue-600 text-primary dark:text-primary hover:bg-primary/5 dark:hover:bg-accent rounded-full font-semibold transition-colors"
                     >
-                        Saiba Mais
+                        {t("hero.learnMore")}
                     </Link>
                 </div>
             </div>

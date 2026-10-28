@@ -11,6 +11,7 @@ import {
     StreamHealthMetrics,
 } from "@/lib/live/stream-health"
 import { Wifi } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 interface StreamStatusCardProps {
     platform: string
@@ -38,6 +39,7 @@ export function StreamStatusCard({
     executionMode = "cloud",
     localOnly = false,
 }: StreamStatusCardProps) {
+    const t = useTranslations("dashboard.live")
     const [liveMetrics, setLiveMetrics] = useState<StreamHealthMetrics | null>(
         initialMetrics || null
     )
@@ -187,14 +189,16 @@ export function StreamStatusCard({
                         {isLive ? viewerCount.toLocaleString() : "—"}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                        Espectadores
+                        {t("viewers")}
                     </p>
                 </div>
                 <div className="text-center rounded-md bg-muted/30 p-2">
                     <p className="text-xl font-bold text-foreground">
                         {isLive ? getUptime() : "—"}
                     </p>
-                    <p className="text-xs text-muted-foreground">Tempo no Ar</p>
+                    <p className="text-xs text-muted-foreground">
+                        {t("uptime")}
+                    </p>
                 </div>
                 <div className="text-center rounded-md bg-muted/30 p-2">
                     <p
@@ -203,7 +207,7 @@ export function StreamStatusCard({
                     >
                         {gameName || "—"}
                     </p>
-                    <p className="text-xs text-muted-foreground">Game</p>
+                    <p className="text-xs text-muted-foreground">{t("game")}</p>
                 </div>
             </div>
 
@@ -212,21 +216,23 @@ export function StreamStatusCard({
                 <div className="mt-3 rounded-md border border-border/60 bg-muted/20 p-2.5 text-xs">
                     <div className="flex items-center justify-between font-medium text-foreground">
                         <span className="flex items-center gap-1.5 text-muted-foreground">
-                            <Wifi className="h-3.5 w-3.5 text-primary" /> Taxa
-                            de Bits ({platform.toUpperCase()})
+                            <Wifi className="h-3.5 w-3.5 text-primary" />{" "}
+                            {t("bitrateForPlatform", {
+                                platform: platform.toUpperCase(),
+                            })}
                         </span>
                         <span className="text-primary font-bold">
                             {liveMetrics
                                 ? `${liveMetrics.bitrateKbps} kbps`
                                 : loadingMetrics
-                                  ? "Verificando..."
+                                  ? t("checking")
                                   : "—"}
                         </span>
                     </div>
                     {liveMetrics &&
                         (liveMetrics.codec || liveMetrics.resolution) && (
                             <div className="mt-1.5 flex items-center justify-between text-[11px] text-muted-foreground pt-1.5 border-t border-border/40">
-                                <span>Encoder & Res</span>
+                                <span>{t("encoderAndRes")}</span>
                                 <span className="font-mono">
                                     {(liveMetrics.codec || "—").toUpperCase()} @{" "}
                                     {liveMetrics.resolution || "—"} (
@@ -243,7 +249,7 @@ export function StreamStatusCard({
                     title={title}
                 >
                     <span className="font-semibold text-foreground">
-                        Título:
+                        {t("titleLabel")}
                     </span>{" "}
                     {title}
                 </p>

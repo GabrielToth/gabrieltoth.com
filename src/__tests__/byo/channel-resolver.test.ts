@@ -165,6 +165,29 @@ describe("resolveChannelsForToken", () => {
         expect(res.error).toBe("RATE_LIMITED")
     })
 
+    it("normalizes Kwai handles and tokens", async () => {
+        const res = await resolveChannelsForToken({
+            platform: "kwai",
+            accessToken: "@gabrieltoth",
+        })
+        expect(res.ok).toBe(true)
+        expect(res.channels).toHaveLength(1)
+        expect(res.channels[0]).toMatchObject({
+            id: "gabrieltoth",
+            name: "@gabrieltoth",
+        })
+
+        const resUrl = await resolveChannelsForToken({
+            platform: "kwai",
+            accessToken: "https://kwai.com/@creator123",
+        })
+        expect(resUrl.ok).toBe(true)
+        expect(resUrl.channels[0]).toMatchObject({
+            id: "creator123",
+            name: "@creator123",
+        })
+    })
+
     it("rejects unsupported platforms", async () => {
         const res = await resolveChannelsForToken({
             platform: "invalid-platform" as ByoPlatform,

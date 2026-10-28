@@ -29,7 +29,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             })
             return NextResponse.redirect(
                 new URL(
-                    `/dashboard?linkedin=error&reason=${oauthError}`,
+                    `/pt-BR/dashboard/channels?error=${encodeURIComponent(oauthError)}`,
                     request.url
                 )
             )
@@ -39,7 +39,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             logger.warn("Missing authorization code in LinkedIn callback")
             return NextResponse.redirect(
                 new URL(
-                    "/dashboard?linkedin=error&reason=missing_params",
+                    "/pt-BR/dashboard/channels?error=missing_code",
                     request.url
                 )
             )
@@ -49,7 +49,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             logger.warn("Missing state parameter in LinkedIn callback")
             return NextResponse.redirect(
                 new URL(
-                    "/dashboard?linkedin=error&reason=missing_params",
+                    "/pt-BR/dashboard/channels?error=missing_state",
                     request.url
                 )
             )
@@ -64,7 +64,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             })
             return NextResponse.redirect(
                 new URL(
-                    "/dashboard?linkedin=error&reason=invalid_state",
+                    "/pt-BR/dashboard/channels?error=invalid_state",
                     request.url
                 )
             )
@@ -185,9 +185,14 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             linkedInSub: linkedInUser.sub,
         })
 
-        return NextResponse.redirect(
-            new URL("/dashboard?linkedin=success", request.url)
+        const locale = verification.payload.locale || "pt-BR"
+        const redirectUrl = new URL(
+            verification.payload.redirectTo || `/${locale}/dashboard/channels`,
+            request.url
         )
+        redirectUrl.searchParams.set("connected", "linkedin")
+
+        return NextResponse.redirect(redirectUrl)
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
         logger.error("Failed to complete LinkedIn linking", {
@@ -198,7 +203,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         const errorMsg = encodeURIComponent(err.message.slice(0, 100))
 
         return NextResponse.redirect(
-            new URL(`/dashboard?linkedin=error&reason=${errorMsg}`, request.url)
+            new URL(`/pt-BR/dashboard/channels?error=${errorMsg}`, request.url)
         )
     }
 }

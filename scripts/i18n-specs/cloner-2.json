@@ -1,0 +1,25 @@
+{
+    "dashboard.json": {
+        "cloner.noContentInCategory": {
+            "pt-BR": "Nenhum conteúdo encontrado nesta categoria.",
+            "en": "No content found in this category.",
+            "es": "No se encontró contenido en esta categoría.",
+            "de": "In dieser Kategorie wurden keine Inhalte gefunden.",
+            "fr": "Aucun contenu trouvé dans cette catégorie."
+        },
+        "cloner.videosProgress": {
+            "pt-BR": "{processed} / {total} vídeos",
+            "en": "{processed} / {total} videos",
+            "es": "{processed} / {total} vídeos",
+            "de": "{processed} / {total} Videos",
+            "fr": "{processed} / {total} vidéos"
+        },
+        "cloner.remainingTime": {
+            "pt-BR": "Tempo Restante:",
+            "en": "Time Remaining:",
+            "es": "Tiempo restante:",
+            "de": "Verbleibende Zeit:",
+            "fr": "Temps restant :"
+        }
+    }
+}

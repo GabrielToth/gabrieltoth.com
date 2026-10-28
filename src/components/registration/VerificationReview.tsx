@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "next-intl"
+
 interface VerificationReviewProps {
     email: string
     name: string
@@ -21,17 +23,18 @@ export function VerificationReview({
     onCreateAccount,
     disabled = false,
 }: VerificationReviewProps) {
+    const t = useTranslations("auth.registrationFlow")
     const fields = [
-        { label: "Email Address", value: email, field: "email" as const },
-        { label: "Full Name", value: name, field: "name" as const },
+        { label: t("stepEmailAddress"), value: email, field: "email" as const },
+        { label: t("fullName"), value: name, field: "name" as const },
         {
-            label: "Birth Date",
+            label: t("birthDate"),
             value: birthDate,
             field: "birthDate" as const,
         },
-        { label: "Phone Number", value: phone, field: "phone" as const },
+        { label: t("phoneNumber"), value: phone, field: "phone" as const },
         {
-            label: "Password",
+            label: t("password"),
             value: "••••••••",
             field: "password" as const,
             isPassword: true,
@@ -59,7 +62,7 @@ export function VerificationReview({
                             </p>
                             <p className="text-base font-semibold text-foreground dark:text-foreground mt-1 break-words">
                                 {field.isPassword
-                                    ? "Password is set and secured"
+                                    ? t("passwordIsSet")
                                     : field.value}
                             </p>
                         </div>
@@ -67,9 +70,11 @@ export function VerificationReview({
                             onClick={() => onEdit(field.field)}
                             disabled={disabled}
                             className="px-4 py-2 text-sm font-medium text-primary dark:text-primary hover:text-primary dark:hover:text-primary hover:bg-primary/5 dark:hover:bg-primary/10 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] sm:min-h-auto flex items-center justify-center"
-                            aria-label={`Edit ${field.label}`}
+                            aria-label={t("editField", {
+                                field: field.label,
+                            })}
                         >
-                            Edit
+                            {t("edit")}
                         </button>
                     </div>
                 ))}
@@ -77,8 +82,7 @@ export function VerificationReview({
 
             <div className="bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-lg p-4 mt-6">
                 <p className="text-sm text-green-900 dark:text-green-100">
-                    ✓ All information has been validated and is ready for
-                    account creation.
+                    {t("allValidated")}
                 </p>
             </div>
 
@@ -86,9 +90,9 @@ export function VerificationReview({
                 onClick={onCreateAccount ?? (() => {})}
                 disabled={disabled}
                 className="w-full mt-6 px-4 py-3 text-base font-semibold text-white bg-primary hover:bg-primary rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
-                aria-label="Create Account"
+                aria-label={t("createAccount")}
             >
-                Create Account
+                {t("createAccount")}
             </button>
         </div>
     )

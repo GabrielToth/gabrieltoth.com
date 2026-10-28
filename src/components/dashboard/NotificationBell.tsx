@@ -1,6 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
+import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 
 interface SystemNotification {
@@ -42,6 +43,7 @@ const PLATFORM_ICONS: Record<string, string> = {
 }
 
 export function NotificationBell() {
+    const t = useTranslations("dashboard.notifications")
     const [notifications, setNotifications] = useState<SystemNotification[]>([])
     const [isOpen, setIsOpen] = useState(false)
     const [loading, setLoading] = useState(true)
@@ -75,7 +77,7 @@ export function NotificationBell() {
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="relative flex items-center justify-center rounded-full p-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground min-h-11 min-w-11"
-                aria-label="System notifications"
+                aria-label={t("ariaLabel")}
             >
                 <svg
                     className="h-5 w-5"
@@ -117,15 +119,15 @@ export function NotificationBell() {
                 <div className="absolute right-0 top-full z-50 mt-2 w-80 max-w-[calc(100vw-1rem)] rounded-xl border border-border bg-card shadow-lg">
                     <div className="border-b border-border px-4 py-3">
                         <h3 className="text-sm font-semibold text-foreground">
-                            Notifications
+                            {t("title")}
                         </h3>
                         {hasNotifications && (
                             <p className="text-xs text-muted-foreground">
                                 {errorCount > 0 &&
-                                    `${errorCount} error${errorCount > 1 ? "s" : ""}`}
+                                    t("errors", { count: errorCount })}
                                 {errorCount > 0 && warningCount > 0 && " · "}
                                 {warningCount > 0 &&
-                                    `${warningCount} warning${warningCount > 1 ? "s" : ""}`}
+                                    t("warnings", { count: warningCount })}
                             </p>
                         )}
                     </div>
@@ -146,7 +148,7 @@ export function NotificationBell() {
                                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                                     />
                                 </svg>
-                                All clear — no issues detected
+                                {t("allClear")}
                             </div>
                         ) : (
                             notifications.map(notification => {

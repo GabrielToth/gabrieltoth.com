@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 import { type Metric } from "web-vitals"
 
@@ -21,6 +22,7 @@ const PerformanceMonitor = ({
 }: PerformanceMonitorProps) => {
     const [metrics, setMetrics] = useState<PerformanceMetrics>({})
     const [isVisible, setIsVisible] = useState(false)
+    const t = useTranslations("dashboard.performanceMonitor")
 
     useEffect(() => {
         if (!enabled) return
@@ -100,7 +102,7 @@ const PerformanceMonitor = ({
             <button
                 onClick={() => setIsVisible(!isVisible)}
                 className="fixed bottom-4 right-4 z-50 bg-primary text-primary-foreground p-3 rounded-full shadow-lg hover:bg-primary transition-colors"
-                title="Performance Monitor"
+                title={t("toggleTitle")}
             >
                 📊
             </button>
@@ -110,7 +112,7 @@ const PerformanceMonitor = ({
                 <div className="fixed bottom-16 right-4 z-50 bg-card rounded-lg shadow-xl p-4 min-w-[280px] border border-border dark:border-border">
                     <div className="flex justify-between items-center mb-3">
                         <h3 className="font-bold text-foreground dark:text-foreground">
-                            Performance Metrics
+                            {t("title")}
                         </h3>
                         <button
                             onClick={() => setIsVisible(false)}
@@ -121,10 +123,10 @@ const PerformanceMonitor = ({
                     </div>
 
                     <div className="space-y-2 text-sm">
-                        {/* Core Web Vitals */}
+                        {/* {t("coreWebVitals")} */}
                         <div className="border-b border-border dark:border-input pb-2">
                             <h4 className="font-semibold text-foreground dark:text-foreground mb-1">
-                                Core Web Vitals
+                                {t("coreWebVitals")}
                             </h4>
                             {metrics.lcp && (
                                 <div className="flex justify-between">
@@ -213,11 +215,13 @@ const PerformanceMonitor = ({
                     {/* Legend */}
                     <div className="mt-3 pt-2 border-t border-border dark:border-input">
                         <div className="flex justify-between text-xs">
-                            <span className="text-green-500">● Good</span>
-                            <span className="text-yellow-500">
-                                ● Needs Improvement
+                            <span className="text-green-500">
+                                ● {t("good")}
                             </span>
-                            <span className="text-red-500">● Poor</span>
+                            <span className="text-yellow-500">
+                                ● {t("needsImprovement")}
+                            </span>
+                            <span className="text-red-500">● {t("poor")}</span>
                         </div>
                     </div>
                 </div>

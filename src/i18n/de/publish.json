@@ -437,5 +437,11 @@
         "cloudDescription": "Video wird auf dem Server für Multi-Plattform-Veröffentlichung gespeichert. Speichergebühren fallen an.",
         "localDescription": "Direkter Upload zu einer Plattform. Keine Speichergebühren.",
         "perPostOverride": "Für diesen Beitrag überschreiben"
-    }
+    },
+    "channelSelectNone": "Für die ausgewählten Plattformen ist keine Kanalauswahl erforderlich.",
+    "thumbnailPreview": "Vorschaubild",
+    "partialPublish": "Teilweise veröffentlicht",
+    "tagPlaceholder": "Tag eingeben und Enter drücken oder durch Kommas trennen",
+    "clickToEdit": "Zum Bearbeiten klicken",
+    "removeFile": "Datei entfernen"
 }

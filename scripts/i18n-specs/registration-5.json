@@ -1,0 +1,18 @@
+{
+    "auth.json": {
+        "registrationFlow.password": {
+            "pt-BR": "Senha",
+            "en": "Password",
+            "es": "Contraseña",
+            "de": "Passwort",
+            "fr": "Mot de passe"
+        },
+        "registrationFlow.passwordRequirementsSummary": {
+            "pt-BR": "Obrigatório: 8+ caracteres, maiúscula, minúscula, número, caractere especial (!@#$%^&*)",
+            "en": "Required: 8+ characters, uppercase, lowercase, number, special character (!@#$%^&*)",
+            "es": "Obligatorio: 8+ caracteres, mayúscula, minúscula, número, carácter especial (!@#$%^&*)",
+            "de": "Erforderlich: 8+ Zeichen, Großbuchstabe, Kleinbuchstabe, Zahl, Sonderzeichen (!@#$%^&*)",
+            "fr": "Requis : 8+ caractères, majuscule, minuscule, chiffre, caractère spécial (!@#$%^&*)"
+        }
+    }
+}

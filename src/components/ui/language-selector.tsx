@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { useLocale } from "@/hooks/use-locale"
 import { localeNamesShort, locales } from "@/lib/i18n"
 import { Globe, Moon, Sun } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 
 interface LanguageSelectorProps {
@@ -20,6 +21,7 @@ export default function LanguageSelector({
     includeThemeToggle = false,
     align = "right",
 }: LanguageSelectorProps) {
+    const t = useTranslations("layout.header")
     const { locale, changeLocale } = useLocale()
     const { theme, toggleTheme } = useTheme()
     const [isOpen, setIsOpen] = useState(false)
@@ -88,7 +90,7 @@ export default function LanguageSelector({
                 data-testid="language-selector-button"
                 aria-haspopup="true"
                 aria-expanded={isOpen}
-                aria-label="Select language"
+                aria-label={t("selectLanguage")}
             >
                 <Globe
                     className="text-foreground dark:text-foreground"
@@ -152,9 +154,9 @@ export default function LanguageSelector({
                                     }}
                                     className={`${currentVariant.option} flex items-center justify-between`}
                                     role="menuitem"
-                                    aria-label={"Toggle theme"}
+                                    aria-label={t("toggleTheme")}
                                 >
-                                    <span>Theme</span>
+                                    <span>{t("theme")}</span>
                                     {theme === "light" ? (
                                         <Moon className="h-4 w-4" />
                                     ) : (

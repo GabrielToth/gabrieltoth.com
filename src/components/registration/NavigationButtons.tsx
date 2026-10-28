@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "next-intl"
+
 interface NavigationButtonsProps {
     onBack?: () => void
     onNext?: () => void
@@ -15,12 +17,15 @@ export function NavigationButtons({
     onBack,
     onNext,
     onCancel,
-    nextLabel = "Next",
+    nextLabel,
     backDisabled = false,
     nextDisabled = false,
     isLoading = false,
     showCancel = true,
 }: NavigationButtonsProps) {
+    const t = useTranslations("auth.registrationFlow")
+    const resolvedNextLabel = nextLabel ?? t("navNext")
+
     return (
         <div className="flex flex-col sm:flex-row gap-3 mt-8">
             {onBack && (
@@ -28,9 +33,9 @@ export function NavigationButtons({
                     onClick={onBack}
                     disabled={backDisabled || isLoading}
                     className="px-4 sm:px-6 py-3 sm:py-2 border border-input dark:border-input text-foreground dark:text-foreground font-medium rounded-full hover:bg-muted dark:hover:bg-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] sm:min-h-auto text-base sm:text-sm"
-                    aria-label="Go back to previous step"
+                    aria-label={t("goBackPrevStep")}
                 >
-                    Back
+                    {t("navBack")}
                 </button>
             )}
 
@@ -39,9 +44,9 @@ export function NavigationButtons({
                     onClick={onCancel}
                     disabled={isLoading}
                     className="px-4 sm:px-6 py-3 sm:py-2 border border-red-300 dark:border-red-600 text-red-700 dark:text-red-400 font-medium rounded-full hover:bg-red-50 dark:hover:bg-red-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] sm:min-h-auto text-base sm:text-sm"
-                    aria-label="Cancel registration"
+                    aria-label={t("cancelRegistration")}
                 >
-                    Cancel
+                    {t("navCancel")}
                 </button>
             )}
 
@@ -52,7 +57,7 @@ export function NavigationButtons({
                     onClick={onNext}
                     disabled={nextDisabled || isLoading}
                     className="px-4 sm:px-6 py-3 sm:py-2 bg-primary hover:bg-primary text-primary-foreground font-medium rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-h-[44px] sm:min-h-auto text-base sm:text-sm"
-                    aria-label={nextLabel}
+                    aria-label={resolvedNextLabel}
                 >
                     {isLoading && (
                         <svg
@@ -75,7 +80,7 @@ export function NavigationButtons({
                             />
                         </svg>
                     )}
-                    {nextLabel}
+                    {resolvedNextLabel}
                 </button>
             )}
         </div>

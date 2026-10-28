@@ -39,6 +39,7 @@ const VALID_PLATFORMS = new Set([
     "twitch",
     "tiktok",
     "kick",
+    "kwai",
 ])
 
 const logger = createLogger("DisconnectChannel")
@@ -104,9 +105,17 @@ export async function POST(request: NextRequest) {
                     token.accessToken,
                     userId
                 )
+            } catch (err) {
+                logger.warn("Failed to revoke provider token", {
+                    platform,
+                    userId,
+                    error: err instanceof Error ? err.message : String(err),
+                })
+            }
+            try {
                 await tokenStore.deleteToken(userId, platform)
             } catch (err) {
-                logger.warn("Failed to revoke/delete provider token", {
+                logger.warn("Failed to delete local token", {
                     platform,
                     userId,
                     error: err instanceof Error ? err.message : String(err),

@@ -6,6 +6,7 @@ import {
     validateMinimumAge,
     validateName,
 } from "@/lib/validation"
+import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 
 /**
@@ -50,6 +51,7 @@ export function GoogleOAuthPersonalInfo({
     const [birthDateError, setBirthDateError] = useState<string | null>(null)
     const [phoneError, setPhoneError] = useState<string | null>(null)
     const [normalizedPhone, setNormalizedPhone] = useState<string | null>(null)
+    const t = useTranslations("auth.registrationFlow")
 
     // Validate all fields
     const nameValidation = validateName(fullName)
@@ -120,11 +122,10 @@ export function GoogleOAuthPersonalInfo({
             {/* Header */}
             <div className="text-center">
                 <h2 className="text-2xl font-bold text-white mb-2">
-                    Complete Your Profile
+                    {t("completeProfileTitle")}
                 </h2>
                 <p className="text-muted-foreground">
-                    We've pre-filled your name from Google. Please provide your
-                    birth date and phone number.
+                    {t("completeProfileDesc")}
                 </p>
             </div>
 
@@ -136,14 +137,14 @@ export function GoogleOAuthPersonalInfo({
                         htmlFor="fullName"
                         className="block text-sm font-medium text-muted-foreground mb-2"
                     >
-                        Full Name
+                        {t("fullName")}
                     </label>
                     <input
                         id="fullName"
                         type="text"
                         value={fullName}
                         onChange={e => setFullName(e.target.value)}
-                        placeholder="John Doe"
+                        placeholder={t("fullNamePlaceholder")}
                         className={`w-full px-4 py-3 bg-card border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 transition-all ${
                             nameError
                                 ? "border-red-500 focus:ring-red-500"
@@ -151,7 +152,7 @@ export function GoogleOAuthPersonalInfo({
                                   ? "border-green-500 focus:ring-green-500"
                                   : "border-border focus:ring-ring"
                         }`}
-                        aria-label="Full name"
+                        aria-label={t("fullNameLabel")}
                         aria-describedby={
                             nameError ? "fullName-error" : undefined
                         }
@@ -166,12 +167,11 @@ export function GoogleOAuthPersonalInfo({
                     )}
                     {nameValidation.isValid && fullName && (
                         <p className="mt-2 text-sm text-green-400">
-                            ✓ Valid name
+                            {t("validName")}
                         </p>
                     )}
                     <p className="mt-1 text-xs text-muted-foreground">
-                        Pre-filled from your Google account. You can edit this
-                        if needed.
+                        {t("prefilledFromGoogle")}
                     </p>
                 </div>
 
@@ -181,14 +181,14 @@ export function GoogleOAuthPersonalInfo({
                         htmlFor="birthDate"
                         className="block text-sm font-medium text-muted-foreground mb-2"
                     >
-                        Birth Date
+                        {t("birthDate")}
                     </label>
                     <input
                         id="birthDate"
                         type="text"
                         value={birthDate}
                         onChange={e => setBirthDate(e.target.value)}
-                        placeholder="DD/MM/YYYY"
+                        placeholder={t("birthDatePlaceholder")}
                         className={`w-full px-4 py-3 bg-card border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 transition-all ${
                             birthDateError
                                 ? "border-red-500 focus:ring-red-500"
@@ -198,7 +198,7 @@ export function GoogleOAuthPersonalInfo({
                                   ? "border-green-500 focus:ring-green-500"
                                   : "border-border focus:ring-ring"
                         }`}
-                        aria-label="Birth date"
+                        aria-label={t("birthDateLabel")}
                         aria-describedby={
                             birthDateError ? "birthDate-error" : undefined
                         }
@@ -215,7 +215,7 @@ export function GoogleOAuthPersonalInfo({
                         ageValidation.isValid &&
                         birthDate && (
                             <p className="mt-2 text-sm text-green-400">
-                                ✓ Valid birth date
+                                {t("validBirthDate")}
                             </p>
                         )}
                     <p className="mt-1 text-xs text-muted-foreground">
@@ -230,14 +230,14 @@ export function GoogleOAuthPersonalInfo({
                         htmlFor="phone"
                         className="block text-sm font-medium text-muted-foreground mb-2"
                     >
-                        Phone Number
+                        {t("phoneNumber")}
                     </label>
                     <input
                         id="phone"
                         type="tel"
                         value={phone}
                         onChange={e => setPhone(e.target.value)}
-                        placeholder="+1 (555) 123-4567"
+                        placeholder={t("phonePlaceholder")}
                         className={`w-full px-4 py-3 bg-card border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 transition-all ${
                             phoneError
                                 ? "border-red-500 focus:ring-red-500"
@@ -245,7 +245,7 @@ export function GoogleOAuthPersonalInfo({
                                   ? "border-green-500 focus:ring-green-500"
                                   : "border-border focus:ring-ring"
                         }`}
-                        aria-label="Phone number"
+                        aria-label={t("phoneLabel")}
                         aria-describedby={
                             phoneError ? "phone-error" : undefined
                         }
@@ -260,12 +260,13 @@ export function GoogleOAuthPersonalInfo({
                     )}
                     {phoneValidation.isValid && phone && (
                         <p className="mt-2 text-sm text-green-400">
-                            ✓ Valid phone ({normalizedPhone})
+                            {t("validPhone", {
+                                phone: normalizedPhone ?? phone,
+                            })}
                         </p>
                     )}
                     <p className="mt-1 text-xs text-muted-foreground">
-                        Supports international formats (e.g., +1 555 123 4567,
-                        +55 11 98765-4321)
+                        {t("phoneHint")}
                     </p>
                 </div>
             </div>
@@ -277,25 +278,24 @@ export function GoogleOAuthPersonalInfo({
                     onClick={handleNext}
                     disabled={!isFormValid}
                     className="w-full px-6 py-3 bg-primary hover:bg-primary disabled:bg-primary disabled:opacity-50 text-white font-semibold rounded-lg transition-colors disabled:cursor-not-allowed"
-                    aria-label="Proceed to next step"
+                    aria-label={t("proceedToNextStep")}
                 >
-                    Next
+                    {t("navNext")}
                 </button>
 
                 {/* Back Button */}
                 <button
                     onClick={onBack}
                     className="w-full px-6 py-3 bg-muted hover:bg-muted text-white font-semibold rounded-lg transition-colors"
-                    aria-label="Go back to previous step"
+                    aria-label={t("goBackPrevStep")}
                 >
-                    Back
+                    {t("navBack")}
                 </button>
             </div>
 
             {/* Info Text */}
             <p className="text-xs text-muted-foreground text-center">
-                Your information is secure and will only be used to create your
-                account.
+                {t("infoSecure")}
             </p>
         </div>
     )

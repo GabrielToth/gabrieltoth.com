@@ -35,6 +35,7 @@ const SUPPORTED: ByoPlatform[] = [
     "linkedin",
     "tiktok",
     "twitter",
+    "kwai",
 ]
 
 const bodySchema = z.object({

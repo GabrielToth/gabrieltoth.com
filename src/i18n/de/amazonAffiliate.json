@@ -3,5 +3,8 @@
         "badge": "Unterstütze Gabriel Toth",
         "title": "Amazon-Partnerlink-Generator",
         "subtitle": "Nutze diese Seite, um Affiliate-Links zu erzeugen, die Gabriel Toth finanziell unterstützen – ohne zusätzliche Kosten für dich. Der Preis, den du zahlst, bleibt exakt gleich. Amazon teilt lediglich eine kleine Provision mit Gabriel, wenn du über diese Links einkaufst."
-    }
+    },
+    "openLink": "Link öffnen ↗",
+    "missingTagError": "Affiliate-Tag fehlt. Setze NEXT_PUBLIC_AMAZON_ASSOCIATES_TAG",
+    "invalidUrl": "Ungültige URL"
 }

@@ -141,7 +141,9 @@ describe("SuccessMessage Component", () => {
             )
 
             // Text is split across elements, so check for the number separately
-            expect(screen.getByText("2")).toBeInTheDocument()
+            expect(
+                screen.getByText(/Redirecting to login in 2 seconds/)
+            ).toBeInTheDocument()
             expect(
                 screen.getByText(/Redirecting to login in/)
             ).toBeInTheDocument()
@@ -156,7 +158,9 @@ describe("SuccessMessage Component", () => {
                 />
             )
 
-            expect(screen.getByText("2")).toBeInTheDocument()
+            expect(
+                screen.getByText(/Redirecting to login in 2 seconds/)
+            ).toBeInTheDocument()
 
             // Advance timer and force re-render
             vi.advanceTimersByTime(1000)
@@ -182,7 +186,9 @@ describe("SuccessMessage Component", () => {
                 />
             )
 
-            expect(screen.getByText("5")).toBeInTheDocument()
+            expect(
+                screen.getByText(/Redirecting to login in 5 seconds/)
+            ).toBeInTheDocument()
         })
 
         it("should handle short countdown", () => {
@@ -194,7 +200,9 @@ describe("SuccessMessage Component", () => {
                 />
             )
 
-            expect(screen.getByText("1")).toBeInTheDocument()
+            expect(
+                screen.getByText(/Redirecting to login in 1 seconds/)
+            ).toBeInTheDocument()
         })
     })
 
@@ -209,7 +217,9 @@ describe("SuccessMessage Component", () => {
             )
 
             // Verify component renders with countdown
-            expect(screen.getByText("2")).toBeInTheDocument()
+            expect(
+                screen.getByText(/Redirecting to login in 2 seconds/)
+            ).toBeInTheDocument()
             expect(
                 screen.getByText(/Redirecting to login in/)
             ).toBeInTheDocument()
@@ -225,7 +235,9 @@ describe("SuccessMessage Component", () => {
             )
 
             // Verify component renders
-            expect(screen.getByText("2")).toBeInTheDocument()
+            expect(
+                screen.getByText(/Redirecting to login in 2 seconds/)
+            ).toBeInTheDocument()
         })
 
         it("should use default redirect URL if not provided", () => {
@@ -252,7 +264,9 @@ describe("SuccessMessage Component", () => {
             )
 
             // Verify component renders
-            expect(screen.getByText("2")).toBeInTheDocument()
+            expect(
+                screen.getByText(/Redirecting to login in 2 seconds/)
+            ).toBeInTheDocument()
         })
     })
 
@@ -398,7 +412,9 @@ describe("SuccessMessage Component", () => {
                 />
             )
 
-            expect(screen.getByText("60")).toBeInTheDocument()
+            expect(
+                screen.getByText(/Redirecting to login in 60 seconds/)
+            ).toBeInTheDocument()
         })
 
         it("should handle empty message", () => {

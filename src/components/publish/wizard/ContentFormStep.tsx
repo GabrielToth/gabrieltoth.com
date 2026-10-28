@@ -475,7 +475,7 @@ export default function ContentFormStep({
                                     src={URL.createObjectURL(
                                         state.content.thumbnailFile
                                     )}
-                                    alt="Thumbnail preview"
+                                    alt={t("thumbnailPreview")}
                                     className="h-32 w-full rounded-lg object-cover"
                                 />
                                 <button

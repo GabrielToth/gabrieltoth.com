@@ -1,0 +1,74 @@
+{
+    "auth.json": {
+        "registrationFlow.authorizingWithGoogle": {
+            "pt-BR": "Autorizando com o Google",
+            "en": "Authorizing with Google",
+            "es": "Autorizando con Google",
+            "de": "Autorisierung mit Google",
+            "fr": "Autorisation avec Google"
+        },
+        "registrationFlow.authorizingWait": {
+            "pt-BR": "Aguarde enquanto concluímos sua autorização...",
+            "en": "Please wait while we complete your authorization...",
+            "es": "Espera mientras completamos tu autorización...",
+            "de": "Bitte warten Sie, während wir Ihre Autorisierung abschließen ...",
+            "fr": "Veuillez patienter pendant que nous finalisons votre autorisation..."
+        },
+        "registrationFlow.signUpWithGoogle": {
+            "pt-BR": "Cadastrar com Google",
+            "en": "Sign up with Google",
+            "es": "Registrarse con Google",
+            "de": "Mit Google registrieren",
+            "fr": "S'inscrire avec Google"
+        },
+        "registrationFlow.authorizeGoogleHint": {
+            "pt-BR": "Clique no botão abaixo para autorizar com sua conta do Google",
+            "en": "Click the button below to authorize with your Google account",
+            "es": "Haz clic en el botón de abajo para autorizar con tu cuenta de Google",
+            "de": "Klicken Sie auf die Schaltfläche unten, um sich mit Ihrem Google-Konto zu autorisieren",
+            "fr": "Cliquez sur le bouton ci-dessous pour autoriser avec votre compte Google"
+        },
+        "registrationFlow.authorizing": {
+            "pt-BR": "Autorizando...",
+            "en": "Authorizing...",
+            "es": "Autorizando...",
+            "de": "Autorisierung ...",
+            "fr": "Autorisation..."
+        },
+        "registrationFlow.authorizeWithGoogle": {
+            "pt-BR": "Autorizar com Google",
+            "en": "Authorize with Google",
+            "es": "Autorizar con Google",
+            "de": "Mit Google autorisieren",
+            "fr": "Autoriser avec Google"
+        },
+        "registrationFlow.tryAgain": {
+            "pt-BR": "Tentar novamente",
+            "en": "Try Again",
+            "es": "Intentar de nuevo",
+            "de": "Erneut versuchen",
+            "fr": "Réessayer"
+        },
+        "registrationFlow.tryAuthorizationAgain": {
+            "pt-BR": "Tentar autorizar novamente",
+            "en": "Try authorization again",
+            "es": "Intentar autorizar de nuevo",
+            "de": "Autorisierung erneut versuchen",
+            "fr": "Réessayer l'autorisation"
+        },
+        "registrationFlow.goBackToMethodSelection": {
+            "pt-BR": "Voltar para a seleção do método de autenticação",
+            "en": "Go back to authentication method selection",
+            "es": "Volver a la selección del método de autenticación",
+            "de": "Zurück zur Auswahl der Authentifizierungsmethode",
+            "fr": "Revenir à la sélection de la méthode d'authentification"
+        },
+        "registrationFlow.googleUsageNote": {
+            "pt-BR": "Usaremos seu e-mail e nome do Google para criar sua conta. Você poderá adicionar mais informações na próxima etapa.",
+            "en": "We'll use your Google email and name to create your account. You'll be able to add more information in the next step.",
+            "es": "Usaremos tu correo y nombre de Google para crear tu cuenta. Podrás añadir más información en el siguiente paso.",
+            "de": "Wir verwenden Ihre Google-E-Mail-Adresse und Ihren Namen, um Ihr Konto zu erstellen. Im nächsten Schritt können Sie weitere Informationen hinzufügen.",
+            "fr": "Nous utiliserons votre e-mail et votre nom Google pour créer votre compte. Vous pourrez ajouter plus d'informations à l'étape suivante."
+        }
+    }
+}

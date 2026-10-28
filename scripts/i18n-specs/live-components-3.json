@@ -1,0 +1,81 @@
+{
+    "dashboard.json": {
+        "live.healthLevel": {
+            "pt-BR": "Saúde: {level}",
+            "en": "Health: {level}",
+            "es": "Salud: {level}",
+            "de": "Zustand: {level}",
+            "fr": "Santé : {level}"
+        },
+        "live.healthExcellent": {
+            "pt-BR": "Excelente",
+            "en": "Excellent",
+            "es": "Excelente",
+            "de": "Ausgezeichnet",
+            "fr": "Excellente"
+        },
+        "live.healthGood": {
+            "pt-BR": "Boa",
+            "en": "Good",
+            "es": "Buena",
+            "de": "Gut",
+            "fr": "Bonne"
+        },
+        "live.healthFair": {
+            "pt-BR": "Razoável",
+            "en": "Fair",
+            "es": "Aceptable",
+            "de": "Mäßig",
+            "fr": "Correcte"
+        },
+        "live.healthPoor": {
+            "pt-BR": "Ruim",
+            "en": "Poor",
+            "es": "Deficiente",
+            "de": "Schlecht",
+            "fr": "Mauvaise"
+        },
+        "live.healthCritical": {
+            "pt-BR": "Crítica",
+            "en": "Critical",
+            "es": "Crítica",
+            "de": "Kritisch",
+            "fr": "Critique"
+        },
+        "live.healthScore": {
+            "pt-BR": "{level} ({score}/100)",
+            "en": "{level} ({score}/100)",
+            "es": "{level} ({score}/100)",
+            "de": "{level} ({score}/100)",
+            "fr": "{level} ({score}/100)"
+        },
+        "live.resolutionValue": {
+            "pt-BR": "Resolução: {value}",
+            "en": "Resolution: {value}",
+            "es": "Resolución: {value}",
+            "de": "Auflösung: {value}",
+            "fr": "Résolution : {value}"
+        },
+        "live.bitrateValue": {
+            "pt-BR": "Bitrate: {value} Kbps",
+            "en": "Bitrate: {value} Kbps",
+            "es": "Bitrate: {value} Kbps",
+            "de": "Bitrate: {value} Kbps",
+            "fr": "Débit : {value} Kbps"
+        },
+        "live.fpsValue": {
+            "pt-BR": "FPS: {value}",
+            "en": "FPS: {value}",
+            "es": "FPS: {value}",
+            "de": "FPS: {value}",
+            "fr": "FPS : {value}"
+        },
+        "live.latencyValue": {
+            "pt-BR": "Latência: {value}ms",
+            "en": "Latency: {value}ms",
+            "es": "Latencia: {value}ms",
+            "de": "Latenz: {value}ms",
+            "fr": "Latence : {value} ms"
+        }
+    }
+}

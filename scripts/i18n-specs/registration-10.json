@@ -1,0 +1,32 @@
+{
+    "auth.json": {
+        "registrationFlow.passwordIsSet": {
+            "pt-BR": "A senha está definida e protegida",
+            "en": "Password is set and secured",
+            "es": "La contraseña está establecida y protegida",
+            "de": "Passwort ist festgelegt und gesichert",
+            "fr": "Le mot de passe est défini et sécurisé"
+        },
+        "registrationFlow.editField": {
+            "pt-BR": "Editar {field}",
+            "en": "Edit {field}",
+            "es": "Editar {field}",
+            "de": "{field} bearbeiten",
+            "fr": "Modifier {field}"
+        },
+        "registrationFlow.edit": {
+            "pt-BR": "Editar",
+            "en": "Edit",
+            "es": "Editar",
+            "de": "Bearbeiten",
+            "fr": "Modifier"
+        },
+        "registrationFlow.allValidated": {
+            "pt-BR": "✓ Todas as informações foram validadas e estão prontas para a criação da conta.",
+            "en": "✓ All information has been validated and is ready for account creation.",
+            "es": "✓ Toda la información ha sido validada y está lista para crear la cuenta.",
+            "de": "✓ Alle Informationen wurden validiert und sind bereit für die Kontoerstellung.",
+            "fr": "✓ Toutes les informations ont été validées et sont prêtes pour la création du compte."
+        }
+    }
+}

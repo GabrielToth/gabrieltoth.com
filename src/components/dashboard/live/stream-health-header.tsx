@@ -9,6 +9,7 @@ import {
     evaluateStreamHealth,
     StreamHealthMetrics,
 } from "@/lib/live/stream-health"
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 
 interface StreamHealthHeaderProps {
@@ -30,6 +31,7 @@ export function StreamHealthHeader({
     metrics = DEFAULT_METRICS,
 }: StreamHealthHeaderProps) {
     const health = evaluateStreamHealth(metrics)
+    const t = useTranslations("dashboard.live")
     const [open, setOpen] = useState(false)
 
     const statusColors = {
@@ -41,11 +43,11 @@ export function StreamHealthHeader({
     }
 
     const statusBadgeText = {
-        excellent: "Health: Excellent",
-        good: "Health: Good",
-        fair: "Health: Fair",
-        poor: "Health: Poor",
-        critical: "Health: Critical",
+        excellent: t("healthLevel", { level: t("healthExcellent") }),
+        good: t("healthLevel", { level: t("healthGood") }),
+        fair: t("healthLevel", { level: t("healthFair") }),
+        poor: t("healthLevel", { level: t("healthPoor") }),
+        critical: t("healthLevel", { level: t("healthCritical") }),
     }
 
     return (
@@ -53,7 +55,7 @@ export function StreamHealthHeader({
             <button
                 onClick={() => setOpen(!open)}
                 className="flex items-center space-x-2 rounded-full border border-border/40 bg-muted/40 px-2.5 py-1 text-xs transition-colors hover:bg-accent focus:outline-none"
-                title="Stream Health Status"
+                title={t("streamHealthStatus")}
             >
                 <span className="relative flex h-2 w-2">
                     <span
@@ -79,10 +81,18 @@ export function StreamHealthHeader({
                         </span>
                     </div>
                     <div className="mt-2 space-y-1 text-muted-foreground">
-                        <p>Resolution: {metrics.resolution}</p>
-                        <p>Bitrate: {metrics.bitrateKbps} Kbps</p>
-                        <p>FPS: {metrics.fps}</p>
-                        <p>Latency: {metrics.latencyMs}ms</p>
+                        <p>
+                            {t("resolutionValue", {
+                                value: metrics.resolution,
+                            })}
+                        </p>
+                        <p>
+                            {t("bitrateValue", {
+                                value: metrics.bitrateKbps,
+                            })}
+                        </p>
+                        <p>{t("fpsValue", { value: metrics.fps })}</p>
+                        <p>{t("latencyValue", { value: metrics.latencyMs })}</p>
                     </div>
                     {health.issues.length > 0 && (
                         <div className="mt-2 border-t border-border pt-2 text-rose-500">

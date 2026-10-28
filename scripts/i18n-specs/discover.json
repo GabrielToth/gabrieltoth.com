@@ -1,0 +1,102 @@
+{
+    "dashboard.json": {
+        "discover.importJson": {
+            "pt-BR": "Importar JSON",
+            "en": "Import JSON",
+            "es": "Importar JSON",
+            "de": "JSON importieren",
+            "fr": "Importer un JSON"
+        },
+        "discover.export": {
+            "pt-BR": "Exportar",
+            "en": "Export",
+            "es": "Exportar",
+            "de": "Exportieren",
+            "fr": "Exporter"
+        },
+        "discover.exportTitle": {
+            "pt-BR": "Exportar lista de descoberta como arquivo JSON",
+            "en": "Export the discovery list as a JSON file",
+            "es": "Exportar la lista de descubrimiento como archivo JSON",
+            "de": "Die Discovery-Liste als JSON-Datei exportieren",
+            "fr": "Exporter la liste de découverte au format JSON"
+        },
+        "discover.linkedPanelTitle": {
+            "pt-BR": "Registrar / remover canais vinculados",
+            "en": "Register / remove linked channels",
+            "es": "Registrar / eliminar canales vinculados",
+            "de": "Verknüpfte Kanäle registrieren / entfernen",
+            "fr": "Enregistrer / supprimer les chaînes liées"
+        },
+        "discover.linkedPanelHint": {
+            "pt-BR": "Cada canal conectado pode ser adicionado ou removido da sua lista de descoberta. O exemplo @ogabrieltoth fica sempre disponível para você montar seu próprio JSON.",
+            "en": "Each connected channel can be added to or removed from your discovery list. The example @ogabrieltoth is always available so you can build your own JSON.",
+            "es": "Cada canal conectado puede añadirse o eliminarse de tu lista de descubrimiento. El ejemplo @ogabrieltoth está siempre disponible para que construyas tu propio JSON.",
+            "de": "Jeder verbundene Kanal kann zur Discovery-Liste hinzugefügt oder daraus entfernt werden. Das Beispiel @ogabrieltoth steht immer zur Verfügung, damit Sie Ihr eigenes JSON erstellen können.",
+            "fr": "Chaque chaîne connectée peut être ajoutée ou retirée de votre liste de découverte. L'exemple @ogabrieltoth reste toujours disponible pour construire votre propre JSON."
+        },
+        "discover.noLinkedChannels": {
+            "pt-BR": "Nenhum canal conectado encontrado. Conecte uma plataforma na aba de canais para registrá-la aqui.",
+            "en": "No connected channel found. Connect a platform in the channels tab to register it here.",
+            "es": "No se encontró ningún canal conectado. Conecta una plataforma en la pestaña de canales para registrarla aquí.",
+            "de": "Kein verbundener Kanal gefunden. Verbinden Sie eine Plattform im Kanäle-Tab, um sie hier zu registrieren.",
+            "fr": "Aucune chaîne connectée trouvée. Connectez une plateforme dans l'onglet des chaînes pour l'enregistrer ici."
+        },
+        "discover.add": {
+            "pt-BR": "+ Adicionar",
+            "en": "+ Add",
+            "es": "+ Añadir",
+            "de": "+ Hinzufügen",
+            "fr": "+ Ajouter"
+        },
+        "discover.added": {
+            "pt-BR": "✓ Adicionado",
+            "en": "✓ Added",
+            "es": "✓ Añadido",
+            "de": "✓ Hinzugefügt",
+            "fr": "✓ Ajouté"
+        },
+        "discover.loadingChannels": {
+            "pt-BR": "Carregando canais...",
+            "en": "Loading channels...",
+            "es": "Cargando canales...",
+            "de": "Kanäle werden geladen...",
+            "fr": "Chargement des chaînes..."
+        },
+        "discover.localModeActive": {
+            "pt-BR": "Modo Local Ativo",
+            "en": "Local Mode Active",
+            "es": "Modo local activo",
+            "de": "Lokaler Modus aktiv",
+            "fr": "Mode local actif"
+        },
+        "discover.localModeEmpty": {
+            "pt-BR": "Nenhum estado local carregado. Suba um arquivo JSON customizado contendo a lista de canais para utilizar o descobrimento local sem consumir créditos da nuvem.",
+            "en": "No local state loaded. Upload a custom JSON file with the channel list to use local discovery without spending cloud credits.",
+            "es": "No hay estado local cargado. Sube un archivo JSON personalizado con la lista de canales para usar el descubrimiento local sin consumir créditos de la nube.",
+            "de": "Kein lokaler Zustand geladen. Laden Sie eine benutzerdefinierte JSON-Datei mit der Kanalliste hoch, um die lokale Discovery ohne Cloud-Guthaben zu nutzen.",
+            "fr": "Aucun état local chargé. Importez un fichier JSON personnalisé contenant la liste des chaînes pour utiliser la découverte locale sans consommer de crédits cloud."
+        },
+        "discover.loadLocalJson": {
+            "pt-BR": "Carregar JSON Local",
+            "en": "Load Local JSON",
+            "es": "Cargar JSON local",
+            "de": "Lokales JSON laden",
+            "fr": "Charger un JSON local"
+        },
+        "discover.noChannelForQuery": {
+            "pt-BR": "Nenhum canal encontrado para \"{query}\".",
+            "en": "No channel found for \"{query}\".",
+            "es": "No se encontró ningún canal para \"{query}\".",
+            "de": "Kein Kanal für \"{query}\" gefunden.",
+            "fr": "Aucune chaîne trouvée pour « {query} »."
+        },
+        "discover.noChannelsAvailable": {
+            "pt-BR": "Nenhum canal disponível no momento.",
+            "en": "No channel available at the moment.",
+            "es": "Ningún canal disponible en este momento.",
+            "de": "Derzeit ist kein Kanal verfügbar.",
+            "fr": "Aucune chaîne disponible pour le moment."
+        }
+    }
+}

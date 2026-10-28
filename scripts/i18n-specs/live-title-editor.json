@@ -1,0 +1,11 @@
+{
+    "dashboard.json": {
+        "live.searchingCategories": {
+            "pt-BR": "Buscando categorias ({platform})...",
+            "en": "Searching categories ({platform})...",
+            "es": "Buscando categorías ({platform})...",
+            "de": "Kategorien werden gesucht ({platform}) ...",
+            "fr": "Recherche des catégories ({platform})..."
+        }
+    }
+}

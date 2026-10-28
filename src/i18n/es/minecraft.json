@@ -85,5 +85,18 @@
         "description": "Mis contribuciones a la comunidad de Minecraft",
         "comingSoon": "Contribuciones Próximamente",
         "comingSoonText": "Estoy documentando mis contribuciones a la comunidad. ¡Vuelve pronto!"
+    },
+    "modsComingSoon": "Próximamente",
+    "modsComingSoonDescription": "Más mods próximamente. ¡Mantente atento!",
+    "hypixelQol": {
+        "aboutTitle": "Acerca de este modpack",
+        "aboutDescription": "El modpack Hypixel QoL está diseñado para mejorar tu experiencia de Minecraft con mejoras de calidad de vida manteniendo la sensación vanilla del juego.",
+        "focusesOn": "Este modpack se centra en:",
+        "featurePerformance": "Optimización del rendimiento",
+        "featureQol": "Mejoras de calidad de vida",
+        "featureUi": "Mejor interfaz de usuario",
+        "featureGameplay": "Mecánicas de juego mejoradas",
+        "moreInfoTitle": "Más información",
+        "moreInfoDescription": "Más detalles sobre este modpack próximamente. ¡Vuelve para ver novedades!"
     }
 }

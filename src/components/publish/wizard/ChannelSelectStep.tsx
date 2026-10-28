@@ -176,7 +176,7 @@ export default function ChannelSelectStep({
             ) : platformsNeedingChannels.length === 0 ? (
                 /* No platforms need channel selection → skip */
                 <div className="py-8 text-center text-sm text-muted-foreground">
-                    No channel selection needed for selected platforms.
+                    {t("channelSelectNone")}
                 </div>
             ) : (
                 /* Channel list per platform */
