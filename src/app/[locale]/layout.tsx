@@ -1,4 +1,5 @@
 import Header from "@/components/layout/header"
+import PerformanceMonitor from "@/components/analytics/performance-monitor"
 import StructuredData from "@/components/seo/structured-data"
 import { ThemeScript } from "@/components/theme/theme-script"
 import { defaultLocale, locales, type Locale } from "@/lib/i18n"
@@ -59,6 +60,7 @@ export default async function LocaleLayout({
                 <StructuredData locale={locale} type="both" />
                 <Header />
                 {children}
+                <PerformanceMonitor />
             </LocaleProvider>
         </NextIntlClientProvider>
     )

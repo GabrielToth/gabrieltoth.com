@@ -1,5 +1,4 @@
 import { BfcacheReload } from "@/components/bfcache-reload"
-import PerformanceMonitor from "@/components/analytics/performance-monitor"
 import WebVitalsReport from "@/components/analytics/web-vitals"
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import { Analytics } from "@vercel/analytics/react"
@@ -42,7 +41,6 @@ export default function RootLayout({
                     {isProd && (
                         <>
                             <WebVitalsReport />
-                            <PerformanceMonitor />
                             <Analytics />
                             <SpeedInsights />
                         </>
