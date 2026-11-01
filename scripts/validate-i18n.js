@@ -10,6 +10,13 @@ const REFERENCE_LANG = "en"
 let hasErrors = false
 
 function extractParams(str) {
+    if (typeof str !== "string") return []
+    if (str.includes(", plural,")) {
+        const match = str.match(/^\{([a-zA-Z0-9_]+),\s*plural,/)
+        if (match) {
+            return [`{${match[1]}}`]
+        }
+    }
     const matches = str.match(/\{[^}]+\}/g) || []
     return matches.sort()
 }
