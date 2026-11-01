@@ -9,10 +9,10 @@
         "publish": "node publish-meta.js"
     },
     "dependencies": {
-        "commander": "^13.1.0",
-        "dotenv": "^16.4.7",
-        "@supabase/supabase-js": "^2.49.4",
-        "puppeteer-core": "^24.6.1",
+        "commander": "^15.0.0",
+        "dotenv": "^18.0.9",
+        "@supabase/supabase-js": "^999.9.2-canary.0",
+        "puppeteer-core": "^25.16.0",
         "puppeteer-extra": "^3.3.6",
         "puppeteer-extra-plugin-stealth": "^2.11.2"
     }
