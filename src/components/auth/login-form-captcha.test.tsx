@@ -323,6 +323,11 @@ describe("LoginForm with CAPTCHA Integration", () => {
         await waitFor(() => {
             expect(screen.getByText(/signing in/i)).toBeInTheDocument()
         })
+
+        // Wait for request to complete so async setState doesn't fire after JSDOM teardown
+        await waitFor(() => {
+            expect(screen.queryByText(/signing in/i)).not.toBeInTheDocument()
+        })
     })
 
     it("should validate email and password before checking CAPTCHA", async () => {
