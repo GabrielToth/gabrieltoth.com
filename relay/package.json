@@ -9,13 +9,13 @@
         "dev": "npx tsx watch src/relay-server.ts"
     },
     "dependencies": {
-        "ws": "^8.22.1",
-        "dotenv": "^18.0.9",
+        "ws": "^8.22.2",
+        "dotenv": "^18.0.10",
         "jsonwebtoken": "^9.0.3",
         "googleapis": "^189.0.0"
     },
     "devDependencies": {
-        "typescript": "^7.1.0-dev.20261031.1",
+        "typescript": "^7.1.0-dev.20261109.1",
         "@types/node": "^26.6.6",
         "@types/ws": "^8.18.2",
         "@types/jsonwebtoken": "^9.0.10",
