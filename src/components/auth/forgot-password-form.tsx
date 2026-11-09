@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { validateEmail } from "@/lib/validation"
-import { FormEvent, useState } from "react"
+import { FormEvent, useEffect, useRef, useState } from "react"
 
 interface ForgotPasswordFormProps {
     locale: string
@@ -41,12 +41,25 @@ export function ForgotPasswordForm({ locale }: ForgotPasswordFormProps) {
     const [csrfToken, setCsrfToken] = useState<string | null>(null)
 
     // Fetch CSRF token on component mount
-    useState(() => {
+    const isMountedRef = useRef(true)
+
+    useEffect(() => {
+        isMountedRef.current = true
+        return () => {
+            isMountedRef.current = false
+        }
+    }, [])
+
+    useEffect(() => {
         const fetchCsrfToken = async () => {
             try {
                 const response = await fetch("/api/auth/csrf")
                 const data = await response.json()
-                if (data.success && data.data?.csrfToken) {
+                if (
+                    isMountedRef.current &&
+                    data.success &&
+                    data.data?.csrfToken
+                ) {
                     setCsrfToken(data.data.csrfToken)
                 }
             } catch {
@@ -54,7 +67,7 @@ export function ForgotPasswordForm({ locale }: ForgotPasswordFormProps) {
             }
         }
         fetchCsrfToken()
-    })
+    }, [])
 
     // Real-time validation for email field
     // Requirement 8.1
@@ -129,6 +142,10 @@ export function ForgotPasswordForm({ locale }: ForgotPasswordFormProps) {
 
             const data = await response.json()
 
+            if (!isMountedRef.current) {
+                return
+            }
+
             if (!response.ok || !data.success) {
                 setServerError(
                     data.error || "An error occurred. Please try again later."
@@ -141,9 +158,13 @@ export function ForgotPasswordForm({ locale }: ForgotPasswordFormProps) {
             setSuccess(true)
         } catch (error) {
             console.error("Forgot password error:", error)
-            setServerError("An error occurred. Please try again later.")
+            if (isMountedRef.current) {
+                setServerError("An error occurred. Please try again later.")
+            }
         } finally {
-            setIsLoading(false)
+            if (isMountedRef.current) {
+                setIsLoading(false)
+            }
         }
     }
 
