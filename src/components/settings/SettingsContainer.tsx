@@ -9,6 +9,7 @@ import { logger } from "@/lib/logger"
 import { BillingSection } from "./BillingSection"
 import { IntegrationsSection } from "./IntegrationsSection"
 import { LocalEnvSection } from "./LocalEnvSection"
+import { LocalProjectsSection } from "./LocalProjectsSection"
 import { PreferencesSection } from "./PreferencesSection"
 import { ProfileSection } from "./ProfileSection"
 import { SecuritySection } from "./SecuritySection"
@@ -374,6 +375,7 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = () => {
                 </TabsContent>
 
                 <TabsContent value="localenv" className="space-y-6">
+                    <LocalProjectsSection />
                     <LocalEnvSection />
                 </TabsContent>
             </Tabs>

@@ -9,6 +9,7 @@ import { UnifiedChat } from "@/components/dashboard/live/unified-chat"
 import { ChatModerationPanel } from "@/components/dashboard/live/chat-moderation-panel"
 import { StreamHealthHeader } from "@/components/dashboard/live/stream-health-header"
 import { useLiveMetricsRecorder } from "@/hooks/use-live-metrics-recorder"
+import { getLocalChannels, LocalPlatformApiClient } from "@/lib/local-projects"
 import { useLocale, useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 import { TutorialLauncher } from "@/components/tutorial/tutorial-launcher"
@@ -98,6 +99,31 @@ export default function LiveDashboardPage() {
 
     async function fetchStatus() {
         try {
+            if (executionMode === "local") {
+                // LOCAL EXECUTION MODE: Zero backend calls.
+                // Queries channels configured in local storage directly.
+                const localChans = getLocalChannels()
+                if (localChans.length > 0) {
+                    const localPlatforms: LivePlatform[] = localChans.map(c => ({
+                        platform: c.platform,
+                        username: c.channelName,
+                        displayName: c.channelName,
+                        profileImageUrl: c.avatarUrl || null,
+                        isLive: true,
+                        viewerCount: 0,
+                        title: "Local Stream Session",
+                        gameName: "Local Live",
+                        startedAt: new Date(c.createdAt || Date.now()).toISOString(),
+                    }))
+                    setPlatforms(localPlatforms)
+                    if (!activePlatform && localPlatforms.length > 0) {
+                        setActivePlatform(localPlatforms[0].platform)
+                    }
+                    setLoading(false)
+                    return
+                }
+            }
+
             const response = await fetch("/api/live/status")
             if (!response.ok) throw new Error("Failed to fetch status")
             const data = await response.json()
