@@ -189,7 +189,14 @@ export function useRegistration() {
         setState(prev => {
             const nextErrors = { ...prev.errors }
             if (error) {
-                nextErrors[field] = error
+                // defineProperty keeps field names like "__proto__" as own
+                // data properties instead of mutating the object prototype
+                Object.defineProperty(nextErrors, field, {
+                    value: error,
+                    enumerable: true,
+                    configurable: true,
+                    writable: true,
+                })
             } else {
                 delete nextErrors[field]
             }
