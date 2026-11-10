@@ -159,8 +159,10 @@ export function LocalProjectsSection() {
                             Projetos & Quotas Locais (N:N Multi-Projeto)
                         </CardTitle>
                         <CardDescription className="mt-1">
-                            Distribua dezenas ou centenas de canais entre múltiplos projetos e quotas com rotação automática.
-                            Zero chaves enviadas ao servidor. Zero consumo de créditos.
+                            Distribua dezenas ou centenas de canais entre
+                            múltiplos projetos e quotas com rotação automática.
+                            Zero chaves enviadas ao servidor. Zero consumo de
+                            créditos.
                         </CardDescription>
                     </div>
                     <div className="flex gap-2">
@@ -195,7 +197,9 @@ export function LocalProjectsSection() {
                     </h3>
                     {projects.length === 0 ? (
                         <div className="rounded-lg border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
-                            Nenhum projeto local cadastrado ainda. Adicione um ou mais projetos do Google Console, Meta ou Twitch para balancear as cotas.
+                            Nenhum projeto local cadastrado ainda. Adicione um
+                            ou mais projetos do Google Console, Meta ou Twitch
+                            para balancear as cotas.
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -204,7 +208,8 @@ export function LocalProjectsSection() {
                                 const percent = Math.min(
                                     100,
                                     Math.round(
-                                        (daily.currentUsage / daily.maxLimit) * 100
+                                        (daily.currentUsage / daily.maxLimit) *
+                                            100
                                     )
                                 )
                                 return (
@@ -239,7 +244,9 @@ export function LocalProjectsSection() {
                                             <div className="flex justify-between text-xs text-muted-foreground">
                                                 <span>Cota Diária:</span>
                                                 <span>
-                                                    {daily.currentUsage} / {daily.maxLimit} pts ({percent}%)
+                                                    {daily.currentUsage} /{" "}
+                                                    {daily.maxLimit} pts (
+                                                    {percent}%)
                                                 </span>
                                             </div>
                                             <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
@@ -251,7 +258,9 @@ export function LocalProjectsSection() {
                                                               ? "bg-amber-500"
                                                               : "bg-emerald-500"
                                                     }`}
-                                                    style={{ width: `${percent}%` }}
+                                                    style={{
+                                                        width: `${percent}%`,
+                                                    }}
                                                 />
                                             </div>
                                         </div>
@@ -262,7 +271,8 @@ export function LocalProjectsSection() {
                                                     className={`h-2 w-2 rounded-full ${
                                                         p.status === "active"
                                                             ? "bg-emerald-500"
-                                                            : p.status === "rate_limited"
+                                                            : p.status ===
+                                                                "rate_limited"
                                                               ? "bg-amber-500 animate-pulse"
                                                               : "bg-red-500"
                                                     }`}
@@ -317,11 +327,14 @@ export function LocalProjectsSection() {
                                             </span>
                                             {c.projectIds.length === 0 ? (
                                                 <span className="text-xs text-amber-500">
-                                                    Nenhum (usando pool global da plataforma)
+                                                    Nenhum (usando pool global
+                                                    da plataforma)
                                                 </span>
                                             ) : (
                                                 c.projectIds.map(pId => {
-                                                    const p = projects.find(proj => proj.id === pId)
+                                                    const p = projects.find(
+                                                        proj => proj.id === pId
+                                                    )
                                                     return (
                                                         <span
                                                             key={pId}
@@ -339,7 +352,10 @@ export function LocalProjectsSection() {
                                         variant="ghost"
                                         size="sm"
                                         onClick={() => {
-                                            removeLocalChannelBinding(c.channelId, c.platform)
+                                            removeLocalChannelBinding(
+                                                c.channelId,
+                                                c.platform
+                                            )
                                             reloadData()
                                         }}
                                         className="text-muted-foreground hover:text-destructive h-8 w-8 p-0"
@@ -357,14 +373,19 @@ export function LocalProjectsSection() {
             <Dialog open={projectModalOpen} onOpenChange={setProjectModalOpen}>
                 <DialogContent className="max-w-md">
                     <DialogHeader>
-                        <DialogTitle>Adicionar Projeto / Chave Local</DialogTitle>
+                        <DialogTitle>
+                            Adicionar Projeto / Chave Local
+                        </DialogTitle>
                         <DialogDescription>
-                            Adicione as credenciais do seu próprio projeto para operar em modo local.
+                            Adicione as credenciais do seu próprio projeto para
+                            operar em modo local.
                         </DialogDescription>
                     </DialogHeader>
                     <div className="space-y-4 py-2">
                         <div className="space-y-1.5">
-                            <label className="text-xs font-medium">Nome do Projeto</label>
+                            <label className="text-xs font-medium">
+                                Nome do Projeto
+                            </label>
                             <Input
                                 placeholder="ex: Google Console - Live Pool 01"
                                 value={projName}
@@ -372,10 +393,14 @@ export function LocalProjectsSection() {
                             />
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-xs font-medium">Plataforma</label>
+                            <label className="text-xs font-medium">
+                                Plataforma
+                            </label>
                             <Select
                                 value={projPlatform}
-                                onValueChange={(val: PlatformType) => setProjPlatform(val)}
+                                onValueChange={(val: PlatformType) =>
+                                    setProjPlatform(val)
+                                }
                             >
                                 <SelectTrigger>
                                     <SelectValue />
@@ -390,7 +415,9 @@ export function LocalProjectsSection() {
                             </Select>
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-xs font-medium">Client ID / App ID (Opcional)</label>
+                            <label className="text-xs font-medium">
+                                Client ID / App ID (Opcional)
+                            </label>
                             <Input
                                 placeholder="client-id..."
                                 value={projClientId}
@@ -398,16 +425,23 @@ export function LocalProjectsSection() {
                             />
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-xs font-medium">Client Secret / App Secret (Opcional)</label>
+                            <label className="text-xs font-medium">
+                                Client Secret / App Secret (Opcional)
+                            </label>
                             <Input
                                 type="password"
                                 placeholder="client-secret..."
                                 value={projClientSecret}
-                                onChange={e => setProjClientSecret(e.target.value)}
+                                onChange={e =>
+                                    setProjClientSecret(e.target.value)
+                                }
                             />
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-xs font-medium">API Key Direta (Para monitoramento de live sem OAuth)</label>
+                            <label className="text-xs font-medium">
+                                API Key Direta (Para monitoramento de live sem
+                                OAuth)
+                            </label>
                             <Input
                                 placeholder="AIzaSy..."
                                 value={projApiKey}
@@ -415,20 +449,30 @@ export function LocalProjectsSection() {
                             />
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-xs font-medium">Limite de Cota Diária (Unidades)</label>
+                            <label className="text-xs font-medium">
+                                Limite de Cota Diária (Unidades)
+                            </label>
                             <Input
                                 type="number"
                                 placeholder="10000"
                                 value={dailyQuotaLimit}
-                                onChange={e => setDailyQuotaLimit(e.target.value)}
+                                onChange={e =>
+                                    setDailyQuotaLimit(e.target.value)
+                                }
                             />
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setProjectModalOpen(false)}>
+                        <Button
+                            variant="outline"
+                            onClick={() => setProjectModalOpen(false)}
+                        >
                             Cancelar
                         </Button>
-                        <Button onClick={handleSaveProject} disabled={!projName.trim()}>
+                        <Button
+                            onClick={handleSaveProject}
+                            disabled={!projName.trim()}
+                        >
                             Salvar Projeto Local
                         </Button>
                     </DialogFooter>
@@ -439,15 +483,20 @@ export function LocalProjectsSection() {
             <Dialog open={channelModalOpen} onOpenChange={setChannelModalOpen}>
                 <DialogContent className="max-w-lg">
                     <DialogHeader>
-                        <DialogTitle>Vincular Canal a Projetos Locais (N:N)</DialogTitle>
+                        <DialogTitle>
+                            Vincular Canal a Projetos Locais (N:N)
+                        </DialogTitle>
                         <DialogDescription>
-                            Atribua um canal a um ou mais projetos locais para balanceamento e fallback de cotas.
+                            Atribua um canal a um ou mais projetos locais para
+                            balanceamento e fallback de cotas.
                         </DialogDescription>
                     </DialogHeader>
                     <div className="space-y-4 py-2">
                         <div className="grid grid-cols-2 gap-3">
                             <div className="space-y-1.5">
-                                <label className="text-xs font-medium">ID do Canal</label>
+                                <label className="text-xs font-medium">
+                                    ID do Canal
+                                </label>
                                 <Input
                                     placeholder="ex: UCxxxx / @canal"
                                     value={chanId}
@@ -455,7 +504,9 @@ export function LocalProjectsSection() {
                                 />
                             </div>
                             <div className="space-y-1.5">
-                                <label className="text-xs font-medium">Nome do Canal</label>
+                                <label className="text-xs font-medium">
+                                    Nome do Canal
+                                </label>
                                 <Input
                                     placeholder="ex: Meu Canal Live 01"
                                     value={chanName}
@@ -464,7 +515,9 @@ export function LocalProjectsSection() {
                             </div>
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-xs font-medium">Plataforma</label>
+                            <label className="text-xs font-medium">
+                                Plataforma
+                            </label>
                             <Select
                                 value={chanPlatform}
                                 onValueChange={(val: PlatformType) => {
@@ -486,17 +539,23 @@ export function LocalProjectsSection() {
                         </div>
                         <div className="space-y-1.5">
                             <label className="text-xs font-medium">
-                                Selecionar Projetos para Balanceamento / Fallback:
+                                Selecionar Projetos para Balanceamento /
+                                Fallback:
                             </label>
                             <div className="max-h-36 overflow-y-auto border rounded-md p-2 space-y-1.5">
                                 {projects
                                     .filter(p => p.platform === chanPlatform)
                                     .map(p => {
-                                        const isSelected = selectedProjectIds.includes(p.id)
+                                        const isSelected =
+                                            selectedProjectIds.includes(p.id)
                                         return (
                                             <div
                                                 key={p.id}
-                                                onClick={() => toggleProjectForChannel(p.id)}
+                                                onClick={() =>
+                                                    toggleProjectForChannel(
+                                                        p.id
+                                                    )
+                                                }
                                                 className={`flex items-center justify-between p-2 rounded cursor-pointer text-xs transition-colors ${
                                                     isSelected
                                                         ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-medium border border-emerald-500/30"
@@ -505,32 +564,43 @@ export function LocalProjectsSection() {
                                             >
                                                 <span>{p.name}</span>
                                                 <span>
-                                                    {isSelected ? "Selecionado" : "Clique p/ Adicionar"}
+                                                    {isSelected
+                                                        ? "Selecionado"
+                                                        : "Clique p/ Adicionar"}
                                                 </span>
                                             </div>
                                         )
                                     })}
-                                {projects.filter(p => p.platform === chanPlatform).length === 0 && (
+                                {projects.filter(
+                                    p => p.platform === chanPlatform
+                                ).length === 0 && (
                                     <p className="text-xs text-muted-foreground text-center py-2">
-                                        Nenhum projeto cadastrado para {chanPlatform}.
+                                        Nenhum projeto cadastrado para{" "}
+                                        {chanPlatform}.
                                     </p>
                                 )}
                             </div>
                         </div>
                         <div className="space-y-1.5">
                             <label className="text-xs font-medium">
-                                Access Token Local do Canal (Opcional, salvo apenas no navegador)
+                                Access Token Local do Canal (Opcional, salvo
+                                apenas no navegador)
                             </label>
                             <Input
                                 type="password"
                                 placeholder="ya29... ou token de acesso"
                                 value={chanAccessToken}
-                                onChange={e => setChanAccessToken(e.target.value)}
+                                onChange={e =>
+                                    setChanAccessToken(e.target.value)
+                                }
                             />
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setChannelModalOpen(false)}>
+                        <Button
+                            variant="outline"
+                            onClick={() => setChannelModalOpen(false)}
+                        >
                             Cancelar
                         </Button>
                         <Button

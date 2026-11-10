@@ -62,7 +62,8 @@ export default function usePublishExecution({
                     }
 
                     const meta = wizardState.platformMetadata.youtube as
-                        YouTubeMetadata | undefined
+                        | YouTubeMetadata
+                        | undefined
                     if (!meta) {
                         results.push({
                             platformId: "youtube",
@@ -212,7 +213,8 @@ export default function usePublishExecution({
 
                 try {
                     const metaMeta = wizardState.platformMetadata["meta"] as
-                        MetaPublishMetadata | undefined
+                        | MetaPublishMetadata
+                        | undefined
 
                     const description =
                         wizardState.content.text || metaMeta?.description || ""
@@ -309,7 +311,8 @@ export default function usePublishExecution({
 
                     if (finalTask.status === "completed") {
                         const r = finalTask.result as
-                            Record<string, string> | undefined
+                            | Record<string, string>
+                            | undefined
                         results.push({
                             platformId,
                             success: true,

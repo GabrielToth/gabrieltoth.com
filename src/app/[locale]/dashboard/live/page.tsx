@@ -104,17 +104,21 @@ export default function LiveDashboardPage() {
                 // Queries channels configured in local storage directly.
                 const localChans = getLocalChannels()
                 if (localChans.length > 0) {
-                    const localPlatforms: LivePlatform[] = localChans.map(c => ({
-                        platform: c.platform,
-                        username: c.channelName,
-                        displayName: c.channelName,
-                        profileImageUrl: c.avatarUrl || null,
-                        isLive: true,
-                        viewerCount: 0,
-                        title: "Local Stream Session",
-                        gameName: "Local Live",
-                        startedAt: new Date(c.createdAt || Date.now()).toISOString(),
-                    }))
+                    const localPlatforms: LivePlatform[] = localChans.map(
+                        c => ({
+                            platform: c.platform,
+                            username: c.channelName,
+                            displayName: c.channelName,
+                            profileImageUrl: c.avatarUrl || null,
+                            isLive: true,
+                            viewerCount: 0,
+                            title: "Local Stream Session",
+                            gameName: "Local Live",
+                            startedAt: new Date(
+                                c.createdAt || Date.now()
+                            ).toISOString(),
+                        })
+                    )
                     setPlatforms(localPlatforms)
                     if (!activePlatform && localPlatforms.length > 0) {
                         setActivePlatform(localPlatforms[0].platform)

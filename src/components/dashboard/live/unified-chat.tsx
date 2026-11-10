@@ -548,7 +548,10 @@ export function UnifiedChat({
                                         onChange={e =>
                                             updateSettings({
                                                 fontSize: e.target.value as
-                                                    "xs" | "sm" | "md" | "lg",
+                                                    | "xs"
+                                                    | "sm"
+                                                    | "md"
+                                                    | "lg",
                                             })
                                         }
                                         className="rounded border border-neutral-700 bg-neutral-800 px-2 py-1 text-xs text-neutral-200"

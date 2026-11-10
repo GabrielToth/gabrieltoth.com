@@ -434,7 +434,9 @@ export default function ClonerPage() {
                                     onChange={e =>
                                         setScheduleType(
                                             e.target.value as
-                                                "immediate" | "daily" | "weekly"
+                                                | "immediate"
+                                                | "daily"
+                                                | "weekly"
                                         )
                                     }
                                     className="w-full rounded-md border border-neutral-700 bg-background px-3 py-2 text-neutral-200 focus:outline-none focus:border-primary"

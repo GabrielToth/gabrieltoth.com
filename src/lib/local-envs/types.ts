@@ -1,5 +1,8 @@
 export type EnvMode =
-    "local_only" | "local_preferred" | "cloud_preferred" | "cloud_only"
+    | "local_only"
+    | "local_preferred"
+    | "cloud_preferred"
+    | "cloud_only"
 
 export interface LocalEnvEntry {
     key: string

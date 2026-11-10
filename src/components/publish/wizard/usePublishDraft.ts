@@ -45,7 +45,8 @@ export default function usePublishDraft({
     const hasContent = useCallback((): boolean => {
         const c = wizardState.content
         const meta = wizardState.platformMetadata.youtube as
-            YouTubeMetadata | undefined
+            | YouTubeMetadata
+            | undefined
 
         if (c.videoFile || c.thumbnailFile || c.images.length > 0) return true
         if (c.text.trim().length > 0) return true

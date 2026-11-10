@@ -14,7 +14,11 @@ export interface StreamHealthMetrics {
 }
 
 export type HealthStatusLevel =
-    "excellent" | "good" | "fair" | "poor" | "critical"
+    | "excellent"
+    | "good"
+    | "fair"
+    | "poor"
+    | "critical"
 
 export interface StreamHealthStatus {
     level: HealthStatusLevel

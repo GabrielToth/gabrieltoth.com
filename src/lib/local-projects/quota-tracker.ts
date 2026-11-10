@@ -44,7 +44,8 @@ export function refreshProjectQuotas(project: LocalProject): LocalProject {
         changed = true
     } else if (
         status === "exhausted" &&
-        updatedQuotas.daily_units.currentUsage < updatedQuotas.daily_units.maxLimit
+        updatedQuotas.daily_units.currentUsage <
+            updatedQuotas.daily_units.maxLimit
     ) {
         status = "active"
         changed = true
@@ -71,7 +72,10 @@ export function hasCapacity(
     cost: number = 1
 ): boolean {
     const refreshed = refreshProjectQuotas(project)
-    if (refreshed.status === "exhausted" || refreshed.status === "invalid_keys") {
+    if (
+        refreshed.status === "exhausted" ||
+        refreshed.status === "invalid_keys"
+    ) {
         return false
     }
     if (refreshed.status === "rate_limited") {
@@ -96,9 +100,10 @@ export function selectBestProject(
     cost: number = 1
 ): SelectProjectResult | null {
     const allProjects = getLocalProjects(platform)
-    const candidates = candidateProjectIds.length > 0
-        ? allProjects.filter(p => candidateProjectIds.includes(p.id))
-        : allProjects
+    const candidates =
+        candidateProjectIds.length > 0
+            ? allProjects.filter(p => candidateProjectIds.includes(p.id))
+            : allProjects
 
     if (candidates.length === 0) {
         return null
@@ -157,7 +162,10 @@ export function recordQuotaConsumption(
                 currentUsage: newUsage,
             },
         },
-        status: isExhausted && bucket === "daily_units" ? "exhausted" : refreshed.status,
+        status:
+            isExhausted && bucket === "daily_units"
+                ? "exhausted"
+                : refreshed.status,
     })
 }
 
