@@ -42,7 +42,9 @@ export class LocalPlatformApiClient {
         platform: PlatformType,
         options: DirectApiCallOptions
     ): Promise<DirectApiResponse<T>> {
-        const bucket = options.bucket || (options.method === "POST" ? "write_requests" : "read_requests")
+        const bucket =
+            options.bucket ||
+            (options.method === "POST" ? "write_requests" : "read_requests")
         const cost = options.cost || 1
 
         let candidateProjectIds = options.candidateProjectIds || []
@@ -81,7 +83,9 @@ export class LocalPlatformApiClient {
         let token: string | undefined
         if (options.channelId) {
             const binding = getLocalChannelById(options.channelId, platform)
-            token = binding?.auths.find(a => a.projectId === project.id)?.accessToken
+            token = binding?.auths.find(
+                a => a.projectId === project.id
+            )?.accessToken
         }
 
         // Build request headers
@@ -121,7 +125,11 @@ export class LocalPlatformApiClient {
             if (response.status === 403) {
                 const bodyText = await response.clone().text()
                 if (bodyText.includes("quotaExceeded")) {
-                    markProjectRateLimited(project.id, 24 * 60 * 60 * 1000, true)
+                    markProjectRateLimited(
+                        project.id,
+                        24 * 60 * 60 * 1000,
+                        true
+                    )
                     return {
                         ok: false,
                         status: 403,

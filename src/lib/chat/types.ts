@@ -32,7 +32,12 @@ export interface ChatBadge {
 }
 
 export type ChatMessageType =
-    "text" | "emote" | "system" | "announcement" | "subscription" | "raid"
+    | "text"
+    | "emote"
+    | "system"
+    | "announcement"
+    | "subscription"
+    | "raid"
 
 export interface ChatMessage {
     id: string

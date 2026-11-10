@@ -106,14 +106,19 @@ export function getLocalProjectById(
 }
 
 export function saveLocalProject(
-    projectData: Omit<LocalProject, "createdAt" | "updatedAt" | "quotas" | "status"> & {
+    projectData: Omit<
+        LocalProject,
+        "createdAt" | "updatedAt" | "quotas" | "status"
+    > & {
         quotas?: Partial<LocalProject["quotas"]>
         status?: LocalProject["status"]
     }
 ): LocalProject {
     const config = loadConfig()
     const now = Date.now()
-    const existingIndex = config.projects.findIndex(p => p.id === projectData.id)
+    const existingIndex = config.projects.findIndex(
+        p => p.id === projectData.id
+    )
 
     const defaultLimits = DEFAULT_PLATFORM_QUOTAS[projectData.platform]
     const defaultQuotas: LocalProject["quotas"] = {
@@ -218,7 +223,8 @@ export function saveLocalChannelBinding(
     const config = loadConfig()
     const now = Date.now()
     const existingIndex = config.channels.findIndex(
-        c => c.channelId === binding.channelId && c.platform === binding.platform
+        c =>
+            c.channelId === binding.channelId && c.platform === binding.platform
     )
 
     if (existingIndex >= 0) {
