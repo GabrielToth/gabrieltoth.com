@@ -9,6 +9,12 @@ import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import type { SocialPlatform } from "@/lib/networks/network-manager"
 import { getConflictDetector, getContentAdapter } from "@/lib/posting"
+import type { PostContentType } from "@/lib/posting/platform-capabilities"
+import {
+    ERROR_LOCAL_MODE_ON_SERVER,
+    isLocalExecutionRequest,
+    validatePublishRequest,
+} from "@/lib/posting/publish-guard"
 import { NextRequest, NextResponse } from "next/server"
 
 const logger = createLogger("ContentValidationEndpoint")
@@ -20,6 +26,10 @@ interface ValidateContentRequest {
     content: string
     platforms: SocialPlatform[]
     scheduledTime?: number
+    mode?: "cloud" | "local"
+    contentType?: PostContentType
+    durationSeconds?: number
+    fileSizeBytes?: number
 }
 
 /**
@@ -50,6 +60,34 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             )
         }
 
+        // LOCAL never reaches this endpoint: it must run entirely in-browser.
+        if (isLocalExecutionRequest(body.mode)) {
+            return NextResponse.json(
+                {
+                    error: ERROR_LOCAL_MODE_ON_SERVER,
+                    message:
+                        "LOCAL execution must be validated in the browser, not on the backend.",
+                },
+                { status: 400 }
+            )
+        }
+
+        const capabilities = validatePublishRequest({
+            platforms: body.platforms,
+            environment: "cloud",
+            contentType: body.contentType,
+            contentTypeCandidates: body.contentType ? undefined : ["text_only"],
+            characterCount: body.content.length,
+            durationSeconds:
+                typeof body.durationSeconds === "number"
+                    ? body.durationSeconds
+                    : undefined,
+            fileSizeBytes:
+                typeof body.fileSizeBytes === "number"
+                    ? body.fileSizeBytes
+                    : undefined,
+        })
+
         const contentAdapter = getContentAdapter()
         const conflictDetector = getConflictDetector()
 
@@ -72,6 +110,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             platforms: body.platforms,
             hasConflicts: conflictResult.hasConflicts,
             canPublish: conflictResult.canPublish,
+            capabilityOk: capabilities.ok,
         })
 
         return NextResponse.json(
@@ -80,8 +119,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     platforms: platformValidations,
                     characterLimits: contentAdapter.getAllCharacterLimits(),
                 },
+                capabilities,
                 conflicts: conflictResult,
-                canPublish: conflictResult.canPublish,
+                canPublish: conflictResult.canPublish && capabilities.ok,
             },
             { status: 200 }
         )
