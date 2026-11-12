@@ -1,0 +1,408 @@
+{
+    "version": 1,
+    "platforms": {
+        "youtube": {
+            "platform": "youtube",
+            "displayName": "YouTube",
+            "officialApiDocsUrl": "https://developers.google.com/youtube/v3/live/docs/liveChatMessages",
+            "liveChat": {
+                "supported": true,
+                "protocol": "rest_polling",
+                "allowedInLocal": true,
+                "allowedInCloud": true,
+                "officialApi": true,
+                "notes": "YouTube LiveChat API consome cotas (5 pontos por listagem). Suporta modo Local e Cloud."
+            },
+            "capabilities": {
+                "text_only": {
+                    "supported": false,
+                    "allowedInLocal": false,
+                    "allowedInCloud": false,
+                    "notes": "YouTube Data API v3 não suporta criação de postagens na Comunidade via API aberta."
+                },
+                "image_text": {
+                    "supported": false,
+                    "allowedInLocal": false,
+                    "allowedInCloud": false,
+                    "notes": "Postagens na Comunidade com imagem não possuem endpoint oficial público."
+                },
+                "short_video": {
+                    "supported": true,
+                    "allowedInLocal": true,
+                    "allowedInCloud": true,
+                    "maxCharacters": 5000,
+                    "maxFileSizeBytes": 274877906944,
+                    "maxDurationSeconds": 60,
+                    "minDurationSeconds": 3,
+                    "notes": "Shorts até 60 segundos com proporção 9:16."
+                },
+                "long_video": {
+                    "supported": true,
+                    "allowedInLocal": true,
+                    "allowedInCloud": true,
+                    "maxCharacters": 5000,
+                    "maxFileSizeBytes": 274877906944,
+                    "maxDurationSeconds": 432000,
+                    "minDurationSeconds": 33,
+                    "notes": "Upload resumable oficial suportado em Local e Cloud."
+                }
+            }
+        },
+        "facebook": {
+            "platform": "facebook",
+            "displayName": "Facebook",
+            "officialApiDocsUrl": "https://developers.facebook.com/docs/graph-api",
+            "liveChat": {
+                "supported": true,
+                "protocol": "webhook",
+                "allowedInLocal": false,
+                "allowedInCloud": true,
+                "officialApi": true,
+                "notes": "Graph API Live Video Comments exige tokens confidenciais e webhooks. Exclusivo Cloud."
+            },
+            "capabilities": {
+                "text_only": {
+                    "supported": true,
+                    "allowedInLocal": false,
+                    "allowedInCloud": true,
+                    "maxCharacters": 63206,
+                    "notes": "Endpoint /feed da Graph API. Cloud oficial com Page Token."
+                },
+                "image_text": {
+                    "supported": true,
+                    "allowedInLocal": false,
+                    "allowedInCloud": true,
+                    "maxCharacters": 63206,
+                    "maxFileSizeBytes": 10485760,
+                    "notes": "Endpoint /photos oficial."
+                },
+                "short_video": {
+                    "supported": true,
+                    "allowedInLocal": false,
+                    "allowedInCloud": true,
+                    "maxCharacters": 5000,
+                    "maxFileSizeBytes": 1073741824,
+                    "maxDurationSeconds": 90,
+                    "notes": "Facebook Reels API."
+                },
+                "long_video": {
+                    "supported": true,
+                    "allowedInLocal": false,
+                    "allowedInCloud": true,
+                    "maxCharacters": 5000,
+                    "maxFileSizeBytes": 10737418240,
+                    "maxDurationSeconds": 14400,
+                    "notes": "Chunked upload de até 10GB."
+                }
+            }
+        },
+        "instagram": {
+            "platform": "instagram",
+            "displayName": "Instagram",
+            "officialApiDocsUrl": "https://developers.facebook.com/docs/instagram-platform/instagram-graph-api",
+            "liveChat": {
+                "supported": true,
+                "protocol": "webhook",
+                "allowedInLocal": false,
+                "allowedInCloud": true,
+                "officialApi": true,
+                "notes": "Instagram Live Media Webhooks e Live Comments via Graph API. Cloud oficial."
+            },
+            "capabilities": {
+                "text_only": {
+                    "supported": false,
+                    "allowedInLocal": false,
+                    "allowedInCloud": false,
+                    "notes": "Instagram não aceita publicação de texto puro sem mídia visual."
+                },
+                "image_text": {
+                    "supported": true,
+                    "allowedInLocal": false,
+                    "allowedInCloud": true,
+                    "maxCharacters": 2200,
+                    "maxFileSizeBytes": 8388608,
+                    "notes": "Content Publishing API (Post ou Carrossel). Exige container assíncrono."
+                },
+                "short_video": {
+                    "supported": true,
+                    "allowedInLocal": false,
+                    "allowedInCloud": true,
+                    "maxCharacters": 2200,
+                    "maxFileSizeBytes": 1073741824,
+                    "maxDurationSeconds": 90,
+                    "minDurationSeconds": 3,
+                    "notes": "Instagram Reels API oficial."
+                },
+                "long_video": {
+                    "supported": false,
+                    "allowedInLocal": false,
+                    "allowedInCloud": false,
+                    "notes": "Vídeos longos regulares foram descontinuados e unificados em Reels (limite de 90s a 15min via app apenas)."
+                }
+            }
+        },
+        "twitch": {
+            "platform": "twitch",
+            "displayName": "Twitch",
+            "officialApiDocsUrl": "https://dev.twitch.tv/docs/chat/irc",
+            "liveChat": {
+                "supported": true,
+                "protocol": "websocket_irc",
+                "allowedInLocal": true,
+                "allowedInCloud": true,
+                "officialApi": true,
+                "notes": "IRC WebSocket oficial (wss://irc-ws.chat.twitch.tv). Suporta envio e leitura em Local e Cloud."
+            },
+            "capabilities": {
+                "text_only": {
+                    "supported": false,
+                    "allowedInLocal": false,
+                    "allowedInCloud": false,
+                    "notes": "Twitch é estritamente plataforma de streaming/vídeo; não possui feed social de texto."
+                },
+                "image_text": {
+                    "supported": false,
+                    "allowedInLocal": false,
+                    "allowedInCloud": false,
+                    "notes": "Twitch não suporta publicação de fotos no feed."
+                },
+                "short_video": {
+                    "supported": true,
+                    "allowedInLocal": true,
+                    "allowedInCloud": true,
+                    "maxDurationSeconds": 60,
+                    "notes": "Criação de Clips via Twitch API."
+                },
+                "long_video": {
+                    "supported": true,
+                    "allowedInLocal": true,
+                    "allowedInCloud": true,
+                    "notes": "VODs e transmissões gravadas."
+                }
+            }
+        },
+        "kick": {
+            "platform": "kick",
+            "displayName": "Kick",
+            "officialApiDocsUrl": "https://docs.kick.com/apis/chat",
+            "liveChat": {
+                "supported": true,
+                "protocol": "pusher_ws",
+                "allowedInLocal": true,
+                "allowedInCloud": true,
+                "officialApi": true,
+                "notes": "Pusher WebSocket público para leitura e endpoint oficial /public/v1/chat para envio."
+            },
+            "capabilities": {
+                "text_only": {
+                    "supported": false,
+                    "allowedInLocal": false,
+                    "allowedInCloud": false,
+                    "notes": "Kick não possui feed de texto."
+                },
+                "image_text": {
+                    "supported": false,
+                    "allowedInLocal": false,
+                    "allowedInCloud": false,
+                    "notes": "Kick não suporta postagem de fotos."
+                },
+                "short_video": {
+                    "supported": true,
+                    "allowedInLocal": true,
+                    "allowedInCloud": true,
+                    "maxDurationSeconds": 60,
+                    "notes": "Kick Clips."
+                },
+                "long_video": {
+                    "supported": false,
+                    "allowedInLocal": false,
+                    "allowedInCloud": false,
+                    "notes": "Kick não possui endpoint público para upload direto de VODs externos."
+                }
+            }
+        },
+        "tiktok": {
+            "platform": "tiktok",
+            "displayName": "TikTok",
+            "officialApiDocsUrl": "https://developers.tiktok.com/doc/content-posting-api-get-started",
+            "liveChat": {
+                "supported": true,
+                "protocol": "emulated_cloud",
+                "allowedInLocal": false,
+                "allowedInCloud": true,
+                "officialApi": false,
+                "notes": "Sem API oficial aberta de Live Chat. Ingestão segura via backend Rust no pentester-01."
+            },
+            "capabilities": {
+                "text_only": {
+                    "supported": false,
+                    "allowedInLocal": false,
+                    "allowedInCloud": false,
+                    "notes": "TikTok é plataforma focada em mídia visual."
+                },
+                "image_text": {
+                    "supported": true,
+                    "allowedInLocal": false,
+                    "allowedInCloud": true,
+                    "maxCharacters": 2200,
+                    "maxFileSizeBytes": 20971520,
+                    "notes": "TikTok Photo Mode API oficial."
+                },
+                "short_video": {
+                    "supported": true,
+                    "allowedInLocal": false,
+                    "allowedInCloud": true,
+                    "maxCharacters": 2200,
+                    "maxFileSizeBytes": 524288000,
+                    "maxDurationSeconds": 600,
+                    "minDurationSeconds": 3,
+                    "notes": "Content Posting API oficial (Direct Post / Inbox)."
+                },
+                "long_video": {
+                    "supported": true,
+                    "allowedInLocal": false,
+                    "allowedInCloud": true,
+                    "maxCharacters": 2200,
+                    "maxFileSizeBytes": 1073741824,
+                    "maxDurationSeconds": 600,
+                    "notes": "TikTok suporta até 10 minutos atualmente."
+                }
+            }
+        },
+        "linkedin": {
+            "platform": "linkedin",
+            "displayName": "LinkedIn",
+            "officialApiDocsUrl": "https://learn.microsoft.com/en-us/linkedin/marketing/community-management/shares/posts-api",
+            "liveChat": {
+                "supported": true,
+                "protocol": "webhook",
+                "allowedInLocal": false,
+                "allowedInCloud": true,
+                "officialApi": true,
+                "notes": "LinkedIn Live Videos API oficial para comentários. Exclusivo Cloud."
+            },
+            "capabilities": {
+                "text_only": {
+                    "supported": true,
+                    "allowedInLocal": false,
+                    "allowedInCloud": true,
+                    "maxCharacters": 3000,
+                    "notes": "LinkedIn Posts API oficial (/rest/posts)."
+                },
+                "image_text": {
+                    "supported": true,
+                    "allowedInLocal": false,
+                    "allowedInCloud": true,
+                    "maxCharacters": 3000,
+                    "maxFileSizeBytes": 10485760,
+                    "notes": "Upload de imagem + Posts API oficial."
+                },
+                "short_video": {
+                    "supported": false,
+                    "allowedInLocal": false,
+                    "allowedInCloud": false,
+                    "notes": "LinkedIn prioriza formato de artigo ou vídeo profissional."
+                },
+                "long_video": {
+                    "supported": true,
+                    "allowedInLocal": false,
+                    "allowedInCloud": true,
+                    "maxCharacters": 3000,
+                    "maxFileSizeBytes": 209715200,
+                    "maxDurationSeconds": 900,
+                    "notes": "Upload multipart /rest/videos oficial."
+                }
+            }
+        },
+        "kwai": {
+            "platform": "kwai",
+            "displayName": "Kwai",
+            "officialApiDocsUrl": "https://www.kwai.com",
+            "liveChat": {
+                "supported": true,
+                "protocol": "emulated_cloud",
+                "allowedInLocal": false,
+                "allowedInCloud": true,
+                "officialApi": false,
+                "notes": "Sem API aberta oficial internacional. Exclusivo Cloud via emulação controlada."
+            },
+            "capabilities": {
+                "text_only": {
+                    "supported": false,
+                    "allowedInLocal": false,
+                    "allowedInCloud": false,
+                    "notes": "Kwai é plataforma exclusivamente de vídeo curto."
+                },
+                "image_text": {
+                    "supported": false,
+                    "allowedInLocal": false,
+                    "allowedInCloud": false,
+                    "notes": "Kwai não aceita postagem estática de imagens."
+                },
+                "short_video": {
+                    "supported": true,
+                    "allowedInLocal": false,
+                    "allowedInCloud": true,
+                    "maxCharacters": 500,
+                    "maxFileSizeBytes": 209715200,
+                    "maxDurationSeconds": 180,
+                    "notes": "Publicação assíncrona Cloud."
+                },
+                "long_video": {
+                    "supported": false,
+                    "allowedInLocal": false,
+                    "allowedInCloud": false,
+                    "notes": "Kwai foca em micro-vídeos curtos."
+                }
+            }
+        },
+        "twitter": {
+            "platform": "twitter",
+            "displayName": "X (Twitter)",
+            "officialApiDocsUrl": "https://developer.x.com/en/docs/x-api",
+            "liveChat": {
+                "supported": false,
+                "protocol": "none",
+                "allowedInLocal": false,
+                "allowedInCloud": false,
+                "officialApi": false,
+                "notes": "Spaces / Live Chat requer permissões especiais de Enterprise na API v2."
+            },
+            "capabilities": {
+                "text_only": {
+                    "supported": true,
+                    "allowedInLocal": true,
+                    "allowedInCloud": true,
+                    "maxCharacters": 280,
+                    "notes": "POST /2/tweets oficial. Suporta Local (OAuth do usuário) e Cloud."
+                },
+                "image_text": {
+                    "supported": true,
+                    "allowedInLocal": true,
+                    "allowedInCloud": true,
+                    "maxCharacters": 280,
+                    "maxFileSizeBytes": 5242880,
+                    "notes": "Media Upload v1.1 oficial."
+                },
+                "short_video": {
+                    "supported": true,
+                    "allowedInLocal": true,
+                    "allowedInCloud": true,
+                    "maxCharacters": 280,
+                    "maxFileSizeBytes": 536870912,
+                    "maxDurationSeconds": 140,
+                    "notes": "Vídeos curtos de até 2min20s no plano padrão."
+                },
+                "long_video": {
+                    "supported": true,
+                    "allowedInLocal": true,
+                    "allowedInCloud": true,
+                    "maxCharacters": 280,
+                    "maxFileSizeBytes": 8589934592,
+                    "maxDurationSeconds": 7200,
+                    "notes": "Disponível para assinantes X Premium."
+                }
+            }
+        }
+    }
+}

@@ -2,6 +2,16 @@ import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getPublicationQueue } from "@/lib/queue/publication-queue"
 import type { SocialPlatform } from "@/lib/networks"
+import {
+    POST_CONTENT_TYPES,
+    type PostContentType,
+} from "@/lib/posting/platform-capabilities"
+import {
+    ERROR_INCOMPATIBLE_CONTENT,
+    ERROR_LOCAL_MODE_ON_SERVER,
+    isLocalExecutionRequest,
+    validatePublishRequest,
+} from "@/lib/posting/publish-guard"
 import { NextRequest, NextResponse } from "next/server"
 
 const logger = createLogger("PostsApi")
@@ -74,6 +84,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             "platforms",
             "mediaType",
             "status",
+            "mode",
+            "contentType",
+            "durationSeconds",
+            "fileSizeBytes",
         ])
         for (const key of Object.keys(body)) {
             if (!allowedKeys.has(key)) {
@@ -89,6 +103,51 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const platforms = body.platforms as string[] | undefined
         const mediaType = (body.mediaType as string) || "text"
         const status = (body.status as string) || "pending"
+
+        // LOCAL execution is a browser-only contract: it must never touch the
+        // backend (no credits, no credentials, no jobs).
+        if (isLocalExecutionRequest(body.mode)) {
+            logger.warn("Rejected LOCAL execution request on backend", {
+                userId: session.user.id,
+            })
+            return NextResponse.json(
+                {
+                    error: ERROR_LOCAL_MODE_ON_SERVER,
+                    message:
+                        "LOCAL execution must run in the browser. The backend does not process, store or charge for LOCAL actions.",
+                },
+                { status: 400 }
+            )
+        }
+
+        const rawContentType = body.contentType
+        if (
+            rawContentType !== undefined &&
+            (typeof rawContentType !== "string" ||
+                !POST_CONTENT_TYPES.includes(rawContentType as PostContentType))
+        ) {
+            return NextResponse.json(
+                {
+                    error: `contentType must be one of: ${POST_CONTENT_TYPES.join(", ")}`,
+                },
+                { status: 400 }
+            )
+        }
+        const contentType = rawContentType as PostContentType | undefined
+
+        const durationSeconds =
+            typeof body.durationSeconds === "number" &&
+            Number.isFinite(body.durationSeconds) &&
+            body.durationSeconds >= 0
+                ? body.durationSeconds
+                : undefined
+
+        const fileSizeBytes =
+            typeof body.fileSizeBytes === "number" &&
+            Number.isFinite(body.fileSizeBytes) &&
+            body.fileSizeBytes >= 0
+                ? body.fileSizeBytes
+                : undefined
 
         const isDraft = status === "draft"
 
@@ -157,6 +216,41 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             if (mediaType !== "text" && mediaType !== "video") {
                 return NextResponse.json(
                     { error: "mediaType must be 'text' or 'video'" },
+                    { status: 400 }
+                )
+            }
+
+            // CLOUD enforcement of the shared platform capability matrix.
+            const candidates: PostContentType[] = contentType
+                ? [contentType]
+                : mediaType === "video"
+                  ? ["short_video", "long_video"]
+                  : ["text_only"]
+
+            const compatibility = validatePublishRequest({
+                platforms: platforms as string[],
+                contentTypeCandidates: candidates,
+                environment: "cloud",
+                characterCount: content.length,
+                durationSeconds,
+                fileSizeBytes,
+            })
+
+            if (!compatibility.ok) {
+                logger.warn("Scheduled post rejected by capability matrix", {
+                    userId: session.user.id,
+                    platforms,
+                    contentType: compatibility.contentType,
+                    issues: compatibility.issues,
+                })
+                return NextResponse.json(
+                    {
+                        error: ERROR_INCOMPATIBLE_CONTENT,
+                        message:
+                            "One or more selected platforms cannot publish this content format.",
+                        contentType: compatibility.contentType,
+                        issues: compatibility.issues,
+                    },
                     { status: 400 }
                 )
             }

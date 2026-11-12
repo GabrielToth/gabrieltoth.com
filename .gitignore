@@ -165,3 +165,6 @@ test-output.txt
 # local editor/tool config
 .claude/
 .tmp-203/
+
+# Rust core build artifacts
+rust-core/target/
