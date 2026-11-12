@@ -23,7 +23,9 @@ import { getLocalChannelById } from "./storage"
 import type { PlatformType } from "./types"
 
 export type LocalPublishAction =
-    "twitter_text" | "youtube_resumable_upload" | "unsupported"
+    | "twitter_text"
+    | "youtube_resumable_upload"
+    | "unsupported"
 
 export type LocalPublishErrorCode =
     | "PLATFORM_NOT_SUPPORTED"
