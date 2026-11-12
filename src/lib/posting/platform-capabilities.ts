@@ -22,7 +22,10 @@ export type PlatformKey =
     | "twitter" // X
 
 export type PostContentType =
-    "text_only" | "image_text" | "short_video" | "long_video"
+    | "text_only"
+    | "image_text"
+    | "short_video"
+    | "long_video"
 
 export type ExecutionEnvironment = "local" | "cloud"
 
