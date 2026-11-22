@@ -38,7 +38,7 @@
         "src/**/*.test.tsx",
         "src/__tests__/**",
         "vitest.setup.ts",
-        "vitest.config.ts",
+        "vitest.config.mts",
         "**/*.stories.ts",
         "**/*.stories.tsx",
         "src/stories",
