@@ -241,20 +241,38 @@
             "subtitle": "Casos reais de crescimento",
             "cases": [
                 {
-                    "channel": "WaveIGL ",
-                    "description": "Canal de Gaming gerenciado por mim",
+                    "channel": "Olhar do Vigo ",
+                    "description": "Canal atendido — primeiro mês de trabalho",
                     "metrics": [
                         {
-                            "label": "Visualizações mensais",
-                            "value": "2M+ "
+                            "label": "Views no 1º mês",
+                            "value": "2,5M "
+                        },
+                        {
+                            "label": "Média anterior",
+                            "value": "50K "
                         },
                         {
                             "label": "Crescimento",
-                            "value": "400% "
+                            "value": "50x "
+                        }
+                    ]
+                },
+                {
+                    "channel": "WaveIGL ",
+                    "description": "De 25K para 2M em 3 meses — hoje +1M/mês",
+                    "metrics": [
+                        {
+                            "label": "Em 3 meses",
+                            "value": "25K → 2M "
                         },
                         {
-                            "label": "Receita",
-                            "value": "5x "
+                            "label": "Recorrência",
+                            "value": "+1M/mês "
+                        },
+                        {
+                            "label": "Crescimento",
+                            "value": "80x "
                         }
                     ]
                 },

@@ -241,20 +241,38 @@
             "subtitle": "Reale Wachstumsfälle",
             "cases": [
                 {
-                    "channel": "WaveIGL ",
-                    "description": "Gaming-Kanal, den ich verwalte",
+                    "channel": "Olhar do Vigo ",
+                    "description": "Betreuter Kanal — erster Arbeitsmonat",
                     "metrics": [
                         {
-                            "label": "Monatliche Aufrufe",
-                            "value": "2M+ "
+                            "label": "Aufrufe im 1. Monat",
+                            "value": "2,5M "
+                        },
+                        {
+                            "label": "Vorheriger Schnitt",
+                            "value": "50K "
                         },
                         {
                             "label": "Wachstum",
-                            "value": "400% "
+                            "value": "50x "
+                        }
+                    ]
+                },
+                {
+                    "channel": "WaveIGL ",
+                    "description": "Von 25K auf 2M in 3 Monaten — heute +1M/Monat",
+                    "metrics": [
+                        {
+                            "label": "In 3 Monaten",
+                            "value": "25K → 2M "
                         },
                         {
-                            "label": "Einnahmen",
-                            "value": "5x "
+                            "label": "Konstanz",
+                            "value": "+1M/Monat "
+                        },
+                        {
+                            "label": "Wachstum",
+                            "value": "80x "
                         }
                     ]
                 },

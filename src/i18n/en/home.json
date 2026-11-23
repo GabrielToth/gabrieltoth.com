@@ -241,20 +241,38 @@
             "subtitle": "Real growth cases",
             "cases": [
                 {
-                    "channel": "WaveIGL",
-                    "description": "Gaming channel managed by me",
+                    "channel": "Olhar do Vigo",
+                    "description": "Client channel — first month of work",
                     "metrics": [
                         {
-                            "label": "Monthly views",
-                            "value": "2M+"
+                            "label": "Views in month 1",
+                            "value": "2.5M"
+                        },
+                        {
+                            "label": "Previous average",
+                            "value": "50K"
                         },
                         {
                             "label": "Growth",
-                            "value": "400%"
+                            "value": "50x"
+                        }
+                    ]
+                },
+                {
+                    "channel": "WaveIGL",
+                    "description": "From 25K to 2M in 3 months — now +1M/mo",
+                    "metrics": [
+                        {
+                            "label": "In 3 months",
+                            "value": "25K → 2M"
                         },
                         {
-                            "label": "Revenue",
-                            "value": "5x"
+                            "label": "Consistency",
+                            "value": "+1M/mo"
+                        },
+                        {
+                            "label": "Growth",
+                            "value": "80x"
                         }
                     ]
                 },

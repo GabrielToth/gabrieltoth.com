@@ -241,20 +241,38 @@
             "subtitle": "Cas de croissance réels",
             "cases": [
                 {
-                    "channel": "WaveIGL",
-                    "description": "Chaîne gaming gérée par moi",
+                    "channel": "Olhar do Vigo",
+                    "description": "Chaîne accompagnée — premier mois de travail",
                     "metrics": [
                         {
-                            "label": "Vues mensuelles",
-                            "value": "2M+"
+                            "label": "Vues au 1er mois",
+                            "value": "2,5M"
+                        },
+                        {
+                            "label": "Moyenne précédente",
+                            "value": "50K"
                         },
                         {
                             "label": "Croissance",
-                            "value": "400%"
+                            "value": "50x"
+                        }
+                    ]
+                },
+                {
+                    "channel": "WaveIGL",
+                    "description": "De 25K à 2M en 3 mois — aujourd'hui +1M/mois",
+                    "metrics": [
+                        {
+                            "label": "En 3 mois",
+                            "value": "25K → 2M"
                         },
                         {
-                            "label": "Revenus",
-                            "value": "5x"
+                            "label": "Régularité",
+                            "value": "+1M/mois"
+                        },
+                        {
+                            "label": "Croissance",
+                            "value": "80x"
                         }
                     ]
                 },
