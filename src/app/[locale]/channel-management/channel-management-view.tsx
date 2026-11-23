@@ -298,59 +298,6 @@ const ResultsSection = () => {
     )
 }
 
-// Testimonials Section Component
-const TestimonialsSection = () => {
-    const t = useTranslations("channelManagement")
-    const items = t.raw("testimonials.items") as Array<{
-        name: string
-        role: string
-        content: string
-        rating: number
-    }>
-    return (
-        <section className="py-20 bg-muted dark:bg-background">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl font-bold text-foreground dark:text-foreground mb-4">
-                        {t("testimonials.title")}
-                    </h2>
-                    <p className="text-xl text-muted-foreground dark:text-foreground">
-                        {t("testimonials.subtitle")}
-                    </p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {items.map((testimonial, index) => (
-                        <div
-                            key={index}
-                            className="bg-card rounded-lg p-8 shadow-lg backdrop-blur-sm"
-                        >
-                            <div>
-                                <div className="font-semibold text-foreground dark:text-foreground">
-                                    {testimonial.name}
-                                </div>
-                                <div className="text-sm text-muted-foreground dark:text-muted-foreground">
-                                    {testimonial.role}
-                                </div>
-                            </div>
-                            <div className="flex items-center mb-4">
-                                {[...Array(testimonial.rating)].map((_, i) => (
-                                    <Star
-                                        key={i}
-                                        className="w-5 h-5 text-yellow-400 fill-current"
-                                    />
-                                ))}
-                            </div>
-                            <p className="text-foreground dark:text-foreground mb-6 italic">
-                                {testimonial.content}
-                            </p>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </section>
-    )
-}
-
 // Pricing Section Component
 const PricingSection = ({
     locale,
@@ -546,7 +493,6 @@ const ChannelManagementView = ({ locale }: ChannelManagementLandingProps) => {
             <ProblemsSection />
             <ServicesSection />
             <ResultsSection />
-            <TestimonialsSection />
             <PricingSection locale={locale} calculatePrice={calculatePrice} />
             <EditorSection locale={locale} />
         </main>
