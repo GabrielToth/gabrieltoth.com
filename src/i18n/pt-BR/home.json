@@ -260,19 +260,19 @@
                 },
                 {
                     "channel": "WaveIGL ",
-                    "description": "Canal de Gaming gerenciado por mim",
+                    "description": "De 25K para 2M em 3 meses — hoje +1M/mês",
                     "metrics": [
                         {
-                            "label": "Visualizações mensais",
-                            "value": "2M+ "
+                            "label": "Em 3 meses",
+                            "value": "25K → 2M "
+                        },
+                        {
+                            "label": "Recorrência",
+                            "value": "+1M/mês "
                         },
                         {
                             "label": "Crescimento",
-                            "value": "400% "
-                        },
-                        {
-                            "label": "Receita",
-                            "value": "5x "
+                            "value": "80x "
                         }
                     ]
                 },

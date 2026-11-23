@@ -245,6 +245,18 @@
         "subtitle": "Real cases and achievements over 10+ years of experience",
         "items": [
             {
+                "name": "Olhar do Vigo",
+                "role": "Client channel — 2.5M views in month 1",
+                "content": "In the very first month of consulting and management, we went from a previous 50K view average to 2.5M monthly views — a 50x reach explosion driven by data-focused content strategy.",
+                "rating": 5
+            },
+            {
+                "name": "WaveIGL",
+                "role": "Managed channel — From 25K to 2M in 3 months",
+                "content": "Scaled the channel from 25K monthly views to 2M in just 3 months of focused execution. Today we consistently maintain over 1M views every single month.",
+                "rating": 5
+            },
+            {
                 "name": "Gabriel Toth (old channel) - @oprimeirogabrieltoth",
                 "role": "Old channel - Extraordinary result",
                 "content": "One of my most impressive cases: I achieved over 1 million views on a channel that still had less than 1000 subscribers. This demonstrates my ability to create viral content and deeply understand platform algorithms.",
