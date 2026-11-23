@@ -241,6 +241,24 @@
             "subtitle": "Casos reais de crescimento",
             "cases": [
                 {
+                    "channel": "Olhar do Vigo ",
+                    "description": "Canal atendido — primeiro mês de trabalho",
+                    "metrics": [
+                        {
+                            "label": "Views no 1º mês",
+                            "value": "2,5M "
+                        },
+                        {
+                            "label": "Média anterior",
+                            "value": "50K "
+                        },
+                        {
+                            "label": "Crescimento",
+                            "value": "50x "
+                        }
+                    ]
+                },
+                {
                     "channel": "WaveIGL ",
                     "description": "Canal de Gaming gerenciado por mim",
                     "metrics": [

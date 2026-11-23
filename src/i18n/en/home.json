@@ -241,6 +241,24 @@
             "subtitle": "Real growth cases",
             "cases": [
                 {
+                    "channel": "Olhar do Vigo",
+                    "description": "Client channel — first month of work",
+                    "metrics": [
+                        {
+                            "label": "Views in month 1",
+                            "value": "2.5M"
+                        },
+                        {
+                            "label": "Previous average",
+                            "value": "50K"
+                        },
+                        {
+                            "label": "Growth",
+                            "value": "50x"
+                        }
+                    ]
+                },
+                {
                     "channel": "WaveIGL",
                     "description": "Gaming channel managed by me",
                     "metrics": [

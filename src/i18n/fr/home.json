@@ -241,6 +241,24 @@
             "subtitle": "Cas de croissance réels",
             "cases": [
                 {
+                    "channel": "Olhar do Vigo",
+                    "description": "Chaîne accompagnée — premier mois de travail",
+                    "metrics": [
+                        {
+                            "label": "Vues au 1er mois",
+                            "value": "2,5M"
+                        },
+                        {
+                            "label": "Moyenne précédente",
+                            "value": "50K"
+                        },
+                        {
+                            "label": "Croissance",
+                            "value": "50x"
+                        }
+                    ]
+                },
+                {
                     "channel": "WaveIGL",
                     "description": "Chaîne gaming gérée par moi",
                     "metrics": [

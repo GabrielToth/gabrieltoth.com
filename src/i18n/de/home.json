@@ -241,6 +241,24 @@
             "subtitle": "Reale Wachstumsfälle",
             "cases": [
                 {
+                    "channel": "Olhar do Vigo ",
+                    "description": "Betreuter Kanal — erster Arbeitsmonat",
+                    "metrics": [
+                        {
+                            "label": "Aufrufe im 1. Monat",
+                            "value": "2,5M "
+                        },
+                        {
+                            "label": "Vorheriger Schnitt",
+                            "value": "50K "
+                        },
+                        {
+                            "label": "Wachstum",
+                            "value": "50x "
+                        }
+                    ]
+                },
+                {
                     "channel": "WaveIGL ",
                     "description": "Gaming-Kanal, den ich verwalte",
                     "metrics": [
