@@ -6,11 +6,15 @@ import { defineConfig } from "vitest/config"
 export default defineConfig({
     resolve: {
         alias: {
-            "@": path.resolve(__dirname, "./src"),
+            "@": path.resolve(import.meta.dirname, "./src"),
         },
     },
     test: {
         environment: "jsdom",
+        // Vite 8.4's rolldown binding plus one forked Node process per test
+        // file exhausts the Windows desktop heap (exit 0xC0000142 / 3221225794)
+        // while the worker is still starting. Threads stay in-process.
+        pool: process.platform === "win32" ? "threads" : "forks",
         include: ["src/**/*.{test,spec}.{ts,tsx}"],
         globals: true,
         reporters: [["default", { summary: true }]],

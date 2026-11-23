@@ -30,7 +30,7 @@
 ## Testing quirks
 
 - Vitest runs **jsdom** environment, globals enabled, 10s timeout.
-- Many test files are **explicitly excluded** from `vitest.config.ts` and will be **skipped** unless infra is up:
+- Many test files are **explicitly excluded** from `vitest.config.mts` and will be **skipped** unless infra is up:
   - DB/integration/security tests that require Docker + Supabase
   - Backend integration tests, credit/metering system tests
 - Property-based testing uses `@fast-check/vitest` (tests that use it may be slower).
