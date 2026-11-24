@@ -1,3 +1,20 @@
+import { getFacebookConfig } from "./config"
+import { generateAppSecretProof } from "./crypto"
+
+function withProof(params: URLSearchParams, accessToken: string): void {
+    try {
+        const config = getFacebookConfig()
+        if (config.oauth.appSecret) {
+            params.set(
+                "appsecret_proof",
+                generateAppSecretProof(accessToken, config.oauth.appSecret)
+            )
+        }
+    } catch {
+        // Continue without appsecret_proof if config is not initialized
+    }
+}
+
 const GRAPH_API_BASE = "https://graph.facebook.com"
 const API_VERSION = "v25.0"
 
@@ -53,6 +70,7 @@ export async function postToPageFeed(
             )
         }
     }
+    withProof(params, pageAccessToken)
 
     const url = `${GRAPH_API_BASE}/${API_VERSION}/${pageId}/feed`
 
@@ -88,6 +106,7 @@ export async function postToGroupFeed(
 
     if (options?.link) params.set("link", options.link)
     if (options?.picture) params.set("picture", options.picture)
+    withProof(params, pageAccessToken)
 
     const url = `${GRAPH_API_BASE}/${API_VERSION}/${groupId}/feed`
 
@@ -154,6 +173,7 @@ export async function postVideoToPageFeed(
             )
         }
     }
+    withProof(params, pageAccessToken)
 
     const url = `${GRAPH_API_BASE}/${API_VERSION}/${pageId}/videos`
 
@@ -192,6 +212,7 @@ export async function getPagePosts(
     if (options?.limit) params.set("limit", String(options.limit))
     if (options?.before) params.set("before", options.before)
     if (options?.after) params.set("after", options.after)
+    withProof(params, pageAccessToken)
 
     const url = `${GRAPH_API_BASE}/${API_VERSION}/${pageId}/feed?${params.toString()}`
 
