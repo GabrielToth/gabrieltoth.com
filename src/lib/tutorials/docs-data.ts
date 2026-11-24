@@ -218,30 +218,6 @@ export const CATEGORY_DOCS: CategoryDoc[] = [
         ],
     },
     {
-        category: "cloner",
-        overviewKey: "cloner.overview",
-        technicalKey: "cloner.technical",
-        dataKey: "cloner.data",
-        sections: [],
-        examples: [
-            {
-                titleKey: "cloner.examples.individual",
-                audience: "individual",
-                bodyKey: "cloner.examples.individualBody",
-                steps: ["cloner.examples.individualStep1"],
-            },
-            {
-                titleKey: "cloner.examples.company",
-                audience: "company",
-                bodyKey: "cloner.examples.companyBody",
-                steps: [
-                    "cloner.examples.companyStep1",
-                    "cloner.examples.companyStep2",
-                ],
-            },
-        ],
-    },
-    {
         category: "settings",
         overviewKey: "settings.overview",
         technicalKey: "settings.technical",

@@ -1,3 +1,20 @@
+import { getFacebookConfig } from "./config"
+import { generateAppSecretProof } from "./crypto"
+
+function withProof(params: URLSearchParams, accessToken: string): void {
+    try {
+        const config = getFacebookConfig()
+        if (config.oauth.appSecret) {
+            params.set(
+                "appsecret_proof",
+                generateAppSecretProof(accessToken, config.oauth.appSecret)
+            )
+        }
+    } catch {
+        // Continue without appsecret_proof if config is not initialized
+    }
+}
+
 const GRAPH_API_BASE = "https://graph.facebook.com"
 const API_VERSION = "v25.0"
 
@@ -42,6 +59,7 @@ export async function getComments(
     if (options?.limit) params.set("limit", String(options.limit))
     if (options?.after) params.set("after", options.after)
     if (options?.before) params.set("before", options.before)
+    withProof(params, pageAccessToken)
 
     const url = `${GRAPH_API_BASE}/${API_VERSION}/${postId}/comments?${params.toString()}`
 
@@ -66,6 +84,7 @@ export async function replyToComment(
         access_token: pageAccessToken,
         message,
     })
+    withProof(params, pageAccessToken)
 
     const url = `${GRAPH_API_BASE}/${API_VERSION}/${commentId}/comments`
 
@@ -89,7 +108,12 @@ export async function deleteComment(
     pageAccessToken: string,
     commentId: string
 ): Promise<void> {
-    const url = `${GRAPH_API_BASE}/${API_VERSION}/${commentId}?access_token=${pageAccessToken}`
+    const params = new URLSearchParams({
+        access_token: pageAccessToken,
+    })
+    withProof(params, pageAccessToken)
+
+    const url = `${GRAPH_API_BASE}/${API_VERSION}/${commentId}?${params.toString()}`
 
     const response = await fetch(url, { method: "DELETE" })
 
@@ -110,6 +134,7 @@ export async function hideComment(
         access_token: pageAccessToken,
         is_hidden: hide ? "true" : "false",
     })
+    withProof(params, pageAccessToken)
 
     const url = `${GRAPH_API_BASE}/${API_VERSION}/${commentId}`
 

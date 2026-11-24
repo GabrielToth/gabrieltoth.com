@@ -45,7 +45,6 @@ export type DashboardCategory =
     | "settings"
     | "discover"
     | "repost"
-    | "cloner"
 
 export const DASHBOARD_CATEGORIES: DashboardCategory[] = [
     "discover",
@@ -54,7 +53,6 @@ export const DASHBOARD_CATEGORIES: DashboardCategory[] = [
     "insights",
     "channels",
     "repost",
-    "cloner",
     "settings",
 ]
 

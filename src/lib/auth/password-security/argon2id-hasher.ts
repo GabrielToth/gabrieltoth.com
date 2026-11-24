@@ -149,7 +149,7 @@ export async function hashPasswordArgon2id(
             memoryCost: memoryKiB,
             timeCost: argon2Params.time,
             parallelism: argon2Params.parallelism,
-            type: "argon2id", // Argon2id type (Argon2 v19 is always used)
+            type: argon2.argon2id, // Argon2id type (Argon2 v19 is always used)
             hashLength: 32, // 256-bit hash
             salt: salt, // Use our generated salt
         })

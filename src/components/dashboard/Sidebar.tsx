@@ -19,7 +19,6 @@ export interface SidebarProps {
         | "chat-commands"
         | "discover"
         | "repost"
-        | "cloner"
     onTabChange: (
         tab:
             | "publish"
@@ -30,7 +29,6 @@ export interface SidebarProps {
             | "chat-commands"
             | "discover"
             | "repost"
-            | "cloner"
     ) => void
     isOpen?: boolean
     onClose?: () => void
@@ -161,7 +159,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
         { id: "chat-commands", label: t("chatCommands"), icon: "💬" },
         { id: "insights", label: t("insights"), icon: "📊" },
         { id: "repost", label: t("repost"), icon: "🔄" },
-        { id: "cloner", label: t("cloner"), icon: "🧬" },
         { id: "channels", label: t("channels"), icon: "🔗" },
         { id: "settings", label: t("settings"), icon: "⚙️" },
     ] as const

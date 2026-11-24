@@ -52,7 +52,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024, // 64 MB
                 timeCost: 3,
                 parallelism: 2,
-                type: "argon2id", // Argon2id
+                type: argon2.argon2id, // Argon2id
             })
         })
 
@@ -101,7 +101,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: "argon2id",
+                type: argon2.argon2id,
             })
         })
 
@@ -231,7 +231,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: "argon2id",
+                type: argon2.argon2id,
             })
         })
 
@@ -250,7 +250,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: "argon2id",
+                type: argon2.argon2id,
             })
 
             // Try to validate with correct pepper (should fail)
@@ -270,7 +270,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: "argon2id",
+                type: argon2.argon2id,
             })
         })
 
@@ -313,7 +313,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: "argon2id",
+                type: argon2.argon2id,
             })
 
             validResult = await validatePassword(TEST_PASSWORD, argon2Hash)
@@ -356,7 +356,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: "argon2id",
+                type: argon2.argon2id,
             })
         })
 
@@ -368,7 +368,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: "argon2id",
+                type: argon2.argon2id,
             })
 
             const result = await validatePassword(specialPassword, hash)
@@ -384,7 +384,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: "argon2id",
+                type: argon2.argon2id,
             })
 
             const result = await validatePassword(unicodePassword, hash)
@@ -400,7 +400,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: "argon2id",
+                type: argon2.argon2id,
             })
 
             const result = await validatePassword(spacedPassword, hash)
@@ -416,7 +416,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: "argon2id",
+                type: argon2.argon2id,
             })
 
             const result = await validatePassword(minPassword, hash)
@@ -432,7 +432,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: "argon2id",
+                type: argon2.argon2id,
             })
 
             const result = await validatePassword(maxPassword, hash)

@@ -7,6 +7,7 @@
 import crypto from "crypto"
 import { BaseService, ServiceError } from "../youtube/base-service"
 import { InstagramConfig } from "./config"
+import { generateAppSecretProof } from "../facebook/crypto"
 
 export interface OAuthTokenResponse {
     accessToken: string
@@ -232,6 +233,15 @@ export class InstagramOAuthService extends BaseService {
                 fields: "instagram_business_account{id,username,name,profile_picture_url,followers_count}",
                 access_token: accessToken,
             })
+            if (this.config.oauth.appSecret) {
+                params.set(
+                    "appsecret_proof",
+                    generateAppSecretProof(
+                        accessToken,
+                        this.config.oauth.appSecret
+                    )
+                )
+            }
 
             const response = await fetch(
                 `${this.graphApiBase}/${this.config.oauth.apiVersion}/me/accounts?${params.toString()}`
@@ -286,8 +296,21 @@ export class InstagramOAuthService extends BaseService {
         this.assertReady()
 
         try {
+            const params = new URLSearchParams({
+                access_token: accessToken,
+            })
+            if (this.config.oauth.appSecret) {
+                params.set(
+                    "appsecret_proof",
+                    generateAppSecretProof(
+                        accessToken,
+                        this.config.oauth.appSecret
+                    )
+                )
+            }
+
             const response = await fetch(
-                `${this.graphApiBase}/${this.config.oauth.apiVersion}/${userId}/permissions?access_token=${accessToken}`,
+                `${this.graphApiBase}/${this.config.oauth.apiVersion}/${userId}/permissions?${params.toString()}`,
                 { method: "DELETE" }
             )
 

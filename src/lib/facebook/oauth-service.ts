@@ -1,6 +1,7 @@
 import crypto from "crypto"
 import { BaseService, ServiceError } from "../youtube/base-service"
 import { FacebookConfig } from "./config"
+import { generateAppSecretProof } from "./crypto"
 
 export interface OAuthTokenResponse {
     accessToken: string
@@ -228,6 +229,15 @@ export class FacebookOAuthService extends BaseService {
                 fields: "id,name,email,picture.width(200).height(200)",
                 access_token: accessToken,
             })
+            if (this.config.oauth.appSecret) {
+                params.set(
+                    "appsecret_proof",
+                    generateAppSecretProof(
+                        accessToken,
+                        this.config.oauth.appSecret
+                    )
+                )
+            }
 
             const response = await fetch(
                 `${this.graphApiBase}/${this.config.oauth.apiVersion}/me?${params.toString()}`
@@ -275,6 +285,15 @@ export class FacebookOAuthService extends BaseService {
                 access_token: accessToken,
                 limit: "100",
             })
+            if (this.config.oauth.appSecret) {
+                params.set(
+                    "appsecret_proof",
+                    generateAppSecretProof(
+                        accessToken,
+                        this.config.oauth.appSecret
+                    )
+                )
+            }
 
             const response = await fetch(
                 `${this.graphApiBase}/${this.config.oauth.apiVersion}/me/accounts?${params.toString()}`
@@ -332,6 +351,15 @@ export class FacebookOAuthService extends BaseService {
                 fields: "access_token",
                 access_token: userAccessToken,
             })
+            if (this.config.oauth.appSecret) {
+                params.set(
+                    "appsecret_proof",
+                    generateAppSecretProof(
+                        userAccessToken,
+                        this.config.oauth.appSecret
+                    )
+                )
+            }
 
             const response = await fetch(
                 `${this.graphApiBase}/${this.config.oauth.apiVersion}/${pageId}?${params.toString()}`
@@ -365,6 +393,15 @@ export class FacebookOAuthService extends BaseService {
             const params = new URLSearchParams({
                 access_token: accessToken,
             })
+            if (this.config.oauth.appSecret) {
+                params.set(
+                    "appsecret_proof",
+                    generateAppSecretProof(
+                        accessToken,
+                        this.config.oauth.appSecret
+                    )
+                )
+            }
 
             const response = await fetch(
                 `${this.graphApiBase}/${this.config.oauth.apiVersion}/me/permissions?${params.toString()}`,

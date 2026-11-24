@@ -505,7 +505,7 @@ describe("Password storage security", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: "argon2id",
+                type: argon2.argon2id,
             })
 
             const result = await validatePassword(password, argon2Hash)
