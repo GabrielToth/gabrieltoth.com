@@ -8,12 +8,12 @@
  * Spec format (nested under namespace file names, e.g. dashboard.json):
  * {
  *   "dashboard.json": {
- *     "cloner.title": {
- *       "pt-BR": "Clonador do YouTube",
- *       "en": "YouTube Cloner",
- *       "es": "Clonador de YouTube",
- *       "de": "YouTube-Kloner",
- *       "fr": "Cloneur YouTube"
+ *     "discover.title": {
+ *       "pt-BR": "Descobrir",
+ *       "en": "Discover",
+ *       "es": "Descubrir",
+ *       "de": "Entdecken",
+ *       "fr": "Decouvrir"
  *     }
  *   }
  * }

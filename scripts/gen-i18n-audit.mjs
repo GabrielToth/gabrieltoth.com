@@ -285,7 +285,7 @@ md += `| Páginas canônicas SEM i18n direto | ${canon.filter(p => !hasI18n(read
 md += `| Páginas canônicas COM i18n direto | ${canon.filter(p => hasI18n(read(p))).length} |\n\n`
 
 md += `**Leitura em 30s:**\n`
-md += `- **Cobertura boa** em: dashboard (channels/cloner/credits/discover/insights/live/publish/repost/settings), minecraft (todos os subpaths), amazon-affiliate, auth/complete-account, forgot-password, home/landing.\n`
+md += `- **Cobertura boa** em: dashboard (channels/credits/discover/insights/live/publish/repost/settings), minecraft (todos os subpaths), amazon-affiliate, auth/complete-account, forgot-password, home/landing.\n`
 md += `- **Gaps restantes** (§7): P0 monetário/visível já traduzido (blog, obs, checkout, chat-popout); os 4 públicos (channel-management/editors/pc-optimization/about-me) têm SEO/breadcrumbs via getTranslations, físico da page sem t() (P2 residual); docs puramente delegado (P2 residual); login/register falso-positivo (redirect-only, forms com auth); 6 URLs sem [locale] são redirects de compatibilidade (✅ manter); gabriel-toth-goncalves intencional com t() (P2 residual); dívida restante = placeholders residuais (P1).\n`
 md += `- **Dívida de infra — RESOLVIDA**: breadcrumbs.json e seo.json agora carregados em request.ts (${loaded.length}/${nsFiles.length} namespaces).\n`
 md += `- **Risco de nova língua**: adicionar locale exige 6 toques manuais (ver §10); sem checklist, é fácil esquecer request.ts, locales[], url-mapping, wrappers, middleware e scripts/validate.\n\n`
@@ -602,7 +602,7 @@ md += `## 9) Riscos e dívidas técnicas\n\n`
 md += `- **SEO/metadata não traduzido**: generateSeoConfig/generateMetadata em about-me, channel-management, editors, pc-optimization usam title/desc hardcoded EN (openGraph locale fixo) — afeta hreflang/sitemap por idioma.\n`
 md += `- **Breadcrumbs hardcoded**: channelManagementBreadcrumbs, editorsBreadcrumbs, pcOptimizationBreadcrumbs constroem labels via t("breadcrumbs.*") mas breadcrumbs.json não está em messages — fallback silencioso para EN.\n`
 md += `- **Duplicação de rotas**: legado src/app/<slug>/page.tsx fora de [locale] compete com [locale]/<slug> — risco de 404/conteúdo duplicado para crawlers.\n`
-md += `- **Placeholders residuais**: mesmo componentes com i18n ainda têm strings literais em placeholder/title/aria-label (ex: dashboard/cloner, discover) — quebra em de/fr.\n`
+md += `- **Placeholders residuais**: mesmo componentes com i18n ainda têm strings literais em placeholder/title/aria-label (ex: dashboard/discover) — quebra em de/fr.\n`
 md += `- **Sem lint guard**: nenhuma regra impede novo JSX hardcoded; i18n:validate só checa paridade de chaves, não uso.\n`
 md += `- **Nova língua = 6 toques manuais**: locales[], request.ts, url-mapping.ts, wrappers físicos, middleware SUPPORTED_LOCALES, sitemap — sem gerador, fácil esquecer um.\n\n`
 
@@ -656,7 +656,7 @@ md += `- Preferir namespaces existentes (auth, dashboard.*, seo, breadcrumbs) an
 md += `### 10.4 Namespaces — quando criar vs reutilizar\n\n`
 md += `| Já existe | Use para |\n|---|---|\n`
 md += `| auth | login, register, complete-account, forgot-password, reset-password |\n`
-md += `| dashboard.* | channels, cloner, credits, discover, insights, live, publish, repost, settings, common |\n`
+md += `| dashboard.* | channels, credits, discover, insights, live, publish, repost, settings, common |\n`
 md += `| home / landing / aboutMe / editors / channelManagement / pcOptimization / services / minecraft* | páginas públicas |\n`
 md += `| seo / breadcrumbs | SEO e navegação (já carregados em request.ts) |\n\n`
 md += `Crie novo namespace só se a página for isolada (ex: blog.json, obs.json, payments.json, docs.json) e adicione em request.ts.\n\n`
@@ -699,7 +699,7 @@ md += `comm -23 <(ls src/i18n/en/*.json | xargs -I{} basename {} | sort) <(grep 
 md += "```\n\n"
 
 md += `---\n\n`
-md += `**Próximo passo recomendado:** P0/P1-legado/P1-infra concluídos (audit §7 com 7 ✅ legado-compat). Restam: P1 polish — placeholders residuais hardcoded nos componentes com i18n (cloner/discover/repost/registration, ~45 arquivos); P2 hygiene — mover t() para pages delegadas e adicionar generateMetadata em dashboard/docs.\n`
+md += `**Próximo passo recomendado:** P0/P1-legado/P1-infra concluídos (audit §7 com 7 ✅ legado-compat). Restam: P1 polish — placeholders residuais hardcoded nos componentes com i18n (discover/repost/registration, ~45 arquivos); P2 hygiene — mover t() para pages delegadas e adicionar generateMetadata em dashboard/docs.\n`
 
 const outPath = path.join(ROOT, "docs/I18N_AUDIT.md")
 fs.mkdirSync(path.dirname(outPath), { recursive: true })

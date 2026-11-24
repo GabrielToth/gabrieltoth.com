@@ -172,19 +172,6 @@ export const CATEGORY_TUTORIALS: Tutorial[] = [
         ],
     },
     {
-        id: "cloner",
-        category: "cloner",
-        titleKey: "titles.cloner",
-        steps: [
-            {
-                index: 0,
-                target: '[data-tutorial="cloner-import"]',
-                title: "clonerImport.title",
-                description: "clonerImport.description",
-            },
-        ],
-    },
-    {
         id: "settings",
         category: "settings",
         titleKey: "titles.settings",

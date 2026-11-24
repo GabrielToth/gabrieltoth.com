@@ -36,7 +36,7 @@ A. [Apêndice — comandos de validação](#a-apêndice--comandos-de-validação
 | Páginas canônicas COM i18n direto | 34 |
 
 **Leitura em 30s:**
-- **Cobertura boa** em: dashboard (channels/cloner/credits/discover/insights/live/publish/repost/settings), minecraft (todos os subpaths), amazon-affiliate, auth/complete-account, forgot-password, home/landing.
+- **Cobertura boa** em: dashboard (channels/credits/discover/insights/live/publish/repost/settings), minecraft (todos os subpaths), amazon-affiliate, auth/complete-account, forgot-password, home/landing.
 - **Gaps restantes** (§7): P0 monetário/visível já traduzido (blog, obs, checkout, chat-popout); os 4 públicos (channel-management/editors/pc-optimization/about-me) têm SEO/breadcrumbs via getTranslations, físico da page sem t() (P2 residual); docs puramente delegado (P2 residual); login/register falso-positivo (redirect-only, forms com auth); 6 URLs sem [locale] são redirects de compatibilidade (✅ manter); gabriel-toth-goncalves intencional com t() (P2 residual); dívida restante = placeholders residuais (P1).
 - **Dívida de infra — RESOLVIDA**: breadcrumbs.json e seo.json agora carregados em request.ts (36/36 namespaces).
 - **Risco de nova língua**: adicionar locale exige 6 toques manuais (ver §10); sem checklist, é fácil esquecer request.ts, locales[], url-mapping, wrappers, middleware e scripts/validate.
@@ -413,7 +413,6 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 | 5 | `[locale]/blog/page.tsx` | `/en/blog` | `/pt-BR/blog` | `/es/blog` | `/de/blog` | `/fr/blog` | ✅ | `blog` | ✅ |
 | 6 | `[locale]/channel-management/page.tsx` | `/en/channel-management` | `/pt-BR/gerenciamento-de-canais` | `/es/gestion-de-canales` | `/de/kanalverwaltung` | `/fr/gestion-de-chaine` | ❌ | `—` | ⚠️ Delegado parcial: channel-management-view/breadcrumbs têm i18n, mas page.tsx sem t() — breadcrumbs/SEO vêm de helper hardcoded |
 | 7 | `[locale]/dashboard/channels/page.tsx` | `/en/dashboard/channels` | `/pt-BR/dashboard/channels` | `/es/dashboard/channels` | `/de/dashboard/channels` | `/fr/dashboard/channels` | ✅ | `dashboard` | ✅ |
-| 8 | `[locale]/dashboard/cloner/page.tsx` | `/en/dashboard/cloner` | `/pt-BR/dashboard/cloner` | `/es/dashboard/cloner` | `/de/dashboard/cloner` | `/fr/dashboard/cloner` | ✅ | `dashboard.cloner` | ✅ |
 | 9 | `[locale]/dashboard/credits/page.tsx` | `/en/dashboard/credits` | `/pt-BR/dashboard/credits` | `/es/dashboard/credits` | `/de/dashboard/credits` | `/fr/dashboard/credits` | ✅ | `dashboard.credits` | ✅ |
 | 10 | `[locale]/dashboard/discover/page.tsx` | `/en/dashboard/discover` | `/pt-BR/dashboard/discover` | `/es/dashboard/discover` | `/de/dashboard/discover` | `/fr/dashboard/discover` | ✅ | `dashboard.discover` | ✅ |
 | 11 | `[locale]/dashboard/docs/[category]/page.tsx` | `/en/dashboard/docs/[category]` | `/pt-BR/dashboard/docs/[category]` | `/es/dashboard/docs/[category]` | `/de/dashboard/docs/[category]` | `/fr/dashboard/docs/[category]` | ❌ | `—` | ❌ Sem i18n — docs/tutorial hardcoded |
@@ -699,7 +698,6 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 - `src/app/[locale]/blog/page.tsx` → `blog`
 - `src/app/[locale]/channel-management/channel-management-view.tsx` → `channelManagement, channelManagement, channelManagement, channelManagement, channelManagement, channelManagement, channelManagement, channelManagement`
 - `src/app/[locale]/dashboard/channels/page.tsx` → `dashboard`
-- `src/app/[locale]/dashboard/cloner/page.tsx` → `dashboard.cloner`
 - `src/app/[locale]/dashboard/credits/page.tsx` → `dashboard.credits`
 - `src/app/[locale]/dashboard/dashboard-layout-client.tsx` → `dashboard.common`
 - `src/app/[locale]/dashboard/discover/page.tsx` → `dashboard.discover`
@@ -829,7 +827,7 @@ Amostra de 120 ocorrências (priorizar P0/P1):
 - **SEO/metadata não traduzido**: generateSeoConfig/generateMetadata em about-me, channel-management, editors, pc-optimization usam title/desc hardcoded EN (openGraph locale fixo) — afeta hreflang/sitemap por idioma.
 - **Breadcrumbs hardcoded**: channelManagementBreadcrumbs, editorsBreadcrumbs, pcOptimizationBreadcrumbs constroem labels via t("breadcrumbs.*") mas breadcrumbs.json não está em messages — fallback silencioso para EN.
 - **Duplicação de rotas**: legado src/app/<slug>/page.tsx fora de [locale] compete com [locale]/<slug> — risco de 404/conteúdo duplicado para crawlers.
-- **Placeholders residuais**: mesmo componentes com i18n ainda têm strings literais em placeholder/title/aria-label (ex: dashboard/cloner, discover) — quebra em de/fr.
+- **Placeholders residuais**: mesmo componentes com i18n ainda têm strings literais em placeholder/title/aria-label (ex: dashboard/discover) — quebra em de/fr.
 - **Sem lint guard**: nenhuma regra impede novo JSX hardcoded; i18n:validate só checa paridade de chaves, não uso.
 - **Nova língua = 6 toques manuais**: locales[], request.ts, url-mapping.ts, wrappers físicos, middleware SUPPORTED_LOCALES, sitemap — sem gerador, fácil esquecer um.
 
@@ -887,7 +885,7 @@ Regras:
 | Já existe | Use para |
 |---|---|
 | auth | login, register, complete-account, forgot-password, reset-password |
-| dashboard.* | channels, cloner, credits, discover, insights, live, publish, repost, settings, common |
+| dashboard.* | channels, credits, discover, insights, live, publish, repost, settings, common |
 | home / landing / aboutMe / editors / channelManagement / pcOptimization / services / minecraft* | páginas públicas |
 | seo / breadcrumbs | SEO e navegação (já carregados em request.ts) |
 
@@ -937,4 +935,4 @@ comm -23 <(ls src/i18n/en/*.json | xargs -I{} basename {} | sort) <(grep -oP '@\
 
 ---
 
-**Próximo passo recomendado:** P0/P1-legado/P1-infra concluídos (audit §7 com 7 ✅ legado-compat). Restam: P1 polish — placeholders residuais hardcoded nos componentes com i18n (cloner/discover/repost/registration, ~45 arquivos); P2 hygiene — mover t() para pages delegadas e adicionar generateMetadata em dashboard/docs.
+**Próximo passo recomendado:** P0/P1-legado/P1-infra concluídos (audit §7 com 7 ✅ legado-compat). Restam: P1 polish — placeholders residuais hardcoded nos componentes com i18n (discover/repost/registration, ~45 arquivos); P2 hygiene — mover t() para pages delegadas e adicionar generateMetadata em dashboard/docs.

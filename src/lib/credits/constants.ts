@@ -3,7 +3,6 @@ export const CREDIT_COSTS = {
     chat_timeout: 10.0,
     chat_ban: 25.0,
     chat_unban: 5.0,
-    youtube_video_download_per_minute: 100.0,
     youtube_metadata: 0.0,
     youtube_post_schedule: 50.0,
     youtube_ai_rewrite_per_1k_tokens: 500.0,

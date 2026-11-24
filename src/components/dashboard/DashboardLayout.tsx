@@ -13,7 +13,6 @@ type DashboardTab =
     | "chat-commands"
     | "discover"
     | "repost"
-    | "cloner"
 import React, { useState } from "react"
 import { Sidebar } from "./Sidebar"
 import { CreditBadge } from "@/components/credits/CreditBadge"

@@ -17,7 +17,6 @@ type DashboardTab =
     | "chat-commands"
     | "discover"
     | "repost"
-    | "cloner"
 
 export default function DashboardClientLayout({
     children,
@@ -48,8 +47,6 @@ export default function DashboardClientLayout({
             setActiveTab("discover")
         } else if (pathname.includes("/dashboard/repost")) {
             setActiveTab("repost")
-        } else if (pathname.includes("/dashboard/cloner")) {
-            setActiveTab("cloner")
         } else if (pathname.includes("/dashboard/chat-commands")) {
             setActiveTab("chat-commands")
         } else if (pathname.includes("/dashboard/channels")) {

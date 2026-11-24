@@ -23,7 +23,7 @@
   - Multi-session concurrency pool using proxy rotation (residential HTTP/SOCKS5 proxies).
 - [x] **Kwai Automation Strategy:**
   - Mobile web endpoint scraping and session signature bypass.
-- [x] **Universal Multi-User Scaling Architecture (1,000+ Active Users & 1,000+ Channel Clones):**
+- [x] **Universal Multi-User Scaling Architecture (1,000+ Active Users):**
   - Queue management via Redis + BullMQ for scheduled uploads/scrapes.
   - Rate limiting per proxy IP and per account session token.
 
@@ -32,7 +32,7 @@
 ## 📊 PHASE 3: Owner/Dev Telemetry & Analytics Dashboard
 - [x] **Admin Insights Dashboard:**
   - Consolidated metrics view for Dev/Owner at `/dashboard/admin-telemetry`.
-  - Real-time revenue tracking, active user sessions, API error rates, credits consumption, and channel clone jobs.
+  - Real-time revenue tracking, active user sessions, API error rates, and credits consumption.
 
 ---
 
