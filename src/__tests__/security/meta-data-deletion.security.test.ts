@@ -36,7 +36,10 @@ const APP_SECRET = "test-meta-app-secret"
 
 function sign(payload: Record<string, unknown>, secret = APP_SECRET): string {
     const encoded = Buffer.from(JSON.stringify(payload)).toString("base64url")
-    const sig = crypto.createHmac("sha256", secret).update(encoded).digest("base64url")
+    const sig = crypto
+        .createHmac("sha256", secret)
+        .update(encoded)
+        .digest("base64url")
     return `${sig}.${encoded}`
 }
 
@@ -46,14 +49,11 @@ function makePost(
         "Content-Type": "application/json",
     }
 ): NextRequest {
-    return new NextRequest(
-        "http://localhost/api/webhooks/meta/data-deletion",
-        {
-            method: "POST",
-            headers,
-            body,
-        }
-    )
+    return new NextRequest("http://localhost/api/webhooks/meta/data-deletion", {
+        method: "POST",
+        headers,
+        body,
+    })
 }
 
 describe("Meta data deletion callback — Attack Matrix", () => {
@@ -70,7 +70,10 @@ describe("Meta data deletion callback — Attack Matrix", () => {
 
     describe("Row 1 — Auth bypass", () => {
         it("rejects a signature signed with the wrong secret", async () => {
-            const signed = sign({ user_id: "123", algorithm: "HMAC-SHA256" }, "other")
+            const signed = sign(
+                { user_id: "123", algorithm: "HMAC-SHA256" },
+                "other"
+            )
             const res = await POST(
                 makePost(JSON.stringify({ signed_request: signed }))
             )
@@ -90,9 +93,8 @@ describe("Meta data deletion callback — Attack Matrix", () => {
 
     describe("Row 2 — Method confusion", () => {
         it("exports POST and does not export GET", async () => {
-            const route = await import(
-                "@/app/api/webhooks/meta/data-deletion/route"
-            )
+            const route =
+                await import("@/app/api/webhooks/meta/data-deletion/route")
             expect("POST" in route).toBe(true)
             expect("GET" in route).toBe(false)
         })
@@ -100,7 +102,9 @@ describe("Meta data deletion callback — Attack Matrix", () => {
 
     describe("Row 3 — Type attacks", () => {
         it("rejects a numeric signed_request", async () => {
-            const res = await POST(makePost(JSON.stringify({ signed_request: 1 })))
+            const res = await POST(
+                makePost(JSON.stringify({ signed_request: 1 }))
+            )
             expect(res.status).toBe(400)
         })
 
@@ -172,7 +176,9 @@ describe("Meta data deletion callback — Attack Matrix", () => {
                 algorithm: "HMAC-SHA256",
             })
             const res = await POST(
-                makePost(JSON.stringify({ signed_request: signed, extra: true }))
+                makePost(
+                    JSON.stringify({ signed_request: signed, extra: true })
+                )
             )
             expect(res.status).toBe(200)
             const body = await res.json()

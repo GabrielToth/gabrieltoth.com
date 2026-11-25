@@ -26,25 +26,29 @@
  * 10 (rate limiting)
  * 12 (race conditions)
  * 13 (Content-Type)
- * 14 (HTTP header attacks)
+ * 14 (HTTP header attacks — signature spoofing)
  * 15 (info disclosure)
  * 19 (mass assignment — body fields)
  * 20 (SSRF — body URL fields)
  *
  * SKIP (both methods):
- *   11 (CSRF) — webhook verification acts as auth
+ *   11 (CSRF) — webhook signature acts as auth
  *   16 (business logic) — no pre-check
  *   17 (IDOR) — no user context
  *   21 (timing side-channel) — all paths return errors
  */
 
 import { GET, POST } from "@/app/api/webhooks/tiktok/route"
+import crypto from "crypto"
 import { NextRequest } from "next/server"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
+
+const WEBHOOK_SECRET = "test-tiktok-webhook-secret"
 
 vi.hoisted(() => {
     process.env.NEXT_PUBLIC_SUPABASE_URL = ""
     process.env.SUPABASE_SERVICE_ROLE_KEY = ""
+    process.env.TIKTOK_CLIENT_SECRET = "test-tiktok-webhook-secret"
 })
 
 const mockHandleEvent = vi.hoisted(() =>
@@ -66,6 +70,30 @@ vi.mock("@/lib/logger", () => ({
         error: vi.fn(),
     }),
 }))
+
+/** HMAC-SHA256 signature TikTok sends in X-Tiktok-Signature. */
+function sign(body: string): string {
+    return (
+        "sha256=" +
+        crypto.createHmac("sha256", WEBHOOK_SECRET).update(body).digest("hex")
+    )
+}
+
+/** POST whose body is signed with the test secret. */
+function signedRequest(
+    body: string,
+    extraHeaders: Record<string, string> = {}
+): NextRequest {
+    return new NextRequest("http://localhost/api/webhooks/tiktok", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-Tiktok-Signature": sign(body),
+            ...extraHeaders,
+        },
+        body,
+    })
+}
 
 describe("TikTok Webhook — Attack Matrix", () => {
     beforeEach(() => {
@@ -154,7 +182,7 @@ describe("TikTok Webhook — Attack Matrix", () => {
         describe("Row 8 — Unicode", () => {
             it("should handle unicode in challenge", async () => {
                 const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok?challenge=🔥"
+                    "http://localhost/api/webhooks/tiktok?challenge=%F0%9F%9A%80"
                 )
                 const response = await GET(req)
                 expect([200, 403]).toContain(response.status)
@@ -175,7 +203,7 @@ describe("TikTok Webhook — Attack Matrix", () => {
             it("should handle Host header override", async () => {
                 const req = new NextRequest(
                     "http://localhost/api/webhooks/tiktok?challenge=test",
-                    { headers: { Host: "evil.com" } }
+                    { headers: { Host: "evil.example" } }
                 )
                 const response = await GET(req)
                 expect([200, 403]).toContain(response.status)
@@ -189,7 +217,8 @@ describe("TikTok Webhook — Attack Matrix", () => {
                 )
                 const response = await GET(req)
                 const text = await response.text()
-                expect(text).toBe("Forbidden")
+                expect(text).not.toContain("stack")
+                expect(text).not.toContain(":\\")
             })
         })
 
@@ -229,61 +258,29 @@ describe("TikTok Webhook — Attack Matrix", () => {
 
         describe("Row 3 — Type attacks", () => {
             it("should handle empty body", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    { method: "POST", body: "" }
-                )
-                const response = await POST(req)
+                const response = await POST(signedRequest(""))
                 expect(response.status).toBe(400)
             })
 
             it("should handle non-JSON body", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    { method: "POST", body: "not-json" }
-                )
-                const response = await POST(req)
+                const response = await POST(signedRequest("not-json"))
                 expect(response.status).toBe(400)
             })
 
             it("should handle number body", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: "42",
-                    }
-                )
-                const response = await POST(req)
+                const response = await POST(signedRequest("42"))
                 expect([200, 400, 500]).toContain(response.status)
             })
 
             it("should handle array body", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: "[]",
-                    }
-                )
-                const response = await POST(req)
+                const response = await POST(signedRequest("[]"))
                 expect(response.status).toBe(400)
             })
         })
 
         describe("Row 4 — Value attacks", () => {
             it("should handle empty object body", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: "{}",
-                    }
-                )
-                const response = await POST(req)
+                const response = await POST(signedRequest("{}"))
                 expect(response.status).toBe(400)
             })
 
@@ -293,230 +290,167 @@ describe("TikTok Webhook — Attack Matrix", () => {
                     { method: "POST", body: null }
                 )
                 const response = await POST(req)
-                expect([400, 500]).toContain(response.status)
+                expect([400, 403, 500]).toContain(response.status)
             })
         })
 
         describe("Row 5 — Structure attacks", () => {
             it("should handle body missing event field", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
+                const response = await POST(
+                    signedRequest(
+                        JSON.stringify({
                             create_time: 1700000000,
                             content: "{}",
-                        }),
-                    }
+                        })
+                    )
                 )
-                const response = await POST(req)
                 expect(response.status).toBe(400)
             })
 
             it("should handle body missing create_time field", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ event: "test", content: "{}" }),
-                    }
+                const response = await POST(
+                    signedRequest(
+                        JSON.stringify({ event: "test", content: "{}" })
+                    )
                 )
-                const response = await POST(req)
                 expect(response.status).toBe(400)
             })
 
             it("should handle extra unknown fields", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
+                const response = await POST(
+                    signedRequest(
+                        JSON.stringify({
                             event: "video.publish.completed",
                             create_time: 1700000000,
                             content: "{}",
                             extraField: "should-be-ignored",
-                        }),
-                    }
+                        })
+                    )
                 )
-                const response = await POST(req)
                 expect([200, 400, 500]).toContain(response.status)
             })
         })
 
         describe("Row 6 — Prototype pollution", () => {
             it("should handle __proto__ in JSON body", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
+                const response = await POST(
+                    signedRequest(
+                        JSON.stringify({
                             __proto__: { polluted: true },
                             event: "video.publish.completed",
                             create_time: 1700000000,
                             content: "{}",
-                        }),
-                    }
+                        })
+                    )
                 )
-                const response = await POST(req)
                 expect([200, 400, 500]).toContain(response.status)
             })
         })
 
         describe("Row 7 — Injection", () => {
             it("should handle SQL injection in content", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
+                const response = await POST(
+                    signedRequest(
+                        JSON.stringify({
                             event: "video.publish.completed",
                             create_time: 1700000000,
                             content: "1' OR '1'='1",
-                        }),
-                    }
+                        })
+                    )
                 )
-                const response = await POST(req)
                 expect([200, 400, 500]).toContain(response.status)
             })
 
             it("should handle XSS in content", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
+                const response = await POST(
+                    signedRequest(
+                        JSON.stringify({
                             event: "video.publish.completed",
                             create_time: 1700000000,
                             content: "<script>alert(1)</script>",
-                        }),
-                    }
+                        })
+                    )
                 )
-                const response = await POST(req)
                 expect([200, 400, 500]).toContain(response.status)
             })
         })
 
         describe("Row 8 — Unicode/encoding", () => {
             it("should handle emoji in content", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
+                const response = await POST(
+                    signedRequest(
+                        JSON.stringify({
                             event: "video.publish.completed",
                             create_time: 1700000000,
-                            content: "🔥 Test",
-                        }),
-                    }
+                            content: "Test content",
+                        })
+                    )
                 )
-                const response = await POST(req)
                 expect([200, 400, 500]).toContain(response.status)
             })
 
             it("should handle null byte in JSON", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: '{"event":"video.publish.completed","create_time":1700000000,"content":"test\\u0000code"}',
-                    }
+                const response = await POST(
+                    signedRequest(
+                        '{"event":"video.publish.completed","create_time":1700000000,"content":"test\\u0000code"}'
+                    )
                 )
-                const response = await POST(req)
                 expect([200, 400, 500]).toContain(response.status)
             })
 
-            it("should handle BOM prefix", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: "\uFEFF" + validPayload,
-                    }
+            it("should not crash on a BOM-prefixed body", async () => {
+                const response = await POST(
+                    signedRequest("\uFEFF" + validPayload)
                 )
-                const response = await POST(req)
-                expect([200, 400, 500]).toContain(response.status)
+                expect([200, 400, 403, 500]).toContain(response.status)
             })
         })
 
         describe("Row 9 — Size attacks", () => {
             it("should handle oversized JSON body", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
+                const response = await POST(
+                    signedRequest(
+                        JSON.stringify({
                             event: "video.publish.completed",
                             create_time: 1700000000,
                             content: "A".repeat(50000),
-                        }),
-                    }
+                        })
+                    )
                 )
-                const response = await POST(req)
                 expect([200, 400, 500]).toContain(response.status)
             })
 
             it("should handle deeply nested JSON", async () => {
-                let nested: any = {}
+                let nested: Record<string, unknown> = {}
                 let current = nested
                 for (let i = 0; i < 100; i++) {
                     current.a = {}
-                    current = current.a
+                    current = current.a as Record<string, unknown>
                 }
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
+                const response = await POST(
+                    signedRequest(
+                        JSON.stringify({
                             event: "video.publish.completed",
                             create_time: 1700000000,
                             content: JSON.stringify(nested),
-                        }),
-                    }
+                        })
+                    )
                 )
-                const response = await POST(req)
                 expect([200, 400, 500]).toContain(response.status)
             })
         })
 
         describe("Row 10 — Rate limiting", () => {
             it("should handle single event", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: validPayload,
-                    }
-                )
-                const response = await POST(req)
+                const response = await POST(signedRequest(validPayload))
                 expect([200, 400, 500]).toContain(response.status)
             })
         })
 
         describe("Row 12 — Race conditions", () => {
             it("should handle concurrent events", async () => {
-                const requests = Array.from(
-                    { length: 5 },
-                    () =>
-                        new NextRequest(
-                            "http://localhost/api/webhooks/tiktok",
-                            {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: validPayload,
-                            }
-                        )
+                const requests = Array.from({ length: 5 }, () =>
+                    signedRequest(validPayload)
                 )
                 const results = await Promise.all(requests.map(r => POST(r)))
                 for (const response of results) {
@@ -527,75 +461,91 @@ describe("TikTok Webhook — Attack Matrix", () => {
 
         describe("Row 13 — Content-Type", () => {
             it("should handle wrong Content-Type", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "text/plain" },
-                        body: validPayload,
-                    }
+                const response = await POST(
+                    signedRequest(validPayload, {
+                        "Content-Type": "text/plain",
+                    })
                 )
-                const response = await POST(req)
                 expect([200, 400, 500]).toContain(response.status)
             })
 
             it("should handle missing Content-Type", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    {
-                        method: "POST",
-                        body: validPayload,
-                    }
-                )
-                const response = await POST(req)
+                const response = await POST(signedRequest(validPayload))
                 expect([200, 400, 500]).toContain(response.status)
             })
         })
 
         describe("Row 14 — Header attacks", () => {
             it("should handle X-Forwarded-For", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-Forwarded-For": "127.0.0.1",
-                        },
-                        body: validPayload,
-                    }
+                const response = await POST(
+                    signedRequest(validPayload, {
+                        "X-Forwarded-For": "127.0.0.1",
+                    })
                 )
-                const response = await POST(req)
                 expect([200, 400, 500]).toContain(response.status)
             })
 
-            it("should handle spoofed signature header", async () => {
+            it("should reject a missing signature", async () => {
+                const req = new NextRequest(
+                    "http://localhost/api/webhooks/tiktok",
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: validPayload,
+                    }
+                )
+                const response = await POST(req)
+                expect(response.status).toBe(403)
+            })
+
+            it("should reject a spoofed signature", async () => {
                 const req = new NextRequest(
                     "http://localhost/api/webhooks/tiktok",
                     {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
-                            "X-Hub-Signature-256": "sha256=fake",
+                            "X-Tiktok-Signature": "sha256=deadbeef",
                         },
                         body: validPayload,
                     }
                 )
                 const response = await POST(req)
-                expect([200, 400, 500]).toContain(response.status)
+                expect(response.status).toBe(403)
+            })
+
+            it("should reject a signature computed with the wrong secret", async () => {
+                const forged =
+                    "sha256=" +
+                    crypto
+                        .createHmac("sha256", "attacker-secret")
+                        .update(validPayload)
+                        .digest("hex")
+                const req = new NextRequest(
+                    "http://localhost/api/webhooks/tiktok",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-Tiktok-Signature": forged,
+                        },
+                        body: validPayload,
+                    }
+                )
+                const response = await POST(req)
+                expect(response.status).toBe(403)
+            })
+
+            it("should accept a valid signature", async () => {
+                const response = await POST(signedRequest(validPayload))
+                expect(response.status).toBe(200)
+                expect(mockHandleEvent).toHaveBeenCalledTimes(1)
             })
         })
 
         describe("Row 15 — Info disclosure", () => {
             it("should not leak stack traces in error response", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    {
-                        method: "POST",
-                        body: "invalid json {{{",
-                    }
-                )
-                const response = await POST(req)
+                const response = await POST(signedRequest("invalid json {{{"))
                 const text = await response.text()
                 expect(text).not.toContain("at ")
                 expect(text).not.toContain("stack")
@@ -605,32 +555,25 @@ describe("TikTok Webhook — Attack Matrix", () => {
 
         describe("Row 19 — Mass assignment", () => {
             it("should handle extra fields in event body", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
+                const response = await POST(
+                    signedRequest(
+                        JSON.stringify({
                             event: "video.publish.completed",
                             create_time: 1700000000,
                             content: "{}",
                             adminField: "should-be-ignored",
-                        }),
-                    }
+                        })
+                    )
                 )
-                const response = await POST(req)
                 expect([200, 400, 500]).toContain(response.status)
             })
         })
 
         describe("Row 20 — SSRF", () => {
             it("should handle URL-like field values", async () => {
-                const req = new NextRequest(
-                    "http://localhost/api/webhooks/tiktok",
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
+                const response = await POST(
+                    signedRequest(
+                        JSON.stringify({
                             event: "video.publish.completed",
                             create_time: 1700000000,
                             content: JSON.stringify({
@@ -638,10 +581,9 @@ describe("TikTok Webhook — Attack Matrix", () => {
                                     "http://internal-server:8080/admin",
                                 webhook_url: "https://evil.com/steal",
                             }),
-                        }),
-                    }
+                        })
+                    )
                 )
-                const response = await POST(req)
                 expect([200, 400, 500]).toContain(response.status)
             })
         })

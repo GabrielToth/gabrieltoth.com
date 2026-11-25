@@ -87,6 +87,16 @@ This document describes all API routes available in the system, their authentica
 - **Request Body:** `{ botToken: string, chatId: string, event: NotificationEvent }`
 - **Description:** Formats and dispatches Markdown notifications to Telegram Bot API.
 
+### `GET /api/webhooks/tiktok`
+- **Auth:** None. The `challenge` query parameter must be present.
+- **Description:** TikTok webhook verification handshake. Echoes the `challenge` value with status 200, or returns 403 when it is missing.
+
+### `POST /api/webhooks/tiktok`
+- **Auth:** HMAC-SHA256 signature. The `X-Tiktok-Signature` header must equal `sha256=<hex>`, where the hex is the HMAC-SHA256 of the raw body computed with `TIKTOK_CLIENT_SECRET`. Missing or invalid signatures return 403 before the body is parsed. The comparison is timing-safe.
+- **Request Body:** `{ event: string, create_time: number, content: string }` where `content` is a JSON string.
+- **Events handled:** `video.publish.completed`, `video.upload.failed`, `authorization.removed`, `portability.download.ready`. Unknown events are acknowledged and logged.
+- **Description:** Receives real-time events from TikTok. On `authorization.removed`, the stored OAuth token and the linked `social_networks` row for the event's open id are deleted.
+
 ---
 
 ## 🌐 OAuth & Social Network Connection APIs

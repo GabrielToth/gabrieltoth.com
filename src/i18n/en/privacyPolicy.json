@@ -1,7 +1,13 @@
 {
     "breadcrumbs": [
-        { "name": "Home", "href": "/" },
-        { "name": "Privacy Policy", "href": "/privacy-policy" }
+        {
+            "name": "Home",
+            "href": "/"
+        },
+        {
+            "name": "Privacy Policy",
+            "href": "/privacy-policy"
+        }
     ],
     "title": "Privacy Policy",
     "lastUpdated": "Last updated: July 23, 2026",
@@ -53,6 +59,10 @@
         {
             "title": "12. Contact Information",
             "content": "If you have any questions, concerns, or requests regarding this Privacy Policy, the processing of your personal data, or if you wish to exercise any of your data protection rights, please contact us through the following channels:\n\nData Protection Officer (DPO): Gabriel Toth Goncalves\n- Email: contato@gabrieltoth.com\n- WhatsApp: +55 11 99331-3606\n- Website: www.gabrieltoth.com\n- Address: Sao Paulo, SP, Brazil\n\nResponse Commitment: We are committed to responding to your requests and inquiries within the timeframe required by applicable law:\n- Under LGPD: Within 15 days from the date of your request (Art. 19 of Law No. 13,709/2018)\n- Under GDPR: Within one month, extendable by up to two additional months for complex or voluminous requests\n\nWhen submitting a request, please provide sufficient information to allow us to verify your identity and understand the nature of your request. We may require additional information to process your request.\n\nIf you believe that we have not adequately addressed your privacy concerns, you have the right to file a complaint with:\n- Brazil: National Data Protection Authority (ANPD) - www.gov.br/anpd\n- European Union: Your local data protection supervisory authority\n\nWe take all privacy concerns seriously and will make every effort to resolve any issues promptly and fairly."
+        },
+        {
+            "title": "13. TikTok Integration",
+            "content": "When you connect a TikTok account, we use the TikTok API to provide the features you request, such as linking your account, reading your basic profile information, and publishing content on your behalf.\n\nData We Receive from TikTok: With your authorization we receive your TikTok open id, display name, avatar, and account statistics such as follower and video counts, together with the access token required to act for you. We store the access token encrypted and use it only to perform the actions you ask for.\n\nHow We Use It: We use this data solely to operate the connected features inside our service. We do not sell TikTok data, we do not use it for advertising, and we do not share it with third parties except for the service providers that host our infrastructure, as described in Section 4.\n\nRevoking Access: You can disconnect your TikTok account at any time from your account settings, and you can also revoke the app directly in your TikTok settings. When you revoke access, we delete the stored access token and remove the linked account. We also delete them automatically when TikTok notifies us that you removed the authorization.\n\nTikTok's Own Terms: Your use of TikTok remains subject to TikTok's Terms of Service and Privacy Policy. TikTok is a trademark of TikTok Inc. and is not affiliated with, endorsed by, or sponsored by us."
         }
     ],
     "complianceNote": "This policy complies with the Brazilian General Data Protection Law (LGPD - Lei No. 13.709/2018), the European General Data Protection Regulation (GDPR - Regulation EU 2016/679), and other applicable data protection regulations."

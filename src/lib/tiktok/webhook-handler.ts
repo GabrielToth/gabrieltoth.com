@@ -1,4 +1,5 @@
 import { createLogger } from "@/lib/logger"
+import { getAdminClient } from "@/lib/supabase/server"
 import type {
     TikTokWebhookEvent,
     TikTokAuthorizationRemovedContent,
@@ -30,7 +31,7 @@ export async function handleTikTokWebhookEvent(
                 const content = JSON.parse(
                     event.content
                 ) as TikTokAuthorizationRemovedContent
-                handleAuthorizationRemoved(content)
+                await handleAuthorizationRemoved(content)
                 result.handled++
                 result.details.push(
                     `authorization.removed:${content.user_open_id}`
@@ -98,12 +99,68 @@ export async function handleTikTokWebhookEvent(
     return result
 }
 
-function handleAuthorizationRemoved(
+/**
+ * The user revoked the app from TikTok. Drop the stored token and the
+ * linked account so no data or access survives the revocation.
+ * The open id is saved as `platform_user_id` during the OAuth callback.
+ */
+async function handleAuthorizationRemoved(
     content: TikTokAuthorizationRemovedContent
-): void {
+): Promise<void> {
+    const openId = content.user_open_id
     logger.info("TikTok authorization removed by user", {
-        openId: content.user_open_id,
+        openId,
         appId: content.app_id,
+    })
+
+    if (!openId) {
+        logger.warn("authorization.removed event without user_open_id")
+        return
+    }
+
+    const supabase = getAdminClient()
+
+    const { data: links, error: lookupError } = await supabase
+        .from("social_networks")
+        .select("user_id")
+        .eq("platform", "tiktok")
+        .eq("platform_user_id", openId)
+
+    if (lookupError) {
+        throw new Error(`Failed to look up TikTok link: ${lookupError.message}`)
+    }
+
+    const userIds = [
+        ...new Set((links ?? []).map(link => link.user_id).filter(Boolean)),
+    ]
+
+    if (userIds.length > 0) {
+        const { error: tokenError } = await supabase
+            .from("oauth_tokens")
+            .delete()
+            .eq("platform", "tiktok")
+            .in("user_id", userIds)
+
+        if (tokenError) {
+            throw new Error(
+                `Failed to delete TikTok token: ${tokenError.message}`
+            )
+        }
+    }
+
+    const { error: linkError } = await supabase
+        .from("social_networks")
+        .delete()
+        .eq("platform", "tiktok")
+        .eq("platform_user_id", openId)
+
+    if (linkError) {
+        throw new Error(`Failed to delete TikTok link: ${linkError.message}`)
+    }
+
+    logger.info("TikTok link removed after authorization revocation", {
+        openId,
+        users: userIds.length,
     })
 }
 
