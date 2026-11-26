@@ -156,9 +156,7 @@ export default async function TermsOfServicePage({
                                         <h2 className="text-xl font-semibold text-foreground dark:text-foreground mb-3">
                                             {typed.youtubeApi.title}
                                         </h2>
-                                        <p
-                                            className="text-foreground dark:text-foreground leading-relaxed whitespace-pre-line"
-                                        >
+                                        <p className="text-foreground dark:text-foreground leading-relaxed whitespace-pre-line">
                                             {typed.youtubeApi.text}
                                         </p>
                                     </section>

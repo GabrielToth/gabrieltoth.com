@@ -23,7 +23,10 @@ describe("Google & YouTube API Compliance Policies", () => {
     for (const { locale, privacy, terms } of locales) {
         describe(`Locale: ${locale}`, () => {
             it("should contain dedicated Google/YouTube section in Privacy Policy", () => {
-                const sections = privacy.sections as Array<{ title: string; content: string }>
+                const sections = privacy.sections as Array<{
+                    title: string
+                    content: string
+                }>
                 const googleSection = sections.find(
                     s =>
                         s.title.includes("Google") &&
@@ -42,7 +45,10 @@ describe("Google & YouTube API Compliance Policies", () => {
             })
 
             it("should contain YouTube API Services section in Terms of Service", () => {
-                const sections = terms.sections as Record<string, { title: string; text: string }>
+                const sections = terms.sections as Record<
+                    string,
+                    { title: string; text: string }
+                >
                 const youtubeSection = sections.youtubeApi
                 expect(youtubeSection).toBeDefined()
                 expect(youtubeSection.text).toContain(
