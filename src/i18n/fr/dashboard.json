@@ -35,7 +35,8 @@
         "channelName": "Nom de la chaîne",
         "connectedSince": "Connecté depuis",
         "connectYouTube": "Connectez votre chaîne YouTube pour gérer vos vidéos, consulter vos analyses et publier du contenu directement depuis le tableau de bord.",
-        "noChannel": "Aucune chaîne connectée"
+        "noChannel": "Aucune chaîne connectée",
+        "googleRevokeNotice": "Vous pouvez aussi revoquer l'acces de cette application a votre compte Google a tout moment : https://myaccount.google.com/permissions. La deconnexion ici supprime les jetons YouTube et les donnees API liees a votre compte."
     },
     "common": {
         "loading": "Chargement du tableau de bord...",

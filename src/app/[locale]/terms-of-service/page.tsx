@@ -149,6 +149,20 @@ export default async function TermsOfServicePage({
                                         {typed.contact.text}
                                     </p>
                                 </section>
+
+                                {/* YouTube API Services */}
+                                {typed.youtubeApi && (
+                                    <section>
+                                        <h2 className="text-xl font-semibold text-foreground dark:text-foreground mb-3">
+                                            {typed.youtubeApi.title}
+                                        </h2>
+                                        <p
+                                            className="text-foreground dark:text-foreground leading-relaxed whitespace-pre-line"
+                                        >
+                                            {typed.youtubeApi.text}
+                                        </p>
+                                    </section>
+                                )}
                             </div>
 
                             <div className="mt-12 pt-8 border-t border-border dark:border-border">

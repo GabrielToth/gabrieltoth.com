@@ -35,7 +35,8 @@
         "channelName": "Kanalname",
         "connectedSince": "Verbunden seit",
         "connectYouTube": "Verbinden Sie Ihren YouTube-Kanal, um Videos zu verwalten, Analysen anzuzeigen und Inhalte direkt aus dem Dashboard zu veröffentlichen.",
-        "noChannel": "Kein Kanal verbunden"
+        "noChannel": "Kein Kanal verbunden",
+        "googleRevokeNotice": "Sie koennen den Zugriff dieser App auf Ihr Google-Konto auch jederzeit widerrufen: https://myaccount.google.com/permissions. Das Trennen hier loescht gespeicherte YouTube-Tokens und mit Ihrem Konto verknuepfte API-Daten."
     },
     "common": {
         "loading": "Dashboard wird geladen...",

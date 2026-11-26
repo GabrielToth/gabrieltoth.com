@@ -54,6 +54,7 @@ export async function buildTermsOfServiceStructured(locale: Locale): Promise<{
         termination: s.termination,
         governing: s.governing,
         contact: s.contact,
+        youtubeApi: s.youtubeApi,
     }
 
     return { breadcrumbs, webPageStructuredData, content }

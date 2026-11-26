@@ -35,7 +35,8 @@
         "channelName": "Channel name",
         "connectedSince": "Connected since",
         "connectYouTube": "Connect your YouTube channel to manage videos, view analytics, and publish content directly from the dashboard.",
-        "noChannel": "No channel connected"
+        "noChannel": "No channel connected",
+        "googleRevokeNotice": "You can also revoke this app's access to your Google Account at any time: https://myaccount.google.com/permissions. Disconnecting here deletes stored YouTube tokens and API data linked to your account."
     },
     "common": {
         "loading": "Loading dashboard...",

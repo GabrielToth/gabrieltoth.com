@@ -297,6 +297,16 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                     </div>
                 </div>
 
+                {/* Google OAuth Revocation Notice */}
+                {youtubeChannel?.isConnected && (
+                    <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-900/30 dark:bg-blue-950/20">
+                        <p className="text-sm text-blue-900 dark:text-blue-300">
+                            {t("youtube.googleRevokeNotice") ||
+                                "You can also revoke this app's access to your Google Account at any time: https://myaccount.google.com/permissions. Disconnecting here deletes stored YouTube tokens and API data linked to your account."}
+                        </p>
+                    </div>
+                )}
+
                 {/* Other Connected Channels */}
                 {nonYoutubeConnected.length > 0 && (
                     <div className="space-y-4">

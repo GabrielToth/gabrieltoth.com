@@ -55,6 +55,10 @@
         "contact": {
             "title": "11. Informacoes de Contato",
             "text": "Se voce tiver duvidas, preocupacoes, reclamacoes ou solicitacoes sobre estes Termos, entre em contato conosco:\n\nGabriel Toth Goncalves\n- E-mail: contato@gabrieltoth.com\n- WhatsApp: +55 11 99331-3606\n- Site: www.gabrieltoth.com\n- Endereco: Sao Paulo, SP, Brasil"
+        },
+        "youtubeApi": {
+            "title": "12. Servicos de API do YouTube",
+            "text": "Partes dos nossos servicos usam os YouTube API Services. Ao usar esses recursos, voce concorda em cumprir os Termos de Servico do YouTube (https://www.youtube.com/t/terms).\n\nVoce tambem concorda com a Politica de Privacidade do Google (https://policies.google.com/privacy), que descreve como o Google trata informacoes processadas pelos YouTube API Services.\n\nVoce pode revogar o acesso deste aplicativo a sua conta Google a qualquer momento nas configuracoes de seguranca do Google: https://myaccount.google.com/permissions. Tambem pode desconectar o YouTube dentro deste aplicativo. Depois da revogacao, excluímos os dados obtidos via API do YouTube associados a sua conta, exceto identificadores que precisamos manter por obrigacao contabil ou legal.\n\nNao fazemos download, copia, scraping nem reenvio de videos de terceiros no YouTube. Voce so pode enviar conteudo de que seja titular ou que esteja autorizado a publicar."
         }
     },
     "bindingNote": "Este documento constituye un acuerdo legalmente vinculante entre usted y Gabriel Toth Goncalves. Al utilizar nuestros servicios, usted reconoce que ha leido, comprendido y acepta estar sujeto a todos los terminos y condiciones establecidos anteriormente."

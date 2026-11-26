@@ -35,7 +35,8 @@
         "channelName": "Nombre del canal",
         "connectedSince": "Conectado desde",
         "connectYouTube": "Conecta tu canal de YouTube para administrar videos, ver análisis y publicar contenido directamente desde el panel.",
-        "noChannel": "Ningún canal conectado"
+        "noChannel": "Ningún canal conectado",
+        "googleRevokeNotice": "Tambien puede revocar el acceso de esta aplicacion a su Cuenta de Google en cualquier momento: https://myaccount.google.com/permissions. Desconectar aqui elimina los tokens de YouTube y los datos de la API vinculados a su cuenta."
     },
     "common": {
         "loading": "Cargando panel...",

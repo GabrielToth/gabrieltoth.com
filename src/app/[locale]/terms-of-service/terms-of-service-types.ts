@@ -13,6 +13,7 @@ export interface TermsSectionsMap {
     termination: TermsSection
     governing: TermsSection
     contact: TermsSection
+    youtubeApi?: TermsSection
 }
 
 export interface TermsContent {
@@ -27,4 +28,5 @@ export interface TermsContent {
     termination: TermsSection
     governing: TermsSection
     contact: TermsSection
+    youtubeApi?: TermsSection
 }
